@@ -1,0 +1,64 @@
+<li
+  class="inline-flex flex-col items-center gap-5 bg-clr-gray-2 rounded-2xl px-10 py-10 shadow-2xl hover:scale-105 transition duration-300 ease-in-out"
+>
+  <div>
+    <img [src]="car?.image" [alt]="car?.name" class="w-[250px]" />
+  </div>
+  <div class="text-center">
+    <h4 class="h4">{{ car?.name }}</h4>
+    <small>{{ car?.type }}</small>
+  </div>
+  <ul class="flex items-center gap-5">
+    <div>
+      <li>
+        <img src="/assets/images/icons/seat.svg" alt="Seat icon" class="icon" />
+        <small>{{ car?.seats }} Seats</small>
+      </li>
+      <li>
+        <img src="/assets/images/icons/door.svg" alt="Door icon" class="icon" />
+        <small>{{ car?.doors }} Doors</small>
+      </li>
+    </div>
+    <div>
+      <li>
+        <img
+          src="/assets/images/icons/speedometer.svg"
+          alt="Speedometer icon"
+          class="icon"
+        />
+        <small>{{ car?.engin }}km</small>
+      </li>
+      <li>
+        <img
+          src="/assets/images/icons/person.svg"
+          alt="Person icon"
+          class="icon"
+        />
+        <small>{{ car?.people }} People</small>
+      </li>
+    </div>
+    <div>
+      <li>
+        <img src="/assets/images/icons/pump.svg" alt="Pump icon" class="icon" />
+        <small>{{ car?.petrol }}</small>
+      </li>
+      <li>
+        <img
+          src="/assets/images/icons/calendar.svg"
+          alt="Calendar icon"
+          class="icon"
+        />
+        <small>{{ car?.year }}</small>
+      </li>
+    </div>
+  </ul>
+  <div class="h-[1px] w-1/2 bg-clr-gray-4"></div>
+  <div class="flex items-center gap-20">
+    <div class="flex items-center">
+      <p class="font-bold">{{ car?.price }}€</p>
+      <span class="font-light text-clr-gray-5">/</span>
+      <span class="font-light text-[12px] text-clr-gray-5">day</span>
+    </div>
+    <button class="btn btn-primary-outline">Details</button>
+  </div>
+</li>

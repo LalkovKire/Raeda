@@ -1,3 +1,52 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  font-family: "Inter", sans-serif;
+  @apply bg-clr-gray-1;
+}
+
+header .h1 {
+  @apply w-[750px] text-center;
+}
+
+header .p {
+  @apply w-[500px] mt-5;
+}
+
+.h1 {
+  @apply text-[58px] font-bold capitalize leading-tight  text-clr-gray-6;
+}
+
+.p {
+  @apply text-center  text-clr-gray-5;
+}
+
+.btn {
+  @apply font-semibold rounded-lg px-5 py-2 transition-all duration-300 ease-in-out;
+}
+
+.btn-primary {
+  @apply bg-clr-black text-clr-white hover:bg-clr-gray-7;
+}
+
+.btn-primary-outline {
+  @apply border-2 border-clr-black text-clr-black hover:bg-clr-black  hover:text-clr-white;
+}
+
+.label {
+  @apply font-semibold text-lg text-clr-gray-5;
+}
+
+.input {
+  @apply bg-transparent border-2 border-clr-gray-4 rounded-lg px-4 py-2 focus:outline-clr-gray-7;
+}
+
+.h4 {
+  @apply font-semibold text-clr-gray-6;
+}
+
+.h2 {
+  @apply text-[40px] font-semibold text-clr-gray-6;
+}

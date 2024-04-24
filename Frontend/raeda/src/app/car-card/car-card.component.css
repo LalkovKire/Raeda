@@ -1,0 +1,15 @@
+.icon {
+  @apply w-[18px];
+}
+
+li li {
+  @apply flex gap-2 items-center;
+}
+
+ul div {
+  @apply flex flex-col gap-2;
+}
+
+small {
+  @apply text-clr-gray-5;
+}
