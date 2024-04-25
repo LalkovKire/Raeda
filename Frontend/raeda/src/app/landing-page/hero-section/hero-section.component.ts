@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BrandCardComponent } from '../../component/brand-card/brand-card.component';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Validators } from '@angular/forms';
 
 @Component({
@@ -11,16 +11,19 @@ import { Validators } from '@angular/forms';
   styleUrl: './hero-section.component.css',
 })
 export class HeroSectionComponent implements OnInit {
-  form: FormGroup;
-  minDatePickup: string;
-  minDateReturn: string;
+  form: FormGroup = this.fb.group({});
+  minDatePickup = this.getCurrentDate();
+  minDateReturn = this.getCurrentDate();
+
+  constructor(private fb: FormBuilder) {
+  }
 
   ngOnInit(): void {
-    this.initForm();
+    this.form = this.initForm();
 
-    this.form.get('pickupDate').valueChanges.subscribe((value) => {
-      this.form.get('returnDate').setValue(value);
-      this.minDateReturn = value;
+    this.form.get('pickupDate')?.valueChanges.subscribe(val => {
+      this.form.get('returnDate')?.setValue(val);
+      this.minDateReturn = val;
     });
   }
 
@@ -30,10 +33,8 @@ export class HeroSectionComponent implements OnInit {
 
   private initForm() {
     const date = this.getCurrentDate();
-    this.minDatePickup == date;
-    this.minDateReturn = date;
 
-    this.form = new FormGroup({
+    return new FormGroup({
       location: new FormControl('All', Validators.required),
       pickupDate: new FormControl(date, Validators.required),
       returnDate: new FormControl(date, Validators.required),
@@ -51,6 +52,6 @@ export class HeroSectionComponent implements OnInit {
   }
 
   restrict(p: Event) {
-    p.preventDefault();
+    //p.preventDefault();
   }
 }
