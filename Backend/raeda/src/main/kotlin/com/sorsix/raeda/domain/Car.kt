@@ -1,5 +1,6 @@
 package com.sorsix.raeda.domain
 
+import com.sorsix.raeda.domain.enumerations.CarStatus
 import jakarta.persistence.*
 
 @Entity
@@ -29,7 +30,7 @@ data class Car (
     val seats: Int,
 
     @Column(nullable = false)
-    val status: String,
+    val status: CarStatus,
 
     @Column(nullable = false)
     val price: Int,
