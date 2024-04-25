@@ -28,7 +28,7 @@ header .p {
 }
 
 .btn {
-  @apply font-semibold rounded-lg px-5 transition-all duration-300 ease-in-out h-11;
+  @apply font-semibold rounded-lg px-5 transition-all duration-300 ease-in-out h-11;it 
 }
 
 .btn-primary {
