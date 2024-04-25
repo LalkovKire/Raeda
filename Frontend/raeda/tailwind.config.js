@@ -13,6 +13,8 @@ module.exports = {
         "clr-gray-2": "#DEE2E6",
         "clr-gray-1": "#E9ECEF",
         "clr-white": "#F8F9FA",
+        "clr-error-1": "#d90429",
+        "clr-error-2": "#ef233c",
       },
     },
   },

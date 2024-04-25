@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CardsComponent } from './cards/cards.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-latest-inventory-section',

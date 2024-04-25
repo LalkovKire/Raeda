@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  @apply scroll-smooth;
+}
+
 body {
   font-family: "Inter", sans-serif;
   @apply bg-clr-gray-1;
@@ -24,7 +28,7 @@ header .p {
 }
 
 .btn {
-  @apply font-semibold rounded-lg px-5 py-2 transition-all duration-300 ease-in-out;
+  @apply font-semibold rounded-lg px-5 transition-all duration-300 ease-in-out h-11;
 }
 
 .btn-primary {
@@ -40,7 +44,11 @@ header .p {
 }
 
 .input {
-  @apply bg-transparent border-2 border-clr-gray-4 rounded-lg px-4 py-2 focus:outline-clr-gray-7;
+  @apply bg-transparent border-2 border-clr-gray-4 rounded-lg px-4 focus:outline-clr-gray-7 h-11;
+}
+
+.select {
+  @apply bg-transparent border-2 border-clr-gray-4 rounded-lg px-4 focus:outline-clr-gray-7 h-11;
 }
 
 .h4 {
@@ -49,4 +57,8 @@ header .p {
 
 .h2 {
   @apply text-[40px] font-semibold text-clr-gray-6;
+}
+
+a {
+  @apply cursor-pointer;
 }
