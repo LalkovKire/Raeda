@@ -34,7 +34,7 @@ export class HeroSectionComponent implements OnInit {
     this.minDateReturn = date;
 
     this.form = new FormGroup({
-      location: new FormControl('Skopje', Validators.required),
+      location: new FormControl('All', Validators.required),
       pickupDate: new FormControl(date, Validators.required),
       returnDate: new FormControl(date, Validators.required),
     });

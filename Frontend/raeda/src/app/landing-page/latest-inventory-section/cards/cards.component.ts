@@ -16,72 +16,84 @@ export class CardsComponent {
       'Mercedes-Benz AMG GT',
       'Sport Car',
       2,
-      220,
+      'Automatic',
       'Petrol',
       2,
-      2,
+      'v8',
       2016,
-      400
+      400,
+      'Skopje',
+      1
     ),
     new CarCard(
       '/assets/images/cars/hero-car.png',
       'Mercedes-Benz AMG GT',
       'Sport Car',
       2,
-      220,
+      'Automatic',
       'Petrol',
       2,
-      2,
+      'v8',
       2016,
-      400
+      400,
+      'Strumica',
+      1
     ),
     new CarCard(
       '/assets/images/cars/hero-car.png',
       'Mercedes-Benz AMG GT',
       'Sport Car',
       2,
-      220,
+      'Automatic',
       'Petrol',
       2,
-      2,
+      'v8',
       2016,
-      400
+      400,
+      'Skopje',
+      1
     ),
     new CarCard(
       '/assets/images/cars/hero-car.png',
       'Mercedes-Benz AMG GT',
       'Sport Car',
       2,
-      220,
+      'Automatic',
       'Petrol',
       2,
-      2,
+      'v8',
       2016,
-      400
+      400,
+      'Ohrid',
+      0
     ),
     new CarCard(
       '/assets/images/cars/hero-car.png',
       'Mercedes-Benz AMG GT',
       'Sport Car',
       2,
-      220,
+      'Automatic',
       'Petrol',
       2,
-      2,
+      'v8',
       2016,
-      400
+      400,
+      'Skopje',
+      1
     ),
     new CarCard(
       '/assets/images/cars/hero-car.png',
       'Mercedes-Benz AMG GT',
       'Sport Car',
       2,
-      220,
+      'Automatic',
       'Petrol',
       2,
-      2,
+      'v8',
       2016,
-      400
+      400,
+      'Strumica',
+      0
     ),
   ];
 }

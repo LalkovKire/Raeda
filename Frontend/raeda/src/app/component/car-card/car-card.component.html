@@ -21,27 +21,15 @@
     </div>
     <div>
       <li>
-        <img
-          src="/assets/images/icons/speedometer.svg"
-          alt="Speedometer icon"
-          class="icon"
-        />
-        <small>{{ car?.engin }}km</small>
+        <img src="/assets/images/icons/gear.svg" alt="Gear icon" class="icon" />
+        <small>{{ car?.gear }}</small>
       </li>
       <li>
-        <img
-          src="/assets/images/icons/person.svg"
-          alt="Person icon"
-          class="icon"
-        />
-        <small>{{ car?.people }} People</small>
+        <img src="/assets/images/icons/pump.svg" alt="Pump icon" class="icon" />
+        <small>{{ car?.fuel }}</small>
       </li>
     </div>
     <div>
-      <li>
-        <img src="/assets/images/icons/pump.svg" alt="Pump icon" class="icon" />
-        <small>{{ car?.petrol }}</small>
-      </li>
       <li>
         <img
           src="/assets/images/icons/calendar.svg"
@@ -50,7 +38,37 @@
         />
         <small>{{ car?.year }}</small>
       </li>
+      <li>
+        <img
+          src="/assets/images/icons/engin.svg"
+          alt="Engin icon"
+          class="icon"
+        />
+        <small>{{ car?.engin }}</small>
+      </li>
     </div>
+  </ul>
+  <ul class="flex gap-10">
+    <li>
+      <img
+        src="/assets/images/icons/location.svg"
+        alt="Location icon"
+        class="icon"
+      />
+      <small> {{ car?.location }} </small>
+    </li>
+    <li>
+      <img
+        [src]="
+          '/assets/images/icons/'.concat(
+            car?.status ? 'available.svg' : 'not-available.svg'
+          )
+        "
+        alt="Location icon"
+        class="icon"
+      />
+      <small> {{ car?.status ? "Available" : "Not-Available" }}</small>
+    </li>
   </ul>
   <div class="h-[1px] w-1/2 bg-clr-gray-4"></div>
   <div class="flex items-center gap-20">
