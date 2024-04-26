@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { ConfirmPasswordValidator } from '../shared/confirm-password.validator';
 
 @Component({
   selector: 'app-sign-up-page',
@@ -38,18 +39,22 @@ export class SignUpPageComponent {
   }
 
   private initForm() {
-    return new FormGroup({
-      firstName: new FormControl(null, Validators.required),
-      lastName: new FormControl(null, Validators.required),
-      email: new FormControl(null, [Validators.required, Validators.email]),
-      password: new FormControl(null, [
-        Validators.required,
-        Validators.minLength(8),
-      ]),
-      confirmPassword: new FormControl(null, [
-        Validators.required,
-        Validators.minLength(8),
-      ]),
-    });
+    return new FormGroup(
+      {
+        firstName: new FormControl(null, Validators.required),
+        lastName: new FormControl(null, Validators.required),
+        email: new FormControl(null, [Validators.required, Validators.email]),
+
+        password: new FormControl(null, [
+          Validators.required,
+          Validators.minLength(8),
+        ]),
+        confirmPassword: new FormControl(null, [
+          Validators.required,
+          Validators.minLength(8),
+        ]),
+      },
+      { validators: ConfirmPasswordValidator }
+    );
   }
 }
