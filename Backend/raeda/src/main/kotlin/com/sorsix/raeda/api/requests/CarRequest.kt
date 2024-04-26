@@ -2,7 +2,7 @@ package com.sorsix.raeda.api.requests
 
 import org.jetbrains.annotations.NotNull
 
-data class CarDto (
+data class CarRequest (
     @NotNull
     val image: String,
 

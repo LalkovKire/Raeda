@@ -1,6 +1,6 @@
 package com.sorsix.raeda.service.impl
 
-import com.sorsix.raeda.api.requests.CarDto
+import com.sorsix.raeda.api.requests.CarRequest
 import com.sorsix.raeda.domain.Car
 import com.sorsix.raeda.domain.enumerations.CarStatus
 import com.sorsix.raeda.repository.CarRepository
@@ -17,7 +17,7 @@ class CarServiceImpl(
 
     override fun getCarById(id: Long) = carRepository.findByIdOrNull(id) ?: throw CarNotFoundException(id)
 
-    override fun addCar(car: CarDto): Car {
+    override fun addCar(car: CarRequest): Car {
         return this.carRepository.save(Car(
             0L,
             car.image,
