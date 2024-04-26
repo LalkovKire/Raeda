@@ -15,7 +15,7 @@
       [formGroup]="form"
       (ngSubmit)="onSubmit()"
     >
-      <div class="flex flex-col gap-2">
+      <div class="form-control">
         <label for="location" class="label">Pickup Location</label>
         <select
           class="select"
@@ -25,11 +25,11 @@
         >
           <option value="All">All</option>
           <option value="Skopje">Skopje</option>
-          <option value="Skopje">Strumica</option>
-          <option value="Skopje">Ohrid</option>
+          <option value="Strumica">Strumica</option>
+          <option value="Kavadarci">Kavadarci</option>
         </select>
       </div>
-      <div class="flex flex-col gap-2">
+      <div class="form-control">
         <label for="pickup" class="label">Pickup Date</label>
         <input
           type="date"
@@ -40,7 +40,7 @@
           (keydown)="restrict($event)"
         />
       </div>
-      <div class="flex flex-col gap-2">
+      <div class="form-control">
         <label for="return" class="label">Return Date</label>
         <input
           type="date"

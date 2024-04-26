@@ -4,6 +4,7 @@ import { HeroSectionComponent } from './hero-section/hero-section.component';
 import { LatestInventorySectionComponent } from './latest-inventory-section/latest-inventory-section.component';
 import { WhyUsSectionComponent } from './why-us-section/why-us-section.component';
 import { SubscriptionComponent } from './subscription/subscription.component';
+import { FooterComponent } from '../component/footer/footer.component';
 
 @Component({
   selector: 'app-landing-page',
@@ -14,6 +15,7 @@ import { SubscriptionComponent } from './subscription/subscription.component';
     LatestInventorySectionComponent,
     WhyUsSectionComponent,
     SubscriptionComponent,
+    FooterComponent,
   ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css',

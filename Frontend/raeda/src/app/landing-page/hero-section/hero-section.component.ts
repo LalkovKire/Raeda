@@ -1,12 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { BrandCardComponent } from '../../component/brand-card/brand-card.component';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Validators } from '@angular/forms';
+import { LoadingComponent } from '../../loading/loading.component';
 
 @Component({
   selector: 'app-hero-section',
   standalone: true,
-  imports: [BrandCardComponent, ReactiveFormsModule],
+  imports: [BrandCardComponent, ReactiveFormsModule, LoadingComponent],
   templateUrl: './hero-section.component.html',
   styleUrl: './hero-section.component.css',
 })
@@ -15,13 +21,12 @@ export class HeroSectionComponent implements OnInit {
   minDatePickup = this.getCurrentDate();
   minDateReturn = this.getCurrentDate();
 
-  constructor(private fb: FormBuilder) {
-  }
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.form = this.initForm();
 
-    this.form.get('pickupDate')?.valueChanges.subscribe(val => {
+    this.form.get('pickupDate')?.valueChanges.subscribe((val) => {
       this.form.get('returnDate')?.setValue(val);
       this.minDateReturn = val;
     });
