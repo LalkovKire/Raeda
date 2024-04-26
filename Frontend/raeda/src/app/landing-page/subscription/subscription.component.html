@@ -28,13 +28,16 @@
             type="email"
             id="small_outlined"
             class="input peer"
-            placeholder=" "
+            placeholder=""
+            formControlName="email"
           />
           <label for="small_outlined" class="label label-peer"
             >Your Email</label
           >
         </div>
-        <button class="btn btn-primary" type="submit">Subscribe</button>
+        <button class="btn btn-primary" type="submit" [disabled]="!form.valid">
+          Subscribe
+        </button>
       </form>
     </div>
     <div>
