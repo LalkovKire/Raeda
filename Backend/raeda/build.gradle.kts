@@ -35,6 +35,7 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("io.rest-assured:rest-assured:5.4.0")
     testImplementation("io.rest-assured:kotlin-extensions:5.4.0")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
 }
 

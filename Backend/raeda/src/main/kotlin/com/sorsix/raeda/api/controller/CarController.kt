@@ -1,6 +1,6 @@
-package com.sorsix.raeda.api
+package com.sorsix.raeda.api.controller
 
-import com.sorsix.raeda.api.requests.CarDto
+import com.sorsix.raeda.api.requests.CarRequest
 import com.sorsix.raeda.service.CarService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -23,7 +23,7 @@ class CarController(private val carService: CarService) {
     fun getCarById(@PathVariable id: Long) = ResponseEntity(this.carService.getCarById(id),HttpStatus.OK)
 
     @PostMapping
-    fun addNewCar(@RequestBody car: CarDto) = ResponseEntity(this.carService.addCar(car),HttpStatus.OK)
+    fun addNewCar(@RequestBody car: CarRequest) = ResponseEntity(this.carService.addCar(car),HttpStatus.OK)
 
     @DeleteMapping("/{id}")
     fun deleteCarById(@PathVariable id: Long) = ResponseEntity(this.carService.deleteCar(id),HttpStatus.OK)
