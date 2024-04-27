@@ -44,6 +44,17 @@
           />
         </div>
         <div>
+          <label for="phoneNumber" class="label mb-2">Your phone number</label>
+
+          <input
+            type="text"
+            id="phoneNumber"
+            class="input"
+            placeholder="070 123 456"
+            formControlName="phoneNumber"
+          />
+        </div>
+        <div>
           <label for="password" class="label mb-2">Password</label>
 
           <input
@@ -54,6 +65,9 @@
             formControlName="password"
           />
         </div>
+        @if (this.form.controls['password'].dirty) {
+        <small>Password should be at least 8 characters</small>
+        }
         <div>
           <label for="confirmPassword" class="label mb-2"
             >Confirm Password</label
@@ -67,10 +81,17 @@
             formControlName="confirmPassword"
           />
         </div>
+        @if (this.form.getError("passwordNotMatch") &&
+        this.form.controls['password'].dirty &&
+        this.form.controls['confirmPassword'].dirty) {
+        <small class="text-red-500"
+          >Oops! It seems the passwords you entered don't match.</small
+        >
+        }
         <button
           type="submit"
           class="btn btn-primary w-full"
-          [disabled]="!form.valid"
+          [disabled]="!this.form.valid"
         >
           Create my account
         </button>
