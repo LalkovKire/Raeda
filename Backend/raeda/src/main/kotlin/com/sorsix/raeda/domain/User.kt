@@ -29,8 +29,6 @@ data class User(
     @Column(name = "phonenumber", nullable = false)
     val phoneNumber: String,
 
-    val country: String,
-
     @Column(name="userpassword",nullable = false)
     val userPassword: String,
 

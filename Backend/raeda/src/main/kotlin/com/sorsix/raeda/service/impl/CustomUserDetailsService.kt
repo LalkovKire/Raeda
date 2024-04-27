@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 typealias ApplicationUser = com.sorsix.raeda.domain.User
 
 @Service
-class CustomUserDetailsService(private val userRepository: UserRepository) : UserDetailsService{
+class CustomUserDetailsService(private val userRepository: UserRepository) : UserDetailsService {
 
 
     override fun loadUserByUsername(username: String): UserDetails {
@@ -20,13 +20,12 @@ class CustomUserDetailsService(private val userRepository: UserRepository) : Use
         return found?.mapToUserDetails() ?: throw UsernameNotFoundException("Not Found")
     }
 
-    private fun ApplicationUser.mapToUserDetails() : UserDetails =
+    private fun ApplicationUser.mapToUserDetails(): UserDetails =
         User.builder()
             .username(this.email)
             .password(this.userPassword)
             .roles(this.role.name)
             .build()
-
 
 
 }
