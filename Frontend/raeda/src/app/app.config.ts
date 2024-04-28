@@ -5,6 +5,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { routes } from './app.routes';
 import { MessageService } from 'primeng/api';
 import { provideHttpClient } from '@angular/common/http';
+import { BrowserStorageService } from './browserStorage.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [

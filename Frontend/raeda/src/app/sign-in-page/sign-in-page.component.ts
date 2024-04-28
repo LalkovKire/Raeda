@@ -10,6 +10,7 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { AuthService } from '../auth/auth.service';
 import { SignInUser } from '../auth/signInUser.model';
+import { BrowserStorageService } from '../browserStorage.service';
 
 @Component({
   selector: 'app-sign-in-page',
@@ -24,7 +25,8 @@ export class SignInPageComponent implements OnInit {
   constructor(
     private messageService: MessageService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private browserStorageService: BrowserStorageService
   ) {}
 
   ngOnInit(): void {
@@ -42,13 +44,13 @@ export class SignInPageComponent implements OnInit {
           severity: 'success',
           detail: 'Welcome back',
         });
-        if (this.form.get('rememberMe')?.value) {
-          localStorage.setItem('token', JSON.stringify(token.accessToken));
-        } else {
-          sessionStorage.setItem('token', JSON.stringify(token.accessToken));
-        }
 
-        this.router.navigate(['/cars']);
+        this.browserStorageService.saveTokenToStorage(
+          this.form.get('rememberMe')?.value,
+          token.accessToken
+        );
+
+        this.router.navigate(['/']);
       },
     });
   }
