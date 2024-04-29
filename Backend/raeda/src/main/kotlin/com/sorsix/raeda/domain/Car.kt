@@ -41,6 +41,11 @@ data class Car(
     @Column(name = "cartype", nullable = false)
     val carType: String,
 
+<<<<<<< HEAD
+    @ManyToMany
+    val locations: List<Location> = arrayListOf()
+)
+=======
     @Column(name = "doors", nullable = false)
     val doors: Int,
 
@@ -50,7 +55,13 @@ data class Car(
     @Column(name = "brand", nullable = false)
     val brand: String,
 
+<<<<<<< HEAD
     @ManyToOne
     @JoinColumn(name = "locationid")
     val location: Location
     )
+=======
+
+    )
+>>>>>>> 3073b9c7b6d5166de80f3a84e478ecde87070791
+>>>>>>> 8afdc0a810fdfb183bc4c5ed24b6367a7e698640

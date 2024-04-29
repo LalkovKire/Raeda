@@ -26,7 +26,11 @@ class SecurityConfiguration(
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/user")
                     .permitAll()
+<<<<<<< HEAD
                     .requestMatchers(HttpMethod.GET, "/api/cars/**", "/api/loc")
+=======
+                    .requestMatchers(HttpMethod.GET, "/api/cars")
+>>>>>>> 8afdc0a810fdfb183bc4c5ed24b6367a7e698640
                     .permitAll()
                     .requestMatchers("/api/user**")
                     .hasRole("ADMIN")
