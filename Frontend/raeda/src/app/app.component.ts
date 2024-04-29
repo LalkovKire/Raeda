@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { initDropdowns, initFlowbite } from 'flowbite';
 import { PrimeNGConfig } from 'primeng/api';
@@ -13,10 +13,8 @@ import { BrowserStorageService } from './browserStorage.service';
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
-  constructor(
-    private primengConfig: PrimeNGConfig,
-    private browserStorageService: BrowserStorageService
-  ) {}
+  private primengConfig = inject(PrimeNGConfig);
+  private browserStorageService = inject(BrowserStorageService);
 
   ngOnInit(): void {
     initFlowbite();

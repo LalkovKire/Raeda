@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
-  EmailValidator,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -16,9 +15,8 @@ import { MessageService } from 'primeng/api';
   styleUrl: './subscription.component.css',
 })
 export class SubscriptionComponent implements OnInit {
+  private messageService = inject(MessageService);
   form: FormGroup = new FormGroup({});
-
-  constructor(private messageService: MessageService) {}
 
   onSubmit() {
     console.log(this.form);

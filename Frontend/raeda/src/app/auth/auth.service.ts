@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { SignInUser } from './signInUser.model';
 import { SignUpUser } from './signUpUser.model';
 
@@ -7,7 +7,7 @@ import { SignUpUser } from './signUpUser.model';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   signIn(user: SignInUser) {
     return this.http.post<{ accessToken: string }>(

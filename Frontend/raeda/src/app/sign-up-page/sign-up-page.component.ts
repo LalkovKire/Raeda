@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -19,13 +19,10 @@ import { AuthService } from '../auth/auth.service';
   styleUrl: './sign-up-page.component.css',
 })
 export class SignUpPageComponent {
+  private router = inject(Router);
+  private messageService = inject(MessageService);
+  private authService = inject(AuthService);
   form: FormGroup = new FormGroup({});
-
-  constructor(
-    private router: Router,
-    private messageService: MessageService,
-    private authService: AuthService
-  ) {}
 
   ngOnInit(): void {
     this.form = this.initForm();
@@ -57,7 +54,6 @@ export class SignUpPageComponent {
           summary: 'Congratulations',
           detail: 'Your account has been successfully created. ',
         });
-        console.log(e);
         this.router.navigate(['/signin']);
       },
     });

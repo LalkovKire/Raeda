@@ -17,11 +17,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   styleUrl: './hero-section.component.css',
 })
 export class HeroSectionComponent implements OnInit {
-  form: FormGroup = this.fb.group({});
+  form: FormGroup = new FormGroup({});
   minDatePickup = this.getCurrentDate();
   minDateReturn = this.getCurrentDate();
-
-  constructor(private fb: FormBuilder, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.form = this.initForm();

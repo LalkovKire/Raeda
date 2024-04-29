@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -20,14 +20,11 @@ import { BrowserStorageService } from '../browserStorage.service';
   styleUrl: './sign-in-page.component.css',
 })
 export class SignInPageComponent implements OnInit {
+  private messageService = inject(MessageService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private browserStorageService = inject(BrowserStorageService);
   form: FormGroup = new FormGroup({});
-
-  constructor(
-    private messageService: MessageService,
-    private authService: AuthService,
-    private router: Router,
-    private browserStorageService: BrowserStorageService
-  ) {}
 
   ngOnInit(): void {
     this.form = this.initForm();

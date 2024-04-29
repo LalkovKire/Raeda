@@ -1,5 +1,5 @@
 import { ViewportScroller } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { BrowserStorageService } from '../../browserStorage.service';
 
@@ -11,19 +11,15 @@ import { BrowserStorageService } from '../../browserStorage.service';
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent implements OnInit {
+  private scroller = inject(ViewportScroller);
+  private browserStorageService = inject(BrowserStorageService);
   signedIn = false;
-
-  constructor(
-    private scroller: ViewportScroller,
-    private browserStorageService: BrowserStorageService
-  ) {}
 
   ngOnInit(): void {
     this.browserStorageService.isSignIn.subscribe((v) => (this.signedIn = v));
   }
 
   scrollTo(section: string) {
-    console.log(this.signedIn);
     this.scroller.scrollToAnchor(section);
   }
 
