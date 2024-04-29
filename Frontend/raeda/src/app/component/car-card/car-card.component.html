@@ -2,11 +2,11 @@
   class="inline-flex flex-col items-center gap-5 bg-clr-gray-2 rounded-2xl px-10 py-10 shadow-2xl hover:scale-105 transition duration-300 ease-in-out"
 >
   <div>
-    <img [src]="car?.image" [alt]="car?.name" class="w-[250px]" />
+    <img [src]="car?.image" [alt]="car?.model" class="w-[250px] rounded" />
   </div>
   <div class="text-center">
-    <h4 class="h4">{{ car?.name }}</h4>
-    <small>{{ car?.type }}</small>
+    <h4 class="h4">{{ car?.model }}</h4>
+    <small>{{ car?.carType }}</small>
   </div>
   <ul class="flex items-center gap-5">
     <div>
@@ -22,11 +22,11 @@
     <div>
       <li>
         <img src="/assets/images/icons/gear.svg" alt="Gear icon" class="icon" />
-        <small>{{ car?.gear }}</small>
+        <small>{{ car?.gearBox }}</small>
       </li>
       <li>
         <img src="/assets/images/icons/pump.svg" alt="Pump icon" class="icon" />
-        <small>{{ car?.fuel }}</small>
+        <small>{{ car?.fuelType }}</small>
       </li>
     </div>
     <div>
@@ -36,7 +36,7 @@
           alt="Calendar icon"
           class="icon"
         />
-        <small>{{ car?.year }}</small>
+        <small>{{ car?.yearMade }}</small>
       </li>
       <li>
         <img
@@ -44,7 +44,7 @@
           alt="Engin icon"
           class="icon"
         />
-        <small>{{ car?.engin }}</small>
+        <small>{{ car?.engine }}</small>
       </li>
     </div>
   </ul>
@@ -55,7 +55,7 @@
         alt="Location icon"
         class="icon"
       />
-      <small> {{ car?.location }} </small>
+      <small> {{ car?.location?.locationName }} </small>
     </li>
     <li>
       <img

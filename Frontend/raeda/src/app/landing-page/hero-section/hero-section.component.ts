@@ -1,13 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BrandCardComponent } from '../../component/brand-card/brand-card.component';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Validators } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-hero-section',

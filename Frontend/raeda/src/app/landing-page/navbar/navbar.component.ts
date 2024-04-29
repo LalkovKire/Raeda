@@ -2,6 +2,7 @@ import { ViewportScroller } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { BrowserStorageService } from '../../browserStorage.service';
+import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-navbar',

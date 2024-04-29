@@ -3,5 +3,20 @@
     <h1 class="h1">Latest <span class="text-clr-black">Inventory</span></h1>
     <p class="p">Explore our latest inventory of brand-new vehicles today.</p>
   </header>
-  <app-cards></app-cards>
+  @if(isLoading && !error) {
+  <div class="flex justify-center mt-10">
+    <app-loading></app-loading>
+  </div>
+  } @else if (!isLoading && error) {
+  <div class="flex justify-center">
+    <app-error [errorMessage]="error"></app-error>
+  </div>
+  } @else {
+
+  <div>
+    <app-cards [cars]="cars"></app-cards>
+  </div>
+  }
+
+  <p-messages [(value)]="messages" [closable]="true"></p-messages>
 </section>
