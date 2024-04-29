@@ -9,6 +9,13 @@ create table carUser
     userRole     smallint     not null
 );
 
+create table Location
+(
+    locationID   BIGSERIAL PRIMARY KEY,
+    locationAddress VARCHAR(100) not null,
+    locationName VARCHAR(100) not null
+);
+
 create table Car
 (
     carID        BIGSERIAL PRIMARY KEY,
@@ -24,15 +31,11 @@ create table Car
     engine       VARCHAR(50)  not null,
     carType      VARCHAR(50)  not null,
     doors        INT          not null,
-    fuelType     VARCHAR(50)  not null
+    fuelType     VARCHAR(50)  not null,
+    locationID     BIGINT    not null,
+    FOREIGN KEY (locationID) REFERENCES Location (locationID)
 );
 
-create table Location
-(
-    locationID   BIGSERIAL PRIMARY KEY,
-    locationSite VARCHAR(100) not null,
-    locationName VARCHAR(100) not null
-);
 
 create table Rental
 (
@@ -59,14 +62,4 @@ create table RentalReview
     rentalID    BIGINT    not null,
     FOREIGN KEY (userID) REFERENCES carUser (userID),
     FOREIGN KEY (rentalID) REFERENCES Rental (rentalID)
-);
-
-
-create table CarLocation
-(
-    carID      INT not null,
-    locationID INT not null,
-    PRIMARY KEY (carID, locationID),
-    FOREIGN KEY (carID) REFERENCES Car (carID),
-    FOREIGN KEY (locationID) REFERENCES Location (locationID)
 );

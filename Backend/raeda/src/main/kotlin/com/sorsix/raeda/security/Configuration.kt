@@ -1,7 +1,7 @@
 package com.sorsix.raeda.security
 
 import com.sorsix.raeda.repository.UserRepository
-import com.sorsix.raeda.service.impl.CustomUserDetailsService
+import com.sorsix.raeda.service.CustomUserDetailsService
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

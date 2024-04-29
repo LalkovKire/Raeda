@@ -1,7 +1,6 @@
-package com.sorsix.raeda.service.impl
+package com.sorsix.raeda.service
 
 import com.sorsix.raeda.repository.UserRepository
-
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -26,6 +25,4 @@ class CustomUserDetailsService(private val userRepository: UserRepository) : Use
             .password(this.userPassword)
             .roles(this.role.name)
             .build()
-
-
 }

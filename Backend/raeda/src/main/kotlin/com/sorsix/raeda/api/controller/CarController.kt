@@ -4,6 +4,7 @@ import com.sorsix.raeda.api.requests.CarRequest
 import com.sorsix.raeda.service.CarService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -23,8 +24,11 @@ class CarController(private val carService: CarService) {
     fun getCarById(@PathVariable id: Long) = ResponseEntity(this.carService.getCarById(id),HttpStatus.OK)
 
     @PostMapping
-    fun addNewCar(@RequestBody car: CarRequest) = ResponseEntity(this.carService.addCar(car),HttpStatus.OK)
+    fun addNewCar(@RequestBody @Validated car: CarRequest) = ResponseEntity(this.carService.addCar(car),HttpStatus.OK)
 
     @DeleteMapping("/{id}")
     fun deleteCarById(@PathVariable id: Long) = ResponseEntity(this.carService.deleteCar(id),HttpStatus.OK)
+
+    @GetMapping("/latest")
+    fun getLatestInventory() = ResponseEntity(this.carService.getLatestInventory(),HttpStatus.OK)
 }

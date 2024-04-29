@@ -1,7 +1,7 @@
 package com.sorsix.raeda.config
 
 import com.sorsix.raeda.security.TokenService
-import com.sorsix.raeda.service.impl.CustomUserDetailsService
+import com.sorsix.raeda.service.CustomUserDetailsService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

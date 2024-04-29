@@ -1,4 +1,4 @@
-package com.sorsix.raeda.service.impl
+package com.sorsix.raeda.service
 
 import com.sorsix.raeda.api.requests.AuthenticationRequest
 import com.sorsix.raeda.api.response.AuthenticationResponse

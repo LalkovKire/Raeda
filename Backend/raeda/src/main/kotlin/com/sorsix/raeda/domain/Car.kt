@@ -50,5 +50,7 @@ data class Car(
     @Column(name = "brand", nullable = false)
     val brand: String,
 
-
+    @ManyToOne
+    @JoinColumn(name = "locationid")
+    val location: Location
     )

@@ -2,7 +2,7 @@ package com.sorsix.raeda.api.controller
 
 import com.sorsix.raeda.api.requests.AuthenticationRequest
 import com.sorsix.raeda.api.response.AuthenticationResponse
-import com.sorsix.raeda.service.impl.AuthenticationService
+import com.sorsix.raeda.service.AuthenticationService
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
