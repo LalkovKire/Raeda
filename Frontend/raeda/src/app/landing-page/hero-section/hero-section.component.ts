@@ -57,6 +57,6 @@ export class HeroSectionComponent implements OnInit {
   }
 
   restrict(p: Event) {
-    //p.preventDefault();
+    p.preventDefault();
   }
 }
