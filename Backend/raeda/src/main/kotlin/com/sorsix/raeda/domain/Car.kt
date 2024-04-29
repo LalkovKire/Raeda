@@ -39,5 +39,8 @@ data class Car (
     val engine: String,
 
     @Column(name = "cartype", nullable = false)
-    val carType: String
+    val carType: String,
+
+    @ManyToMany
+    val locations: List<Location> = arrayListOf()
 )

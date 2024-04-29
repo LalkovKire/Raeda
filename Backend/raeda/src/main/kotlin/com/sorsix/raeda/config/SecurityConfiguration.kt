@@ -26,11 +26,13 @@ class SecurityConfiguration(
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/user")
                     .permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/cars")
+                    .permitAll()
                     .requestMatchers("/api/user**")
                     .hasRole("ADMIN")
                     .anyRequest()
                     .fullyAuthenticated()
-            } //.hasRole("ADMIN")
+            }
             .sessionManagement {
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             }
