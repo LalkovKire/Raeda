@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -8,6 +8,8 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ConfirmPasswordValidator } from '../shared/confirm-password.validator';
+import { SignUpUser } from '../auth/signUpUser.model';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-sign-up-page',
@@ -17,25 +19,44 @@ import { ConfirmPasswordValidator } from '../shared/confirm-password.validator';
   styleUrl: './sign-up-page.component.css',
 })
 export class SignUpPageComponent {
+  private router = inject(Router);
+  private messageService = inject(MessageService);
+  private authService = inject(AuthService);
   form: FormGroup = new FormGroup({});
-
-  constructor(private router: Router, private messageService: MessageService) {}
 
   ngOnInit(): void {
     this.form = this.initForm();
+
+    this.form
+      .get('confirmPassword')
+      ?.statusChanges.subscribe((status) => console.log(status));
   }
 
   onSubmit() {
-    if (this.form.valid) {
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Congratulations',
-        detail: 'Your account has been successfully created. ',
-      });
-      this.router.navigate(['/signin']);
-    }
+    const firstName = this.form.get('firstName')?.value;
+    const lastName = this.form.get('lastName')?.value;
+    const email: string = this.form.get('email')?.value;
+    const phoneNumber: string = this.form.get('phoneNumber')?.value;
+    const password: string = this.form.get('password')?.value;
 
-    console.log(this.form);
+    const newUser = new SignUpUser(
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      password
+    );
+
+    this.authService.signUp(newUser).subscribe({
+      next: (e) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Congratulations',
+          detail: 'Your account has been successfully created. ',
+        });
+        this.router.navigate(['/signin']);
+      },
+    });
   }
 
   private initForm() {
@@ -44,6 +65,12 @@ export class SignUpPageComponent {
         firstName: new FormControl(null, Validators.required),
         lastName: new FormControl(null, Validators.required),
         email: new FormControl(null, [Validators.required, Validators.email]),
+        phoneNumber: new FormControl(null, [
+          Validators.required,
+          Validators.minLength(9),
+          Validators.maxLength(9),
+          Validators.pattern('^[0-9]*$'),
+        ]),
 
         password: new FormControl(null, [
           Validators.required,

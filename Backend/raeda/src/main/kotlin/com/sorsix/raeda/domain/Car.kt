@@ -5,7 +5,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "car")
-data class Car (
+data class Car(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "carid")
@@ -41,6 +41,20 @@ data class Car (
     @Column(name = "cartype", nullable = false)
     val carType: String,
 
+<<<<<<< HEAD
     @ManyToMany
     val locations: List<Location> = arrayListOf()
 )
+=======
+    @Column(name = "doors", nullable = false)
+    val doors: Int,
+
+    @Column(name = "fueltype", nullable = false)
+    val fuelType: String,
+
+    @Column(name = "brand", nullable = false)
+    val brand: String,
+
+
+    )
+>>>>>>> 3073b9c7b6d5166de80f3a84e478ecde87070791

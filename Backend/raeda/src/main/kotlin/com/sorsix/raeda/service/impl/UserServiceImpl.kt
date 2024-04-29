@@ -19,8 +19,17 @@ class UserServiceImpl(private val userRepository: UserRepository, private val en
         val found = this.userRepository.existsByEmail(user.email)
 
         return if (!found) {
-           this.userRepository.save(User(
-               0L,user.firstName,user.lastName,user.email,user.phoneNumber,user.country,encoder.encode(user.userPassword), role = Role.USER))
+            this.userRepository.save(
+                User(
+                    0L,
+                    user.firstName,
+                    user.lastName,
+                    user.email,
+                    user.phoneNumber,
+                    encoder.encode(user.userPassword),
+                    role = Role.USER
+                )
+            )
         } else
             throw UserAlreadyExistsException(user.email)
     }
@@ -30,7 +39,7 @@ class UserServiceImpl(private val userRepository: UserRepository, private val en
     override fun deleteUserById(id: Long) = this.userRepository.deleteById(id)
 
     override fun findAllUsers(): List<UserResponse> = this.userRepository.findAll().map {
-       UserResponse(it.email)
+        UserResponse(it.email)
     }
 
 

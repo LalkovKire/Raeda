@@ -2,7 +2,7 @@ package com.sorsix.raeda.api.requests
 
 import org.jetbrains.annotations.NotNull
 
-data class CarRequest (
+data class CarRequest(
     @NotNull
     val image: String,
 
@@ -28,5 +28,14 @@ data class CarRequest (
     val engine: String,
 
     @NotNull
-    val carType: String
+    val carType: String,
+
+    @NotNull
+    var doors: Int,
+
+    @NotNull
+    var fuelType: String,
+
+    @NotNull
+    var brand: String
 )

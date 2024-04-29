@@ -7,21 +7,19 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { Validators } from '@angular/forms';
-import { LoadingComponent } from '../../loading/loading.component';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-hero-section',
   standalone: true,
-  imports: [BrandCardComponent, ReactiveFormsModule, LoadingComponent],
+  imports: [BrandCardComponent, ReactiveFormsModule],
   templateUrl: './hero-section.component.html',
   styleUrl: './hero-section.component.css',
 })
 export class HeroSectionComponent implements OnInit {
-  form: FormGroup = this.fb.group({});
+  form: FormGroup = new FormGroup({});
   minDatePickup = this.getCurrentDate();
   minDateReturn = this.getCurrentDate();
-
-  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.form = this.initForm();

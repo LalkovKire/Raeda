@@ -10,8 +10,10 @@
     <li><a (click)="scrollTo('home')">Home</a></li>
     <li><a (click)="scrollTo('latest')">Latest</a></li>
     <li><a (click)="scrollTo('why-us')">Why us</a></li>
-    <li><a href="">Cars</a></li>
+    <li><a routerLink="cars">Cars</a></li>
   </ul>
+
+  @if (!signedIn) {
   <div class="flex gap-1">
     <a routerLink="signin">
       <button class="btn btn-primary">Sign in</button>
@@ -20,4 +22,43 @@
       <button class="btn btn-primary-outline">Sign up</button>
     </a>
   </div>
+  } @else {
+
+  <img
+    id="avatarButton"
+    type="button"
+    data-dropdown-toggle="userDropdown"
+    data-dropdown-placement="bottom-start"
+    class="w-12 h-12 rounded-full cursor-pointer"
+    src="/assets/images/default-profile-picture.png"
+    alt="User dropdown"
+  />
+
+  <!-- Dropdown menu -->
+  <div
+    id="userDropdown"
+    class="z-10 hidden bg-clr-white divide-y divide-clr-gray-2 rounded-lg shadow w-44"
+  >
+    <div class="px-4 py-3 text-sm text-clr-gray-6">
+      <div>Full name</div>
+      <div class="font-medium truncate">email</div>
+    </div>
+    <ul class="py-2 text-sm text-clr-gray-5" aria-labelledby="avatarButton">
+      <li>
+        <a href="#" class="block px-4 py-2 hover:bg-clr-gray-1">My Rents</a>
+      </li>
+      <li>
+        <a href="#" class="block px-4 py-2 hover:bg-clr-gray-1">Account</a>
+      </li>
+    </ul>
+    <div class="py-1">
+      <a
+        class="block px-4 py-2 text-sm text-gray-700 hover:bg-clr-gray-1"
+        (click)="onSignOut()"
+        >Sign out</a
+      >
+    </div>
+  </div>
+
+  }
 </nav>

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { initFlowbite } from 'flowbite';
+import { initDropdowns, initFlowbite } from 'flowbite';
 import { PrimeNGConfig } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { BrowserStorageService } from './browserStorage.service';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +13,13 @@ import { ToastModule } from 'primeng/toast';
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
-  constructor(private primengConfig: PrimeNGConfig) {}
+  private primengConfig = inject(PrimeNGConfig);
+  private browserStorageService = inject(BrowserStorageService);
 
   ngOnInit(): void {
     initFlowbite();
+    initDropdowns();
     this.primengConfig.ripple = true;
+    this.browserStorageService.autoSignIn();
   }
 }
