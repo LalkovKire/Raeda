@@ -7,10 +7,12 @@ import com.sorsix.raeda.domain.enumerations.Role
 import com.sorsix.raeda.repository.UserRepository
 import com.sorsix.raeda.service.exceptions.UserAlreadyExistsException
 import com.sorsix.raeda.service.exceptions.UserNotFoundException
+import com.sorsix.raeda.service.exceptions.WrongEmailFormatException
 import com.sorsix.raeda.service.exceptions.WrongPhoneNumberFormatException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import java.util.regex.Pattern
 
 @Service
 class UserService(private val userRepository: UserRepository, private val encoder: PasswordEncoder){
@@ -21,6 +23,9 @@ class UserService(private val userRepository: UserRepository, private val encode
         return if (!found) {
             if (!checkPhoneNumber(user.phoneNumber))
                 throw WrongPhoneNumberFormatException()
+
+            if (!validateEmail(user.email))
+                throw WrongEmailFormatException()
 
             this.userRepository.save(
                 User(
@@ -59,4 +64,15 @@ class UserService(private val userRepository: UserRepository, private val encode
     private fun formatNumber(number: String) =
         number.replace(Regex("[./-]"), "")
 
+    private fun validateEmail(email: String) : Boolean {
+        val regexPattern = ("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")
+        return patternMatches(email,regexPattern)
+    }
+
+    fun patternMatches(emailAddress: String, regexPattern: String): Boolean {
+        return Pattern.compile(regexPattern)
+            .matcher(emailAddress)
+            .matches()
+    }
 }

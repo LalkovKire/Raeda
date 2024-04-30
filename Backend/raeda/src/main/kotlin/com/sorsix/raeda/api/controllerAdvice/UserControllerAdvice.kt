@@ -5,6 +5,7 @@ import com.sorsix.raeda.domain.errorResponse.NotFoundError
 import com.sorsix.raeda.domain.errorResponse.WrongFormatError
 import com.sorsix.raeda.service.exceptions.UserAlreadyExistsException
 import com.sorsix.raeda.service.exceptions.UserNotFoundException
+import com.sorsix.raeda.service.exceptions.WrongEmailFormatException
 import com.sorsix.raeda.service.exceptions.WrongPhoneNumberFormatException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -25,5 +26,10 @@ class UserControllerAdvice : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(WrongPhoneNumberFormatException::class)
     fun handlePhoneNumberException(e : WrongPhoneNumberFormatException) =
-        ResponseEntity(WrongFormatError(description = "The correct format is 077-222-555"),HttpStatus.BAD_REQUEST)
+        ResponseEntity(WrongFormatError(description = "The correct phone format is 077-222-555"),HttpStatus.BAD_REQUEST)
+
+    @ExceptionHandler(WrongEmailFormatException::class)
+    fun handlePhoneNumberException(e : WrongEmailFormatException) =
+        ResponseEntity(WrongFormatError(description = "The email provided is not valid"),HttpStatus.BAD_REQUEST)
+
 }
