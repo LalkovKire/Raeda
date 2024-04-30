@@ -72,7 +72,11 @@ li a {
   @apply bg-transparent border border-clr-gray-4 text-clr-gray-6  rounded-lg focus:ring-clr-gray-5 focus:border-clr-gray-5 block w-full p-2.5 placeholder:text-clr-gray-4;
 }
 
-input.ng-invalid.ng-touched {
+.input-date {
+  @apply w-[150px] cursor-pointer;
+}
+
+.input-error.ng-invalid.ng-touched {
   @apply border-red-500;
 }
 

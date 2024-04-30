@@ -31,25 +31,43 @@
       </div>
       <div class="form-control">
         <label for="pickup" class="label">Pickup Date</label>
-        <input
+        <!-- <input
           type="date"
           id="pickup"
           class="input cursor-pointer"
           formControlName="pickupDate"
           [min]="minDatePickup"
           (keydown)="restrict($event)"
-        />
+        /> -->
+        <p-calendar
+          formControlName="pickupDate"
+          [minDate]="minDatePickup"
+          [showIcon]="true"
+          readonlyInput="true"
+          inputStyleClass="input input-date"
+          iconDisplay="input"
+          inputId="pickup"
+        ></p-calendar>
       </div>
       <div class="form-control">
         <label for="return" class="label">Return Date</label>
-        <input
+        <!-- <input
           type="date"
           id="return"
           class="input cursor-pointer"
           formControlName="returnDate"
           [min]="minDateReturn"
           (keydown)="restrict($event)"
-        />
+        /> -->
+        <p-calendar
+          formControlName="returnDate"
+          [minDate]="minDateReturn"
+          [showIcon]="true"
+          readonlyInput="true"
+          inputStyleClass="input input-date"
+          iconDisplay="input"
+          inputId="return"
+        ></p-calendar>
       </div>
       <button class="btn btn-primary flex gap-3 items-center" type="submit">
         Search

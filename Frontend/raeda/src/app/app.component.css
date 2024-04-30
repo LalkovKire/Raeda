@@ -1,0 +1,16 @@
+::ng-deep .p-datepicker,
+::ng-deep .p-datepicker-header {
+  @apply bg-clr-gray-1;
+}
+
+::ng-deep .p-datepicker table td {
+  @apply p-[1px] text-clr-gray-7;
+}
+
+::ng-deep .p-datepicker table td .p-datepicker-other-month {
+  @apply text-clr-white bg-red-500;
+}
+
+::ng-deep .p-datepicker table td .p-highlight {
+  @apply text-clr-white bg-clr-gray-5;
+}

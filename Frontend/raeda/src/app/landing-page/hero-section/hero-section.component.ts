@@ -2,18 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { BrandCardComponent } from '../../component/brand-card/brand-card.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Validators } from '@angular/forms';
+import { CalendarModule } from 'primeng/calendar';
 
 @Component({
   selector: 'app-hero-section',
   standalone: true,
-  imports: [BrandCardComponent, ReactiveFormsModule],
+  imports: [BrandCardComponent, ReactiveFormsModule, CalendarModule],
   templateUrl: './hero-section.component.html',
   styleUrl: './hero-section.component.css',
 })
 export class HeroSectionComponent implements OnInit {
   form: FormGroup = new FormGroup({});
-  minDatePickup = this.getCurrentDate();
-  minDateReturn = this.getCurrentDate();
+  minDatePickup = new Date();
+  minDateReturn = new Date();
 
   ngOnInit(): void {
     this.form = this.initForm();
@@ -29,23 +30,13 @@ export class HeroSectionComponent implements OnInit {
   }
 
   private initForm() {
-    const date = this.getCurrentDate();
+    const date = new Date();
 
     return new FormGroup({
       location: new FormControl('All', Validators.required),
       pickupDate: new FormControl(date, Validators.required),
       returnDate: new FormControl(date, Validators.required),
     });
-  }
-
-  private getCurrentDate() {
-    const date = new Date();
-
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
-
-    return `${year}-${month}-${day}`;
   }
 
   restrict(p: Event) {

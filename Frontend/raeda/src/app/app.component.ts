@@ -20,6 +20,10 @@ export class AppComponent implements OnInit {
     initFlowbite();
     initDropdowns();
     this.primengConfig.ripple = true;
+    this.primengConfig.setTranslation({
+      firstDayOfWeek: 1,
+      dateFormat: 'dd.mm.yy',
+    });
     this.browserStorageService.autoSignIn();
   }
 }
