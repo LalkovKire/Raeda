@@ -16,8 +16,8 @@
       (ngSubmit)="onSubmit()"
     >
       <div class="form-control">
-        <label for="location" class="label">Pickup Location</label>
-        <select
+        <label class="label">Pickup Location</label>
+        <!-- <select
           class="select"
           name="location"
           id="location"
@@ -27,7 +27,14 @@
           <option value="Skopje">Skopje</option>
           <option value="Strumica">Strumica</option>
           <option value="Kavadarci">Kavadarci</option>
-        </select>
+        </select> -->
+        <p-dropdown
+          formControlName="location"
+          [options]="cities"
+          optionLabel="name"
+          placeholder="Select a City"
+          styleClass="input input-select"
+        ></p-dropdown>
       </div>
       <div class="form-control">
         <label for="pickup" class="label">Pickup Date</label>
@@ -69,7 +76,11 @@
           inputId="return"
         ></p-calendar>
       </div>
-      <button class="btn btn-primary flex gap-3 items-center" type="submit">
+      <button
+        class="btn btn-primary flex gap-3 items-center"
+        type="submit"
+        (click)="onSubmit()"
+      >
         Search
         <img
           src="/assets/images/icons/search.svg"

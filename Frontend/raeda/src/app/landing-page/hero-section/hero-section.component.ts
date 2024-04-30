@@ -3,11 +3,17 @@ import { BrandCardComponent } from '../../component/brand-card/brand-card.compon
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-hero-section',
   standalone: true,
-  imports: [BrandCardComponent, ReactiveFormsModule, CalendarModule],
+  imports: [
+    BrandCardComponent,
+    ReactiveFormsModule,
+    CalendarModule,
+    DropdownModule,
+  ],
   templateUrl: './hero-section.component.html',
   styleUrl: './hero-section.component.css',
 })
@@ -15,6 +21,7 @@ export class HeroSectionComponent implements OnInit {
   form: FormGroup = new FormGroup({});
   minDatePickup = new Date();
   minDateReturn = new Date();
+  cities: { name: string }[] = [];
 
   ngOnInit(): void {
     this.form = this.initForm();
@@ -23,6 +30,12 @@ export class HeroSectionComponent implements OnInit {
       this.form.get('returnDate')?.setValue(val);
       this.minDateReturn = val;
     });
+
+    this.cities = [
+      { name: 'Skopje' },
+      { name: 'Strumica' },
+      { name: 'Kavadarci' },
+    ];
   }
 
   onSubmit() {
@@ -33,7 +46,7 @@ export class HeroSectionComponent implements OnInit {
     const date = new Date();
 
     return new FormGroup({
-      location: new FormControl('All', Validators.required),
+      location: new FormControl(null, Validators.required),
       pickupDate: new FormControl(date, Validators.required),
       returnDate: new FormControl(date, Validators.required),
     });

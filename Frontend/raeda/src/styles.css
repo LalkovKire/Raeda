@@ -69,7 +69,7 @@ li a {
 }
 
 .input {
-  @apply bg-transparent border border-clr-gray-4 text-clr-gray-6  rounded-lg focus:ring-clr-gray-5 focus:border-clr-gray-5 block w-full p-2.5 placeholder:text-clr-gray-4;
+  @apply bg-transparent border border-clr-gray-4 text-clr-gray-6  rounded-lg focus:ring-clr-gray-5 focus:border-clr-gray-5  w-full h-11 placeholder:text-clr-gray-4;
 }
 
 .input-date {
@@ -80,8 +80,8 @@ li a {
   @apply border-red-500;
 }
 
-.select {
-  @apply bg-transparent border border-clr-gray-4 text-clr-gray-6  rounded-lg focus:ring-clr-gray-5 focus:border-clr-gray-5 block w-full p-2.5 placeholder:text-clr-gray-4;
+.input-select {
+  @apply w-[200px];
 }
 
 .wrapper {
