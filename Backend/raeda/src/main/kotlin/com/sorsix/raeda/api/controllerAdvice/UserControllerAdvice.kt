@@ -2,8 +2,10 @@ package com.sorsix.raeda.api.controllerAdvice
 
 import com.sorsix.raeda.domain.errorResponse.AlreadyExistsError
 import com.sorsix.raeda.domain.errorResponse.NotFoundError
+import com.sorsix.raeda.domain.errorResponse.WrongFormatError
 import com.sorsix.raeda.service.exceptions.UserAlreadyExistsException
 import com.sorsix.raeda.service.exceptions.UserNotFoundException
+import com.sorsix.raeda.service.exceptions.WrongPhoneNumberFormatException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -20,4 +22,8 @@ class UserControllerAdvice : ResponseEntityExceptionHandler() {
     @ExceptionHandler(UserAlreadyExistsException::class)
     fun handleUserAlreadyExists(e : UserAlreadyExistsException) =
         ResponseEntity(AlreadyExistsError(description = "The user with email: ${e.email} already exists in the database"), HttpStatus.BAD_REQUEST)
+
+    @ExceptionHandler(WrongPhoneNumberFormatException::class)
+    fun handlePhoneNumberException(e : WrongPhoneNumberFormatException) =
+        ResponseEntity(WrongFormatError(description = "The correct format is 077-222-555"),HttpStatus.BAD_REQUEST)
 }
