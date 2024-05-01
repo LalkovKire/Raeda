@@ -1,10 +1,10 @@
 package com.sorsix.raeda.service
 
 import com.sorsix.raeda.repository.UserRepository
+import com.sorsix.raeda.service.exceptions.UserEmailNotFoundException
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 
 typealias ApplicationUser = com.sorsix.raeda.domain.User
@@ -16,7 +16,7 @@ class CustomUserDetailsService(private val userRepository: UserRepository) : Use
     override fun loadUserByUsername(username: String): UserDetails {
         val found = userRepository.findByEmail(username)
 
-        return found?.mapToUserDetails() ?: throw UsernameNotFoundException("Not Found")
+        return found?.mapToUserDetails() ?: throw UserEmailNotFoundException(username)
     }
 
     private fun ApplicationUser.mapToUserDetails(): UserDetails =

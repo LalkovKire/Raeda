@@ -19,15 +19,15 @@ class TokenService(jwtProperties: JwtProperties) {
         expirationDate: Date,
         additionalClaims: Map<String, Any> = emptyMap()
     ): String =
-    Jwts.builder()
-    .claims()
-    .subject(userDetails.username)
-    .issuedAt(Date(System.currentTimeMillis()))
-    .expiration(expirationDate)
-    .add(additionalClaims)
-    .and()
-    .signWith(secretKey)
-    .compact()
+        Jwts.builder()
+        .claims()
+        .subject(userDetails.username)
+        .issuedAt(Date(System.currentTimeMillis()))
+        .expiration(expirationDate)
+        .add(additionalClaims)
+        .and()
+        .signWith(secretKey)
+        .compact()
 
     fun isValid(token: String, userDetails: UserDetails): Boolean {
         val email = extractEmail(token)
@@ -47,8 +47,6 @@ class TokenService(jwtProperties: JwtProperties) {
         val parser = Jwts.parser()
             .verifyWith(secretKey)
             .build()
-        return parser
-            .parseSignedClaims(token)
-            .payload
+        return parser.parseSignedClaims(token).payload
     }
 }

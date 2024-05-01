@@ -3,12 +3,10 @@ package com.sorsix.raeda.api.controllerAdvice
 import com.sorsix.raeda.domain.errorResponse.AlreadyExistsError
 import com.sorsix.raeda.domain.errorResponse.NotFoundError
 import com.sorsix.raeda.domain.errorResponse.WrongFormatError
-import com.sorsix.raeda.service.exceptions.UserAlreadyExistsException
-import com.sorsix.raeda.service.exceptions.UserNotFoundException
-import com.sorsix.raeda.service.exceptions.WrongEmailFormatException
-import com.sorsix.raeda.service.exceptions.WrongPhoneNumberFormatException
+import com.sorsix.raeda.service.exceptions.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
@@ -31,5 +29,9 @@ class UserControllerAdvice : ResponseEntityExceptionHandler() {
     @ExceptionHandler(WrongEmailFormatException::class)
     fun handlePhoneNumberException(e : WrongEmailFormatException) =
         ResponseEntity(WrongFormatError(description = "The email provided is not valid"),HttpStatus.BAD_REQUEST)
+
+    @ExceptionHandler(UserEmailNotFoundException::class)
+    fun handlePhoneNumberException(e : UserEmailNotFoundException) =
+        ResponseEntity(NotFoundError(description = "The user with email:  ${e.email} was not found"),HttpStatus.BAD_REQUEST)
 
 }

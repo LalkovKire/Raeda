@@ -28,7 +28,7 @@ class AuthenticationService(
         val user = userDetailsService.loadUserByUsername(authenticationRequest.email)
         val accessToken = createAccessToken(user)
         return AuthenticationResponse(
-            accessToken = accessToken,
+            accessToken = accessToken
         )
     }
     private fun createAccessToken(user: UserDetails) = tokenService.generate(

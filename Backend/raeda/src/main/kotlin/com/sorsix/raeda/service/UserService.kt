@@ -17,17 +17,17 @@ import java.util.regex.Pattern
 @Service
 class UserService(private val userRepository: UserRepository, private val encoder: PasswordEncoder){
 
-    fun createUser(user: UserRequest): User? {
+    fun createUser(user: UserRequest): UserResponse {
         val found = this.userRepository.existsByEmail(user.email)
 
-        return if (!found) {
+        if (!found) {
             if (!checkPhoneNumber(user.phoneNumber))
                 throw WrongPhoneNumberFormatException()
 
             if (!validateEmail(user.email))
                 throw WrongEmailFormatException()
 
-            this.userRepository.save(
+            val tmp = this.userRepository.save(
                 User(
                     0L,
                     user.firstName,
@@ -38,8 +38,15 @@ class UserService(private val userRepository: UserRepository, private val encode
                     role = Role.USER
                 )
             )
-        } else
-            throw UserAlreadyExistsException(user.email)
+
+            return UserResponse(
+                tmp.firstName,
+                tmp.lastName,
+                tmp.email,
+                tmp.phoneNumber
+            )
+
+        } else throw UserAlreadyExistsException(user.email)
     }
 
     fun findUserById(id: Long) = userRepository.findByIdOrNull(id) ?: throw UserNotFoundException(id)
@@ -47,7 +54,12 @@ class UserService(private val userRepository: UserRepository, private val encode
     fun deleteUserById(id: Long) = this.userRepository.deleteById(id)
 
     fun findAllUsers(): List<UserResponse> = this.userRepository.findAll().map {
-        UserResponse(it.email)
+        UserResponse(
+            it.firstName,
+            it.lastName,
+            it.email,
+            it.phoneNumber
+        )
     }
 
     private fun checkPhoneNumber(number: String) : Boolean {
