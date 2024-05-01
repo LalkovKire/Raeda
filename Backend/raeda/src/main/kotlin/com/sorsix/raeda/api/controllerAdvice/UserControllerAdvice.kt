@@ -17,19 +17,25 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 class UserControllerAdvice : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(UserNotFoundException::class)
-    fun handleUserNotFound(e : UserNotFoundException) =
+    fun handleUserNotFound(e: UserNotFoundException) =
         ResponseEntity(NotFoundError(description = "The user with id ${e.id} was not found"), HttpStatus.NOT_FOUND)
 
     @ExceptionHandler(UserAlreadyExistsException::class)
-    fun handleUserAlreadyExists(e : UserAlreadyExistsException) =
-        ResponseEntity(AlreadyExistsError(description = "The user with email: ${e.email} already exists in the database"), HttpStatus.BAD_REQUEST)
+    fun handleUserAlreadyExists(e: UserAlreadyExistsException) =
+        ResponseEntity(
+            AlreadyExistsError(description = "The user with ${e.identifier}: ${e.type} already exists"),
+            HttpStatus.BAD_REQUEST
+        )
 
     @ExceptionHandler(WrongPhoneNumberFormatException::class)
-    fun handlePhoneNumberException(e : WrongPhoneNumberFormatException) =
-        ResponseEntity(WrongFormatError(description = "The correct phone format is 077-222-555"),HttpStatus.BAD_REQUEST)
+    fun handlePhoneNumberException(e: WrongPhoneNumberFormatException) =
+        ResponseEntity(
+            WrongFormatError(description = "Number should start with: \"070\", \"071\", \"072\", \"073\", \"074\", \"075\", \"076\", \"077\", \"078\", \"079\""),
+            HttpStatus.BAD_REQUEST
+        )
 
     @ExceptionHandler(WrongEmailFormatException::class)
-    fun handlePhoneNumberException(e : WrongEmailFormatException) =
-        ResponseEntity(WrongFormatError(description = "The email provided is not valid"),HttpStatus.BAD_REQUEST)
+    fun handlePhoneNumberException(e: WrongEmailFormatException) =
+        ResponseEntity(WrongFormatError(description = "The email provided is not valid"), HttpStatus.BAD_REQUEST)
 
 }
