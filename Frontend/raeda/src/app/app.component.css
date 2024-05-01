@@ -25,3 +25,12 @@
   .p-dropdown-item.p-highlight.p-focus {
   @apply bg-clr-gray-3 text-clr-gray-7;
 }
+
+::ng-deep .p-dropdown:not(.p-disabled).p-focus {
+  @apply shadow-none;
+}
+
+::ng-deep .input.ng-invalid.ng-touched,
+::ng-deep .p-element.ng-invalid.ng-touched .input {
+  @apply border-red-500;
+}

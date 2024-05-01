@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { BrandCardComponent } from '../../component/brand-card/brand-card.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-hero-section',
@@ -18,6 +19,7 @@ import { DropdownModule } from 'primeng/dropdown';
   styleUrl: './hero-section.component.css',
 })
 export class HeroSectionComponent implements OnInit {
+  messageService = inject(MessageService);
   form: FormGroup = new FormGroup({});
   minDatePickup = new Date();
   minDateReturn = new Date();
@@ -39,6 +41,14 @@ export class HeroSectionComponent implements OnInit {
   }
 
   onSubmit() {
+    if (!this.form.controls['location'].valid) {
+      this.messageService.add({
+        severity: 'error',
+        detail: 'Please select city',
+      });
+      return;
+    }
+
     console.log(this.form);
   }
 

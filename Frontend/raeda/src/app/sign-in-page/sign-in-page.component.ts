@@ -11,11 +11,12 @@ import { ToastModule } from 'primeng/toast';
 import { AuthService } from '../auth/auth.service';
 import { SignInUser } from '../auth/signInUser.model';
 import { BrowserStorageService } from '../browserStorage.service';
+import { PasswordModule } from 'primeng/password';
 
 @Component({
   selector: 'app-sign-in-page',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule, ToastModule],
+  imports: [RouterLink, ReactiveFormsModule, ToastModule, PasswordModule],
   templateUrl: './sign-in-page.component.html',
   styleUrl: './sign-in-page.component.css',
 })

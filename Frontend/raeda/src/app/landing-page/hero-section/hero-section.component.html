@@ -29,6 +29,7 @@
           <option value="Kavadarci">Kavadarci</option>
         </select> -->
         <p-dropdown
+          class="ng-dirty ng-invalid"
           formControlName="location"
           [options]="cities"
           optionLabel="name"
@@ -51,9 +52,9 @@
           [minDate]="minDatePickup"
           [showIcon]="true"
           readonlyInput="true"
-          inputStyleClass="input input-date"
           iconDisplay="input"
           inputId="pickup"
+          inputStyleClass="input input-date"
         ></p-calendar>
       </div>
       <div class="form-control">
@@ -71,16 +72,12 @@
           [minDate]="minDateReturn"
           [showIcon]="true"
           readonlyInput="true"
-          inputStyleClass="input input-date"
           iconDisplay="input"
           inputId="return"
+          inputStyleClass="input input-date"
         ></p-calendar>
       </div>
-      <button
-        class="btn btn-primary flex gap-3 items-center"
-        type="submit"
-        (click)="onSubmit()"
-      >
+      <button class="btn btn-primary flex gap-3 items-center" type="submit">
         Search
         <img
           src="/assets/images/icons/search.svg"

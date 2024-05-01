@@ -10,28 +10,35 @@
     <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
       <h3 class="h3">Sign in to your account</h3>
       <form class="space-y-4" [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div>
-          <label for="email" class="label mb-2">Your email</label>
-
+        <div class="form-control">
+          <label for="email" class="label">Your email</label>
           <input
             type="email"
-            name="email"
             id="email"
-            class="input input-error"
+            class="input"
             placeholder="name@company.com"
             formControlName="email"
           />
         </div>
-        <div>
-          <label for="password" class="label mb-2">Password</label>
-          <input
+        <div class="form-control">
+          <label for="password" class="label">Password</label>
+          <p-password
+            formControlName="password"
+            [toggleMask]="true"
+            inputStyleClass="input input-error"
+            styleClass="input input-error"
+            inputId="password"
+            feedback="false"
+            placeholder="••••••••"
+          ></p-password>
+          <!-- <input
             type="password"
             name="password"
             id="password"
             placeholder="••••••••"
             class="input input-error"
             formControlName="password"
-          />
+          /> -->
         </div>
         <div class="flex items-center justify-between">
           <div class="flex items-start">
