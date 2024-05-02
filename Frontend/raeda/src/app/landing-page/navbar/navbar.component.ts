@@ -15,6 +15,7 @@ export class NavbarComponent implements OnInit {
   private scroller = inject(ViewportScroller);
   private browserStorageService = inject(BrowserStorageService);
   signedIn = false;
+  toggleDropdown = false;
 
   ngOnInit(): void {
     this.browserStorageService.isSignIn.subscribe((v) => (this.signedIn = v));
@@ -26,5 +27,9 @@ export class NavbarComponent implements OnInit {
 
   onSignOut() {
     this.browserStorageService.signOut();
+  }
+
+  onToggleDropdown() {
+    this.toggleDropdown = !this.toggleDropdown;
   }
 }

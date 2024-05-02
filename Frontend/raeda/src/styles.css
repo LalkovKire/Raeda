@@ -9,6 +9,7 @@ html {
 
 body {
   font-family: "Inter", sans-serif;
+
   @apply bg-clr-gray-1;
 }
 
@@ -80,8 +81,12 @@ li a {
   @apply w-[150px] cursor-pointer;
 }
 
-.input-select {
+.select {
   @apply w-[200px] leading-none border;
+}
+
+.input-error-none {
+  @apply border-none;
 }
 
 .label-peer {

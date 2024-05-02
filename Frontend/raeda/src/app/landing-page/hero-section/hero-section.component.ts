@@ -48,8 +48,6 @@ export class HeroSectionComponent implements OnInit {
       });
       return;
     }
-
-    console.log(this.form);
   }
 
   private initForm() {
