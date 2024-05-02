@@ -30,7 +30,7 @@
   @apply shadow-none;
 }
 
-::ng-deep .input.ng-invalid.ng-touched,
-::ng-deep .p-element.ng-invalid.ng-touched .input {
+::ng-deep .input-error.ng-invalid.ng-touched,
+::ng-deep .p-element.ng-invalid.ng-touched .input-error {
   @apply border-red-500;
 }
