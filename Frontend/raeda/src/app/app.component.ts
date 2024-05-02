@@ -1,6 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { initDropdowns, initFlowbite } from 'flowbite';
 import { PrimeNGConfig } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { BrowserStorageService } from './browserStorage.service';
@@ -17,8 +16,6 @@ export class AppComponent implements OnInit {
   private browserStorageService = inject(BrowserStorageService);
 
   ngOnInit(): void {
-    initFlowbite();
-    initDropdowns();
     this.primengConfig.ripple = true;
     this.primengConfig.setTranslation({
       firstDayOfWeek: 1,

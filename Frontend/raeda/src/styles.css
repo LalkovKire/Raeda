@@ -80,7 +80,7 @@ li a {
   @apply w-[150px] cursor-pointer;
 }
 
-.input-select {
+.select {
   @apply w-[200px] leading-none border;
 }
 

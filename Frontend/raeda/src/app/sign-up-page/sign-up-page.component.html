@@ -17,7 +17,7 @@
               type="text"
               id="firstName"
               placeholder="John"
-              class="input"
+              class="input input-error"
               formControlName="firstName"
             />
             @if (form.controls['firstName'].invalid &&
@@ -31,7 +31,7 @@
               type="text"
               id="lastName"
               placeholder="Doe"
-              class="input"
+              class="input input-error"
               formControlName="lastName"
             />
             @if (form.controls['lastName'].invalid &&
@@ -45,7 +45,7 @@
           <input
             type="email"
             id="email"
-            class="input"
+            class="input input-error"
             placeholder="name@company.com"
             formControlName="email"
           />
@@ -68,7 +68,7 @@
             formControlName="phoneNumber"
             placeholder="070 123 456"
             inputId="phoneNumber"
-            styleClass="input"
+            styleClass="input input-error"
           ></p-inputMask>
           @if (form.controls['phoneNumber'].invalid &&
           form.controls['phoneNumber'].touched) {
@@ -88,8 +88,8 @@
             formControlName="password"
             [toggleMask]="true"
             feedback="false"
-            inputStyleClass="input"
-            styleClass="input "
+            inputStyleClass="input input-error"
+            styleClass="input input-error"
             placeholder="••••••••"
             inputId="password"
           >
@@ -113,8 +113,8 @@
             formControlName="confirmPassword"
             [toggleMask]="true"
             feedback="false"
-            inputStyleClass="input"
-            styleClass="input "
+            inputStyleClass="input input-error"
+            styleClass="input input-error"
             placeholder="••••••••"
             inputId="password"
           ></p-password>
