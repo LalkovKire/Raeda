@@ -10,11 +10,20 @@ import { MessageService } from 'primeng/api';
 import { ConfirmPasswordValidator } from '../shared/confirm-password.validator';
 import { SignUpUser } from '../auth/signUpUser.model';
 import { AuthService } from '../auth/auth.service';
+import { PasswordModule } from 'primeng/password';
+import { InputMaskModule } from 'primeng/inputmask';
+import { DividerModule } from 'primeng/divider';
 
 @Component({
   selector: 'app-sign-up-page',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule],
+  imports: [
+    RouterLink,
+    ReactiveFormsModule,
+    PasswordModule,
+    InputMaskModule,
+    DividerModule,
+  ],
   templateUrl: './sign-up-page.component.html',
   styleUrl: './sign-up-page.component.css',
 })
@@ -26,18 +35,17 @@ export class SignUpPageComponent {
 
   ngOnInit(): void {
     this.form = this.initForm();
-
-    this.form
-      .get('confirmPassword')
-      ?.statusChanges.subscribe((status) => console.log(status));
   }
-
   onSubmit() {
     const firstName = this.form.get('firstName')?.value;
     const lastName = this.form.get('lastName')?.value;
     const email: string = this.form.get('email')?.value;
-    const phoneNumber: string = this.form.get('phoneNumber')?.value;
+    const phoneNumber: string = this.form
+      .get('phoneNumber')
+      ?.value.replaceAll(' ', '');
     const password: string = this.form.get('password')?.value;
+
+    console.log(phoneNumber);
 
     const newUser = new SignUpUser(
       firstName,
@@ -56,6 +64,13 @@ export class SignUpPageComponent {
         });
         this.router.navigate(['/signin']);
       },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Something went wrong',
+          detail: err.error.description,
+        });
+      },
     });
   }
 
@@ -65,12 +80,7 @@ export class SignUpPageComponent {
         firstName: new FormControl(null, Validators.required),
         lastName: new FormControl(null, Validators.required),
         email: new FormControl(null, [Validators.required, Validators.email]),
-        phoneNumber: new FormControl(null, [
-          Validators.required,
-          Validators.minLength(9),
-          Validators.maxLength(9),
-          Validators.pattern('^[0-9]*$'),
-        ]),
+        phoneNumber: new FormControl(null, [Validators.required]),
 
         password: new FormControl(null, [
           Validators.required,

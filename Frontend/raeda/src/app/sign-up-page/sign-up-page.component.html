@@ -11,8 +11,8 @@
       <h3 class="h3">Create your account</h3>
       <form class="space-y-4" [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="grid grid-cols-2 gap-6">
-          <div>
-            <label for="firstName" class="label mb-2">First Name</label>
+          <div class="form-control">
+            <label for="firstName" class="label">First Name</label>
             <input
               type="text"
               id="firstName"
@@ -20,9 +20,13 @@
               class="input"
               formControlName="firstName"
             />
+            @if (form.controls['firstName'].invalid &&
+            form.controls['firstName'].touched) {
+            <small class="text-red-500">First name is required</small>
+            }
           </div>
-          <div>
-            <label for="lastName" class="label mb-2">Last Name</label>
+          <div class="form-control">
+            <label for="lastName" class="label">Last Name</label>
             <input
               type="text"
               id="lastName"
@@ -30,11 +34,14 @@
               class="input"
               formControlName="lastName"
             />
+            @if (form.controls['lastName'].invalid &&
+            form.controls['lastName'].touched) {
+            <small class="text-red-500">Last name is required</small>
+            }
           </div>
         </div>
-        <div>
-          <label for="email" class="label mb-2">Your email</label>
-
+        <div class="form-control">
+          <label for="email" class="label">Your email</label>
           <input
             type="email"
             id="email"
@@ -42,48 +49,84 @@
             placeholder="name@company.com"
             formControlName="email"
           />
+          @if (form.controls['email'].invalid && form.controls['email'].touched)
+          {
+          <small class="text-red-500">Email is required</small>
+          }
         </div>
-        <div>
-          <label for="phoneNumber" class="label mb-2">Your phone number</label>
-
-          <input
+        <div class="form-control">
+          <label for="phoneNumber" class="label">Your phone number</label>
+          <!-- <input
             type="text"
             id="phoneNumber"
             class="input"
             placeholder="070 123 456"
             formControlName="phoneNumber"
-          />
+          /> -->
+          <p-inputMask
+            mask="999 999 999"
+            formControlName="phoneNumber"
+            placeholder="070 123 456"
+            inputId="phoneNumber"
+            styleClass="input"
+          ></p-inputMask>
+          @if (form.controls['phoneNumber'].invalid &&
+          form.controls['phoneNumber'].touched) {
+          <small class="text-red-500">Phone number is required</small>
+          }
         </div>
-        <div>
-          <label for="password" class="label mb-2">Password</label>
-
-          <input
+        <div class="form-control">
+          <label for="password" class="label">Password</label>
+          <!-- <input
             type="password"
             id="password"
             class="input"
             placeholder="••••••••"
             formControlName="password"
-          />
-        </div>
-        @if (this.form.controls['password'].dirty) {
-        <small>Password should be at least 8 characters</small>
-        }
-        <div>
-          <label for="confirmPassword" class="label mb-2"
-            >Confirm Password</label
+          /> -->
+          <p-password
+            formControlName="password"
+            [toggleMask]="true"
+            feedback="false"
+            inputStyleClass="input"
+            styleClass="input "
+            placeholder="••••••••"
+            inputId="password"
           >
+          </p-password>
+          @if (form.controls['password'].invalid &&
+          form.controls['password'].touched) {
+          <small class="text-red-500">Password is required</small>
+          }
+        </div>
 
-          <input
+        <div class="form-control">
+          <label for="confirmPassword" class="label">Confirm Password</label>
+          <!-- <input
             type="password"
             id="confirmPassword"
             class="input"
             placeholder="••••••••"
             formControlName="confirmPassword"
-          />
+          /> -->
+          <p-password
+            formControlName="confirmPassword"
+            [toggleMask]="true"
+            feedback="false"
+            inputStyleClass="input"
+            styleClass="input "
+            placeholder="••••••••"
+            inputId="password"
+          ></p-password>
+          @if (form.controls['confirmPassword'].invalid &&
+          form.controls['confirmPassword'].touched) {
+          <small class="text-red-500">Password confirmation is required</small>
+          }
         </div>
         @if (this.form.getError("passwordNotMatch") &&
-        this.form.controls['password'].dirty &&
-        this.form.controls['confirmPassword'].dirty) {
+        form.controls['password'].dirty &&
+        form.controls['confirmPassword'].dirty
+        &&this.form.controls['confirmPassword'].value ) {
         <small class="text-red-500"
           >Oops! It seems the passwords you entered don't match.</small
         >
@@ -91,7 +134,7 @@
         <button
           type="submit"
           class="btn btn-primary w-full"
-          [disabled]="!this.form.valid"
+          [disabled]="!form.valid"
         >
           Create my account
         </button>

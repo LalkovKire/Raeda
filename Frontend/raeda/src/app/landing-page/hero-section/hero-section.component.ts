@@ -1,19 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { BrandCardComponent } from '../../component/brand-card/brand-card.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Validators } from '@angular/forms';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-hero-section',
   standalone: true,
-  imports: [BrandCardComponent, ReactiveFormsModule],
+  imports: [
+    BrandCardComponent,
+    ReactiveFormsModule,
+    CalendarModule,
+    DropdownModule,
+  ],
   templateUrl: './hero-section.component.html',
   styleUrl: './hero-section.component.css',
 })
 export class HeroSectionComponent implements OnInit {
+  messageService = inject(MessageService);
   form: FormGroup = new FormGroup({});
-  minDatePickup = this.getCurrentDate();
-  minDateReturn = this.getCurrentDate();
+  minDatePickup = new Date();
+  minDateReturn = new Date();
+  cities: { name: string }[] = [];
 
   ngOnInit(): void {
     this.form = this.initForm();
@@ -22,30 +32,34 @@ export class HeroSectionComponent implements OnInit {
       this.form.get('returnDate')?.setValue(val);
       this.minDateReturn = val;
     });
+
+    this.cities = [
+      { name: 'Skopje' },
+      { name: 'Strumica' },
+      { name: 'Kavadarci' },
+    ];
   }
 
   onSubmit() {
+    if (!this.form.controls['location'].valid) {
+      this.messageService.add({
+        severity: 'error',
+        detail: 'Please select city',
+      });
+      return;
+    }
+
     console.log(this.form);
   }
 
   private initForm() {
-    const date = this.getCurrentDate();
+    const date = new Date();
 
     return new FormGroup({
-      location: new FormControl('All', Validators.required),
+      location: new FormControl(null, Validators.required),
       pickupDate: new FormControl(date, Validators.required),
       returnDate: new FormControl(date, Validators.required),
     });
-  }
-
-  private getCurrentDate() {
-    const date = new Date();
-
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
-
-    return `${year}-${month}-${day}`;
   }
 
   restrict(p: Event) {

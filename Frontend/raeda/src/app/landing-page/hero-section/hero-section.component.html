@@ -16,8 +16,8 @@
       (ngSubmit)="onSubmit()"
     >
       <div class="form-control">
-        <label for="location" class="label">Pickup Location</label>
-        <select
+        <label class="label">Pickup Location</label>
+        <!-- <select
           class="select"
           name="location"
           id="location"
@@ -27,29 +27,55 @@
           <option value="Skopje">Skopje</option>
           <option value="Strumica">Strumica</option>
           <option value="Kavadarci">Kavadarci</option>
-        </select>
+        </select> -->
+        <p-dropdown
+          class="ng-dirty ng-invalid"
+          formControlName="location"
+          [options]="cities"
+          optionLabel="name"
+          placeholder="Select a City"
+          styleClass="input input-select"
+        ></p-dropdown>
       </div>
       <div class="form-control">
         <label for="pickup" class="label">Pickup Date</label>
-        <input
+        <!-- <input
           type="date"
           id="pickup"
           class="input cursor-pointer"
           formControlName="pickupDate"
           [min]="minDatePickup"
           (keydown)="restrict($event)"
-        />
+        /> -->
+        <p-calendar
+          formControlName="pickupDate"
+          [minDate]="minDatePickup"
+          [showIcon]="true"
+          readonlyInput="true"
+          iconDisplay="input"
+          inputId="pickup"
+          inputStyleClass="input input-date"
+        ></p-calendar>
       </div>
       <div class="form-control">
         <label for="return" class="label">Return Date</label>
-        <input
+        <!-- <input
           type="date"
           id="return"
           class="input cursor-pointer"
           formControlName="returnDate"
           [min]="minDateReturn"
           (keydown)="restrict($event)"
-        />
+        /> -->
+        <p-calendar
+          formControlName="returnDate"
+          [minDate]="minDateReturn"
+          [showIcon]="true"
+          readonlyInput="true"
+          iconDisplay="input"
+          inputId="return"
+          inputStyleClass="input input-date"
+        ></p-calendar>
       </div>
       <button class="btn btn-primary flex gap-3 items-center" type="submit">
         Search

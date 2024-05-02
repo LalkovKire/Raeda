@@ -15,19 +15,23 @@ import org.springframework.stereotype.Service
 import java.util.regex.Pattern
 
 @Service
-class UserService(private val userRepository: UserRepository, private val encoder: PasswordEncoder){
+class UserService(private val userRepository: UserRepository, private val encoder: PasswordEncoder) {
 
     fun createUser(user: UserRequest): UserResponse {
-        val found = this.userRepository.existsByEmail(user.email)
 
-        if (!found) {
-            if (!checkPhoneNumber(user.phoneNumber))
-                throw WrongPhoneNumberFormatException()
+        if (!checkPhoneNumber(user.phoneNumber))
+            throw WrongPhoneNumberFormatException()
 
-            if (!validateEmail(user.email))
-                throw WrongEmailFormatException()
+        if (!validateEmail(user.email))
+            throw WrongEmailFormatException()
 
-            val tmp = this.userRepository.save(
+        if (this.userRepository.existsByEmail(user.email))
+            throw UserAlreadyExistsException("email",user.email)
+
+        if (this.userRepository.existsByPhoneNumber(user.phoneNumber))
+            throw UserAlreadyExistsException("phone number", user.phoneNumber)
+
+        val tmp = this.userRepository.save(
                 User(
                     0L,
                     user.firstName,
@@ -35,18 +39,18 @@ class UserService(private val userRepository: UserRepository, private val encode
                     user.email,
                     formatNumber(user.phoneNumber),
                     encoder.encode(user.userPassword),
-                    role = Role.USER
+                    role = Role.USER,
+                    listOf()
                 )
             )
 
-            return UserResponse(
-                tmp.firstName,
-                tmp.lastName,
-                tmp.email,
-                tmp.phoneNumber
-            )
+        return UserResponse(
+            tmp.firstName,
+            tmp.lastName,
+            tmp.email,
+            tmp.phoneNumber
+        )
 
-        } else throw UserAlreadyExistsException(user.email)
     }
 
     fun findUserById(id: Long) = userRepository.findByIdOrNull(id) ?: throw UserNotFoundException(id)
@@ -62,24 +66,24 @@ class UserService(private val userRepository: UserRepository, private val encode
         )
     }
 
-    private fun checkPhoneNumber(number: String) : Boolean {
-        val prefixSet = listOf("070","071","072","073","074","075","076","077","078")
-        val prefix = number.substring(0,3)
+    private fun checkPhoneNumber(number: String): Boolean {
+        val prefixSet = listOf("070", "071", "072", "073", "074", "075", "076", "077", "078", "079")
+        val prefix = number.substring(0, 3)
         val tmp = formatNumber(number)
         if (prefixSet.contains(prefix) && tmp.length == 9) {
-                val postfix = tmp.substring(3, 9).toLongOrNull()
-                if (postfix != null) return true
+            val postfix = tmp.substring(3, 9).toLongOrNull()
+            if (postfix != null) return true
         }
         return false
     }
 
     private fun formatNumber(number: String) =
-        number.replace(Regex("[./-]"), "")
+        number.replace(Regex("[./\\-\\s]"), "")
 
-    private fun validateEmail(email: String) : Boolean {
+    private fun validateEmail(email: String): Boolean {
         val regexPattern = ("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
                 + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")
-        return patternMatches(email,regexPattern)
+        return patternMatches(email, regexPattern)
     }
 
     fun patternMatches(emailAddress: String, regexPattern: String): Boolean {

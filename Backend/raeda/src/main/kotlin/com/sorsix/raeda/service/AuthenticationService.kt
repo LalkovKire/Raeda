@@ -2,10 +2,13 @@ package com.sorsix.raeda.service
 
 import com.sorsix.raeda.api.requests.AuthenticationRequest
 import com.sorsix.raeda.api.response.AuthenticationResponse
+import com.sorsix.raeda.domain.User
 import com.sorsix.raeda.security.JwtProperties
 import com.sorsix.raeda.security.TokenService
+import com.sorsix.raeda.service.exceptions.InvalidAuthenticationException
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import java.util.*
@@ -19,18 +22,30 @@ class AuthenticationService(
 ) {
 
     fun authentication(authenticationRequest: AuthenticationRequest): AuthenticationResponse {
-        authManager.authenticate(
-            UsernamePasswordAuthenticationToken(
-                authenticationRequest.email,
-                authenticationRequest.password
+
+        try {
+            authManager.authenticate(
+                UsernamePasswordAuthenticationToken(
+                    authenticationRequest.email,
+                    authenticationRequest.password
+                )
             )
-        )
-        val user = userDetailsService.loadUserByUsername(authenticationRequest.email)
+        } catch (e: AuthenticationException) {
+            // checks for invalid email
+            userDetailsService.loadUserByUsername(authenticationRequest.email)
+            throw InvalidAuthenticationException("password")
+        }
+        val user = userDetailsService.loadUserByUsername(authenticationRequest.email) as User
         val accessToken = createAccessToken(user)
         return AuthenticationResponse(
-            accessToken = accessToken
+            accessToken = accessToken,
+            firstName = user.firstName,
+            lastName = user.lastName,
+            email = user.email,
+            phoneNumber = user.phoneNumber
         )
     }
+
     private fun createAccessToken(user: UserDetails) = tokenService.generate(
         userDetails = user,
         expirationDate = getAccessTokenExpiration()

@@ -24,7 +24,7 @@ class SecurityConfiguration(
                 it
                     .requestMatchers("/api/auth", "api/auth/refresh", "/error")
                     .permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/user")
+                    .requestMatchers(HttpMethod.POST, "/api/user", "/api/cars/rent")
                     .permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/cars/**", "/api/loc")
                     .permitAll()

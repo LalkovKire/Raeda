@@ -1,12 +1,10 @@
 package com.sorsix.raeda.domain
 
 import com.sorsix.raeda.domain.enumerations.Role
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 
 @Entity
 @Table(name = "caruser")
@@ -33,5 +31,27 @@ data class User(
     val userPassword: String,
 
     @Column(name = "userrole", nullable = false)
-    val role: Role
-)
+    val role: Role,
+
+    @OneToMany(mappedBy = "user")
+    val rentals: List<Rental>
+) : UserDetails  {
+
+    override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
+        return mutableListOf(SimpleGrantedAuthority("ROLE_${role.name}"))
+    }
+
+    override fun getPassword(): String = userPassword
+
+    override fun getUsername(): String = this.email
+
+    override fun isAccountNonExpired(): Boolean = true
+
+    override fun isAccountNonLocked(): Boolean = true
+
+    override fun isCredentialsNonExpired(): Boolean = true
+
+    override fun isEnabled(): Boolean = true
+
+
+}

@@ -1,6 +1,7 @@
 package com.sorsix.raeda.service
 
 import com.sorsix.raeda.api.requests.CarRequest
+import com.sorsix.raeda.api.requests.RentalRequest
 import com.sorsix.raeda.domain.Car
 import com.sorsix.raeda.domain.Location
 import com.sorsix.raeda.domain.enumerations.CarStatus
@@ -43,6 +44,10 @@ class CarService(
     fun getLatestInventory() = this.carRepository.getLatestInventory()
 
     fun deleteCar(id: Long) = this.carRepository.deleteById(id)
+
+    fun rentCar(rental: RentalRequest) {
+
+    }
 
     fun editCar(id: Car): Car {
         TODO("Not yet implemented")
