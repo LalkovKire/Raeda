@@ -3,7 +3,7 @@ import { CardsComponent } from './cards/cards.component';
 import { CarService } from '../../car.service';
 import { CarModel } from '../../car.model';
 import { LoadingComponent } from '../../loading/loading.component';
-import { ErrorComponent } from '../../component/error/error.component';
+import { ErrorComponent } from '../../components/error/error.component';
 
 @Component({
   selector: 'app-latest-inventory-section',

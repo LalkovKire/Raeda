@@ -4,7 +4,7 @@ import { HeroSectionComponent } from './hero-section/hero-section.component';
 import { LatestInventorySectionComponent } from './latest-inventory-section/latest-inventory-section.component';
 import { WhyUsSectionComponent } from './why-us-section/why-us-section.component';
 import { SubscriptionComponent } from './subscription/subscription.component';
-import { FooterComponent } from '../component/footer/footer.component';
+import { FooterComponent } from '../components/footer/footer.component';
 
 @Component({
   selector: 'app-landing-page',

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CarModel } from '../../../car.model';
-import { CarCardComponent } from '../../../component/car-card/car-card.component';
+import { CarCardComponent } from '../../../components/car-card/car-card.component';
 
 @Component({
   selector: 'app-cards',

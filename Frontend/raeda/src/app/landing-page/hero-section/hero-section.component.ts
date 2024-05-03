@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { BrandCardComponent } from '../../component/brand-card/brand-card.component';
+import { BrandCardComponent } from '../../components/brand-card/brand-card.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
