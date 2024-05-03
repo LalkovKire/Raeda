@@ -33,7 +33,7 @@ class AuthenticationService(
         } catch (e: AuthenticationException) {
             // checks for invalid email
             userDetailsService.loadUserByUsername(authenticationRequest.email)
-            throw InvalidAuthenticationException("password")
+            throw InvalidAuthenticationException("Wrong password. Try again or click Forgot password to reset it.")
         }
         val user = userDetailsService.loadUserByUsername(authenticationRequest.email) as User
         val accessToken = createAccessToken(user)
@@ -42,7 +42,8 @@ class AuthenticationService(
             firstName = user.firstName,
             lastName = user.lastName,
             email = user.email,
-            phoneNumber = user.phoneNumber
+            phoneNumber = user.phoneNumber,
+            role = user.role
         )
     }
 
@@ -50,6 +51,7 @@ class AuthenticationService(
         userDetails = user,
         expirationDate = getAccessTokenExpiration()
     )
+
     private fun getAccessTokenExpiration(): Date =
         Date(System.currentTimeMillis() + jwtProperties.accessTokenExpiration)
 }

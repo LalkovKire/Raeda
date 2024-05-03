@@ -38,6 +38,6 @@ class UserControllerAdvice : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(InvalidAuthenticationException::class)
     fun handleAuthenticationException(e : InvalidAuthenticationException) =
-        ResponseEntity(NotFoundError(description = "Invalid ${e.cred}"),HttpStatus.UNAUTHORIZED)
+        ResponseEntity(NotFoundError(description = e.msg),HttpStatus.UNAUTHORIZED)
 
 }

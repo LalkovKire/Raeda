@@ -13,7 +13,7 @@ class CustomUserDetailsService(private val userRepository: UserRepository) : Use
     override fun loadUserByUsername(username: String): UserDetails {
         val found = userRepository.findByEmail(username)
 
-        return found ?: throw InvalidAuthenticationException("email")
+        return found ?: throw InvalidAuthenticationException("Could’t find your Account")
     }
 
 }
