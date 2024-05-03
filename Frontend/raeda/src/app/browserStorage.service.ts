@@ -1,31 +1,40 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { LoginResponse } from './auth/login-response';
 
 @Injectable({ providedIn: 'root' })
 export class BrowserStorageService {
-  isSignIn = new BehaviorSubject<boolean>(false);
+  isSignIn = new BehaviorSubject<LoginResponse | null>(null);
 
   autoSignIn() {
-    if (localStorage.getItem('token') || sessionStorage.getItem('token'))
-      this.isSignIn.next(true);
-    else this.isSignIn.next(false);
+    const localStorageUser = localStorage.getItem('user') as string;
+    const sessionStorageUser = sessionStorage.getItem('user') as string;
+
+    if (localStorageUser || sessionStorageUser) {
+      const user = localStorageUser
+        ? JSON.parse(localStorageUser)
+        : JSON.parse(sessionStorageUser);
+      this.isSignIn.next(user);
+    } else {
+      this.isSignIn.next(null);
+    }
   }
 
-  saveTokenToStorage(whereToSave: boolean, token: string) {
-    token = JSON.stringify(token);
+  saveUserInfoInStorage(whereToSave: boolean, userInfo: LoginResponse) {
+    const user = JSON.stringify(userInfo);
 
     if (whereToSave) {
-      localStorage.setItem('token', token);
+      localStorage.setItem('user', user);
     } else {
-      sessionStorage.setItem('token', token);
+      sessionStorage.setItem('user', user);
     }
 
-    this.isSignIn.next(true);
+    this.isSignIn.next(userInfo);
   }
 
   signOut() {
-    localStorage.removeItem('token');
-    sessionStorage.removeItem('token');
-    this.isSignIn.next(false);
+    localStorage.removeItem('user');
+    sessionStorage.removeItem('user');
+    this.isSignIn.next(null);
   }
 }

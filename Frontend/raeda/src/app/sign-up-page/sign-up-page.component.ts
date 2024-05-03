@@ -36,7 +36,10 @@ export class SignUpPageComponent {
   ngOnInit(): void {
     this.form = this.initForm();
   }
+
   onSubmit() {
+    if (!this.form.valid) return;
+
     const firstName = this.form.get('firstName')?.value;
     const lastName = this.form.get('lastName')?.value;
     const email: string = this.form.get('email')?.value;

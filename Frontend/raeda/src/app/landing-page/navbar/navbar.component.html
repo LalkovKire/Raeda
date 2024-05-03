@@ -38,8 +38,8 @@
       class="z-10bg-clr-white divide-y divide-clr-gray-2 rounded-lg shadow w-44 absolute transform: translate-y-2 right-0"
     >
       <div class="px-4 py-3 text-sm text-clr-gray-6">
-        <div>Full name</div>
-        <div class="font-medium truncate">email</div>
+        <div>{{ signedIn.firstName }} {{ signedIn.lastName }}</div>
+        <div class="font-medium truncate">{{ signedIn.email }}</div>
       </div>
       <ul class="py-2 text-sm text-clr-gray-5" aria-labelledby="avatarButton">
         <li>

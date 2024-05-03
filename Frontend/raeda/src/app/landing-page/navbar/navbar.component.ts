@@ -2,6 +2,7 @@ import { ViewportScroller } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { BrowserStorageService } from '../../browserStorage.service';
+import { LoginResponse } from '../../auth/login-response';
 
 @Component({
   selector: 'app-navbar',
@@ -13,7 +14,7 @@ import { BrowserStorageService } from '../../browserStorage.service';
 export class NavbarComponent implements OnInit {
   private scroller = inject(ViewportScroller);
   private browserStorageService = inject(BrowserStorageService);
-  signedIn = false;
+  signedIn: LoginResponse | null = null;
   toggleDropdown = false;
 
   ngOnInit(): void {

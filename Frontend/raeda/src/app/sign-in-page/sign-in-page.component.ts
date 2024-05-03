@@ -26,29 +26,40 @@ export class SignInPageComponent implements OnInit {
   private router = inject(Router);
   private browserStorageService = inject(BrowserStorageService);
   form: FormGroup = new FormGroup({});
+  isSubmitting = false;
 
   ngOnInit(): void {
     this.form = this.initForm();
   }
 
   onSubmit() {
+    if (!this.form.valid) return;
+
     const email: string = this.form.get('email')?.value;
     const password: string = this.form.get('password')?.value;
+    this.isSubmitting = true;
 
     const user = new SignInUser(email, password);
     this.authService.signIn(user).subscribe({
-      next: (token) => {
+      next: (userInfo) => {
         this.messageService.add({
           severity: 'success',
-          detail: 'Welcome back',
+          detail: `Welcome back ${userInfo.firstName}`,
         });
 
-        this.browserStorageService.saveTokenToStorage(
+        this.browserStorageService.saveUserInfoInStorage(
           this.form.get('rememberMe')?.value,
-          token.accessToken
+          userInfo
         );
 
         this.router.navigate(['/']);
+      },
+      error: (error) => {
+        this.isSubmitting = false;
+        this.messageService.add({
+          severity: 'error',
+          detail: error.error.description,
+        });
       },
     });
   }
