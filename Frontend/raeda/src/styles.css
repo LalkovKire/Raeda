@@ -73,7 +73,7 @@ li a {
 }
 
 .input {
-  @apply bg-transparent border-clr-gray-4 text-clr-gray-6  rounded-lg focus:ring-clr-gray-5 focus:border-clr-gray-5 w-full h-11 placeholder:text-clr-gray-4;
+  @apply w-full h-11 bg-transparent border border-clr-gray-4 text-clr-gray-6  rounded-lg placeholder:text-clr-gray-4 px-3 focus-visible:outline-none focus:border-clr-gray-7;
 }
 
 .input-date {
@@ -81,7 +81,7 @@ li a {
 }
 
 .select {
-  @apply w-[200px] leading-none border;
+  @apply w-[200px] leading-none p-0;
 }
 
 .label-peer {
@@ -89,5 +89,5 @@ li a {
 }
 
 .checkbox {
-  @apply w-5 h-5 border border-clr-gray-3 focus:ring-clr-gray-5 rounded checked:bg-clr-gray-5 bg-transparent;
+  @apply w-4 h-4;
 }

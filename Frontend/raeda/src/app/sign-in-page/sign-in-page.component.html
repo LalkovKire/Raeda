@@ -26,7 +26,7 @@
             formControlName="password"
             [toggleMask]="true"
             inputStyleClass="input"
-            styleClass="input"
+            [style]="{ width: '100%' }"
             inputId="password"
             feedback="false"
             placeholder="••••••••"
@@ -41,19 +41,15 @@
           /> -->
         </div>
         <div class="flex items-center justify-between">
-          <div class="flex items-start">
-            <div class="flex items-center h-5">
-              <input
-                id="remember"
-                aria-describedby="remember"
-                type="checkbox"
-                class="checkbox"
-                formControlName="rememberMe"
-              />
-            </div>
-            <div class="ml-3">
-              <label for="remember" class="label">Remember me</label>
-            </div>
+          <div class="flex items-center gap-2">
+            <input
+              id="remember"
+              type="checkbox"
+              class="checkbox"
+              formControlName="rememberMe"
+            />
+
+            <label for="remember" class="label">Remember me</label>
           </div>
           <a href="#" class="">Forgot password?</a>
         </div>

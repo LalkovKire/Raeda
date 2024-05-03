@@ -19,6 +19,10 @@
   @apply bg-clr-gray-1;
 }
 
+::ng-deep .p-inputtext {
+  @apply shadow-none;
+}
+
 ::ng-deep
   .p-dropdown-panel
   .p-dropdown-items
