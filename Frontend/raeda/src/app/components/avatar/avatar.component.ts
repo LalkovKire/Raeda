@@ -1,5 +1,5 @@
 import { Component, inject, Input } from '@angular/core';
-import { BrowserStorageService } from '../../browserStorage.service';
+import { BrowserStorageService } from '../../shared/browserStorage.service';
 import { LoginResponse } from '../../auth/login-response';
 
 @Component({

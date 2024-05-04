@@ -10,7 +10,7 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { AuthService } from '../auth/auth.service';
 import { SignInUser } from '../auth/signInUser.model';
-import { BrowserStorageService } from '../browserStorage.service';
+import { BrowserStorageService } from '../shared/browserStorage.service';
 import { PasswordModule } from 'primeng/password';
 
 @Component({

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { LoginResponse } from './auth/login-response';
+import { LoginResponse } from '../auth/login-response';
 
 @Injectable({ providedIn: 'root' })
 export class BrowserStorageService {

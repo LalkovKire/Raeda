@@ -13,3 +13,11 @@ ul div {
 small {
   @apply text-clr-gray-5;
 }
+
+.not-available {
+  @apply opacity-60;
+}
+
+.card-hover {
+  @apply hover:scale-105 transition duration-300 ease-in-out;
+}

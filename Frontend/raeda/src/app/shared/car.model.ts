@@ -1,3 +1,5 @@
+import { CarStatus } from './car-status';
+
 export class CarModel {
   constructor(
     public image: string,
@@ -9,7 +11,7 @@ export class CarModel {
     public doors: number,
     public fuelType: string,
     public engine: string,
-    public status: number,
+    public status: CarStatus,
     public price: number,
     public location: {
       locationName: string;

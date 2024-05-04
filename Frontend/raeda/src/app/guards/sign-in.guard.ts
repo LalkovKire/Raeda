@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { BrowserStorageService } from '../browserStorage.service';
+import { BrowserStorageService } from '../shared/browserStorage.service';
 import { map, take } from 'rxjs';
 
 export const signInGuard: CanActivateFn = (route, state) => {

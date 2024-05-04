@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { CardsComponent } from './cards/cards.component';
-import { CarService } from '../../car.service';
-import { CarModel } from '../../car.model';
-import { LoadingComponent } from '../../loading/loading.component';
+import { CarService } from '../../shared/car.service';
+import { CarModel } from '../../shared/car.model';
+import { LoadingComponent } from '../../components/loading/loading.component';
 import { ErrorComponent } from '../../components/error/error.component';
 
 @Component({

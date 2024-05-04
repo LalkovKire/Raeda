@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { PrimeNGConfig } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-import { BrowserStorageService } from './browserStorage.service';
+import { BrowserStorageService } from './shared/browserStorage.service';
 
 @Component({
   selector: 'app-root',
