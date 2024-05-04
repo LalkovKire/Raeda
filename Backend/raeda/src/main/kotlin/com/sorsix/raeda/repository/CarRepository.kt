@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface CarRepository : JpaRepository<Car,Long> {
 
-    @Query("select * FROM car order by carid DESC LIMIT 6", nativeQuery = true)
+    @Query("SELECT * FROM car WHERE status = 0 ORDER BY carid DESC LIMIT 6", nativeQuery = true)
     fun getLatestInventory() : List<Car>
 
 }
