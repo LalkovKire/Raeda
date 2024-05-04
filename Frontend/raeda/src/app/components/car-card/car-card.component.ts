@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CarModel } from '../../shared/car.model';
 import { NgClass } from '@angular/common';
-import { CarStatus } from '../../shared/car-status';
 
 @Component({
   selector: 'car-card',

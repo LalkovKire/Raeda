@@ -7,10 +7,8 @@
   <ul
     class="flex gap-10 uppercase shadow-2xl px-10 py-5 rounded-full text-clr-black bg-clr-gray-2"
   >
-    <li><a (click)="scrollTo('home')">Home</a></li>
-    <li><a (click)="scrollTo('latest')">Latest</a></li>
-    <li><a (click)="scrollTo('why-us')">Why us</a></li>
-    <li><a routerLink="cars">Cars</a></li>
+    <li><a routerLink="/" routerLinkActive="active">Home</a></li>
+    <li><a routerLink="cars" routerLinkActive="active">Cars</a></li>
   </ul>
 
   @if (!signedIn) {
