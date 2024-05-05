@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull
 data class LocationResponse(
 
     @NotNull
-    val locationSite: String,
+    val locationAddress: String,
 
     @NotNull
     val locationName: String

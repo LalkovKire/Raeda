@@ -31,7 +31,7 @@ data class Car(
     val seats: Int,
 
     @Column(nullable = false)
-    val status: CarStatus,
+    var status: CarStatus,
 
     @Column(nullable = false)
     val price: Int,

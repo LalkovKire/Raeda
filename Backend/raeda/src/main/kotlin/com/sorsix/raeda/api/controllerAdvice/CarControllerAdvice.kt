@@ -1,7 +1,11 @@
 package com.sorsix.raeda.api.controllerAdvice
 
+import com.sorsix.raeda.domain.errorResponse.AlreadyExistsError
+import com.sorsix.raeda.domain.errorResponse.NotAvailableError
 import com.sorsix.raeda.domain.errorResponse.NotFoundError
+import com.sorsix.raeda.service.exceptions.CarNotAvailableException
 import com.sorsix.raeda.service.exceptions.CarNotFoundException
+import com.sorsix.raeda.service.exceptions.LicencePlateRegisteredException
 import com.sorsix.raeda.service.exceptions.LocationNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -19,4 +23,12 @@ class CarControllerAdvice : ResponseEntityExceptionHandler()  {
     @ExceptionHandler(LocationNotFoundException::class)
     fun handleLocationNotFound(e : LocationNotFoundException) =
         ResponseEntity(NotFoundError(description = "The location with id ${e.id} was not found."), HttpStatus.NOT_FOUND)
+
+    @ExceptionHandler(CarNotAvailableException::class)
+    fun handleCarNotAvailableException(e : CarNotAvailableException) =
+        ResponseEntity(NotAvailableError(description = "The car with id ${e.id} is not available at the moment"), HttpStatus.NOT_ACCEPTABLE)
+
+    @ExceptionHandler(LicencePlateRegisteredException::class)
+    fun handleLicensePlateException(e : LicencePlateRegisteredException) =
+        ResponseEntity(AlreadyExistsError(description = "The license plate: ${e.lp} is already registered to the car with id: ${e.id}"), HttpStatus.BAD_REQUEST)
 }

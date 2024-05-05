@@ -1,6 +1,7 @@
 package com.sorsix.raeda.api.controller
 
 import com.sorsix.raeda.api.requests.LocationRequest
+import com.sorsix.raeda.api.response.LocationResponse
 import com.sorsix.raeda.service.LocationService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -21,8 +22,10 @@ class LocationController(private val locationService: LocationService){
         ResponseEntity(this.locationService.getAllLocations(), HttpStatus.OK)
 
     @GetMapping("/{id}")
-    fun getLocationById(@PathVariable id: Long) =
-        ResponseEntity(this.locationService.getLocationById(id),HttpStatus.OK)
+    fun getLocationById(@PathVariable id: Long) : ResponseEntity<LocationResponse> {
+        val loc = this.locationService.getLocationById(id)
+        return ResponseEntity(LocationResponse(loc.locationAddress,loc.locationName),HttpStatus.OK)
+    }
 
     @PostMapping
     fun saveNewLocation(@RequestBody loc: LocationRequest) =
