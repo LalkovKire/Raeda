@@ -93,3 +93,7 @@ li a {
 .checkbox {
   @apply w-4 h-4;
 }
+
+.label-radio {
+  @apply block bg-clr-gray-5 text-clr-white font-bold capitalize px-3 py-3 rounded-lg hover:bg-clr-black peer-checked:bg-clr-black transition-all duration-300 ease-in-out;
+}

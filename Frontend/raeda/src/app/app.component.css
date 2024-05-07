@@ -38,3 +38,19 @@
 ::ng-deep .p-element.ng-invalid.ng-touched .input-error {
   @apply border-red-500;
 }
+
+::ng-deep .p-sidebar {
+  @apply bg-clr-black text-clr-white;
+}
+
+::ng-deep div.p-sidebar div.p-sidebar-header {
+  @apply justify-between;
+}
+
+::ng-deep ul li.p-listbox-item {
+  @apply text-clr-black;
+}
+
+::ng-deep ul li.p-listbox-item.p-highlight {
+  @apply bg-clr-gray-2;
+}

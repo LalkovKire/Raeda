@@ -8,7 +8,9 @@ import { CarModel } from './car.model';
 export class CarService {
   private http = inject(HttpClient);
 
-  getAllCars() {}
+  getAllCars() {
+    return this.http.get<CarModel[]>('http://localhost:8080/api/cars');
+  }
 
   getLatestInventory() {
     return this.http.get<CarModel[]>('http://localhost:8080/api/cars/latest');

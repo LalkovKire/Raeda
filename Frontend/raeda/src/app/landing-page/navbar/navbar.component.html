@@ -7,16 +7,23 @@
   <ul
     class="flex gap-10 uppercase shadow-2xl px-10 py-5 rounded-full text-clr-black bg-clr-gray-2"
   >
-    <li><a routerLink="/" routerLinkActive="active">Home</a></li>
-    <li><a routerLink="cars" routerLinkActive="active">Cars</a></li>
+    <li>
+      <a
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        >Home</a
+      >
+    </li>
+    <li><a routerLink="/cars" routerLinkActive="active">Cars</a></li>
   </ul>
 
   @if (!signedIn) {
   <div class="flex gap-1">
-    <a routerLink="signin">
+    <a routerLink="/signin">
       <button class="btn btn-primary">Sign in</button>
     </a>
-    <a routerLink="signup">
+    <a routerLink="/signup">
       <button class="btn btn-primary-outline">Sign up</button>
     </a>
   </div>
