@@ -13,6 +13,7 @@ import { AuthService } from '../auth/auth.service';
 import { PasswordModule } from 'primeng/password';
 import { InputMaskModule } from 'primeng/inputmask';
 import { DividerModule } from 'primeng/divider';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-sign-up-page',
@@ -31,6 +32,7 @@ export class SignUpPageComponent {
   private router = inject(Router);
   private messageService = inject(MessageService);
   private authService = inject(AuthService);
+
   form: FormGroup = new FormGroup({});
 
   ngOnInit(): void {

@@ -5,13 +5,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { AuthService } from '../auth/auth.service';
 import { SignInUser } from '../auth/signInUser.model';
 import { BrowserStorageService } from '../shared/browserStorage.service';
 import { PasswordModule } from 'primeng/password';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-sign-in-page',
@@ -23,8 +24,8 @@ import { PasswordModule } from 'primeng/password';
 export class SignInPageComponent implements OnInit {
   private messageService = inject(MessageService);
   private authService = inject(AuthService);
-  private router = inject(Router);
   private browserStorageService = inject(BrowserStorageService);
+  private router = inject(Router);
   form: FormGroup = new FormGroup({});
   isSubmitting = false;
 
@@ -52,7 +53,7 @@ export class SignInPageComponent implements OnInit {
           userInfo
         );
 
-        this.router.navigate(['/']);
+        this.router.navigate(['/cars']);
       },
       error: (error) => {
         this.isSubmitting = false;
