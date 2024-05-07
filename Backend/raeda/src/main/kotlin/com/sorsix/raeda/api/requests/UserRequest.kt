@@ -1,8 +1,10 @@
 package com.sorsix.raeda.api.requests
 
+import com.sorsix.raeda.domain.enumerations.Role
 import org.jetbrains.annotations.NotNull
 
 data class UserRequest(
+
     @NotNull
     val firstName: String,
 
@@ -18,5 +20,5 @@ data class UserRequest(
     @NotNull
     val userPassword: String,
 
-
+    val role: Role
     )

@@ -39,7 +39,7 @@ class UserService(private val userRepository: UserRepository, private val encode
                     user.email,
                     formatNumber(user.phoneNumber),
                     encoder.encode(user.userPassword),
-                    role = Role.USER,
+                    role = user.role,
                     listOf()
                 )
             )
