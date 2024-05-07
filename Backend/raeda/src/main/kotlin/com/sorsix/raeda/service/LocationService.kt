@@ -12,19 +12,18 @@ import org.springframework.stereotype.Service
 class LocationService(private val locationRepository: LocationRepository) {
 
     fun getAllLocations() = this.locationRepository.findAll().map {
-        LocationResponse(locationName = it.locationName, locationSite = it.locationAddress)
+        LocationResponse(locationName = it.locationName, locationAddress = it.locationAddress)
     }
 
-    fun getLocationById(id: Long) : LocationResponse {
-        val tmp = this.locationRepository.findByIdOrNull(id) ?: throw LocationNotFoundException(id)
-        return LocationResponse(locationSite = tmp.locationAddress, locationName = tmp.locationName)
+    fun getLocationById(id: Long) : Location {
+        return this.locationRepository.findByIdOrNull(id) ?: throw LocationNotFoundException(id)
     }
 
     fun deleteLocation(id: Long) = this.locationRepository.deleteById(id)
 
     fun saveNewLocation(newLocation: LocationRequest) : LocationResponse {
         val tmp = this.locationRepository.save(Location(0L,newLocation.locationAddress,newLocation.locationName))
-        return LocationResponse(locationSite = tmp.locationAddress, locationName = tmp.locationName)
+        return LocationResponse(locationAddress = tmp.locationAddress, locationName = tmp.locationName)
     }
 
 }

@@ -31,11 +31,14 @@ data class CarRequest(
     val carType: String,
 
     @NotNull
-    var doors: Int,
+    val doors: Int,
 
     @NotNull
-    var fuelType: String,
+    val fuelType: String,
 
     @NotNull
-    var brand: String
+    val brand: String,
+
+    @NotNull
+    val locationID: Long
 )

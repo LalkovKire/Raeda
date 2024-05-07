@@ -2,6 +2,7 @@ package com.sorsix.raeda.api.controller
 
 import com.sorsix.raeda.api.requests.CarRequest
 import com.sorsix.raeda.api.requests.RentalRequest
+import com.sorsix.raeda.api.response.RentalResponse
 import com.sorsix.raeda.service.CarService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -35,7 +36,7 @@ class CarController(private val carService: CarService) {
     fun getLatestInventory() = ResponseEntity(this.carService.getLatestInventory(),HttpStatus.OK)
 
    @PostMapping("/rent")
-   fun rentCar(@RequestBody @Validated rental: RentalRequest) {
-      this.carService.rentCar(rental)
+   fun rentCar(@RequestBody @Validated rental: RentalRequest): RentalResponse {
+      return this.carService.rentCar(rental)
    }
 }

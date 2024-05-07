@@ -40,4 +40,7 @@ class UserControllerAdvice : ResponseEntityExceptionHandler() {
     fun handleAuthenticationException(e : InvalidAuthenticationException) =
         ResponseEntity(NotFoundError(description = e.msg),HttpStatus.UNAUTHORIZED)
 
+    @ExceptionHandler(UserNotFoundByEmailException::class)
+    fun handleUserNotFoundByEmailException(e : UserNotFoundByEmailException) =
+        ResponseEntity(NotFoundError(description = "User with the email ${e.email} was not found"),HttpStatus.NOT_FOUND)
 }
