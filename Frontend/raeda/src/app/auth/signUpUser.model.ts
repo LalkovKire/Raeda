@@ -4,6 +4,7 @@ export class SignUpUser {
     private lastName: string,
     private email: string,
     private phoneNumber: string,
-    private userPassword: string
+    private userPassword: string,
+    private role: number
   ) {}
 }

@@ -57,7 +57,8 @@ export class SignUpPageComponent {
       lastName,
       email,
       phoneNumber,
-      password
+      password,
+      0
     );
 
     this.authService.signUp(newUser).subscribe({
