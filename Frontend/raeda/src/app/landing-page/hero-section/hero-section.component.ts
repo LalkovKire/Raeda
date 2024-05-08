@@ -5,6 +5,8 @@ import { Validators } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { MessageService } from 'primeng/api';
+import { DateService } from '../../shared/date.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-hero-section',
@@ -20,10 +22,12 @@ import { MessageService } from 'primeng/api';
 })
 export class HeroSectionComponent implements OnInit {
   messageService = inject(MessageService);
+  dateService = inject(DateService);
+  router = inject(Router);
   form: FormGroup = new FormGroup({});
   minDatePickup = new Date();
   minDateReturn = new Date();
-  cities: { name: string }[] = [];
+  locations = ['Skopje', 'Strumica', 'Kavadarci'];
 
   ngOnInit(): void {
     this.form = this.initForm();
@@ -32,22 +36,25 @@ export class HeroSectionComponent implements OnInit {
       this.form.get('returnDate')?.setValue(val);
       this.minDateReturn = val;
     });
-
-    this.cities = [
-      { name: 'Skopje' },
-      { name: 'Strumica' },
-      { name: 'Kavadarci' },
-    ];
   }
 
   onSubmit() {
     if (!this.form.controls['location'].valid) {
       this.messageService.add({
         severity: 'error',
-        detail: 'Please select city',
+        detail: 'Please select location',
       });
       return;
     }
+
+    const query = {
+      location: this.form.value.location,
+      pickupDate: this.dateService.convertDateToString(
+        this.form.value.pickupDate
+      ),
+    };
+
+    this.router.navigate(['/cars'], { queryParams: query });
   }
 
   private initForm() {

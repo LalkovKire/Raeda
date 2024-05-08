@@ -1,16 +1,16 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { SidebarModule } from 'primeng/sidebar';
 import { AccordionModule } from 'primeng/accordion';
 import { ListboxModule } from 'primeng/listbox';
 import { CalendarModule } from 'primeng/calendar';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import { BehaviorSubject } from 'rxjs';
-
-interface Price {
-  title: string;
-  amount: number;
-}
+import { BehaviorSubject, debounceTime } from 'rxjs';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { FilterService } from './filter.service';
+import { DefaultSelectionValuesService } from './default-selection-values.service';
+import { FilterForm } from './filter-form';
+import { DateService } from '../../shared/date.service';
 
 @Component({
   selector: 'app-filter-sidebar',
@@ -28,37 +28,56 @@ interface Price {
 })
 export class FilterSidebarComponent {
   @Input() toggleFilterBy: BehaviorSubject<boolean> | undefined;
+
+  private filterService = inject(FilterService);
+  defaultSelectionValuesService = inject(DefaultSelectionValuesService);
+  route = inject(ActivatedRoute);
+  router = inject(Router);
+  dateService = inject(DateService);
+
   toggle: boolean | undefined;
   form: FormGroup = new FormGroup({});
-  locations = ['All', 'Skopje', 'Strumica', 'Kavadarci'];
-  prices: Price[] = [
-    { title: 'All', amount: 0 },
-    { title: 'Under 200€', amount: 200 },
-    { title: 'Under 400€', amount: 400 },
-    { title: 'Under 600€', amount: 600 },
-    { title: 'Under 800€', amount: 800 },
-    { title: 'Under 1000€', amount: 1000 },
-  ];
-  brands = ['Porsche', 'Audi', 'Mercedes', 'BMW', 'Ford', 'Toyota'];
-  years = [2017, 2018, 2019, 2020, 2021, 2022, 2023];
-  fuels = ['All', 'Petrol', 'Diesel'];
-  gears = ['All', 'Manuel', 'Automatic'];
 
   ngOnInit(): void {
     this.form = this.initForm();
+    this.form.valueChanges
+      .pipe(debounceTime(500))
+      .subscribe((values: FilterForm) => {
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: this.filterService.buildQueryParams(values),
+        });
+      });
     this.toggleFilterBy?.subscribe((val: boolean) => (this.toggle = val));
   }
 
   initForm() {
+    const location =
+      this.route.snapshot.queryParams['location'] ??
+      this.defaultSelectionValuesService.locations[0];
+    const pickup = this.route.snapshot.queryParams['pickupDate']
+      ? this.dateService.convertStringToDate(
+          this.route.snapshot.queryParams['pickupDate']
+        )
+      : new Date();
+
     return new FormGroup({
-      selectedLocation: new FormControl(this.locations[0]),
-      selectedPickupDate: new FormControl(null),
-      selectedPrice: new FormControl(this.prices[0]),
-      selectedBrands: new FormControl(this.brands),
-      selectedYears: new FormControl(this.years),
-      selectedFuel: new FormControl(this.fuels[0]),
-      selectedGear: new FormControl(this.gears[0]),
-      selectedAvailability: new FormControl(null),
+      selectedLocation: new FormControl(location),
+      selectedPickupDate: new FormControl(pickup),
+      selectedPrice: new FormControl(
+        this.defaultSelectionValuesService.prices[0]
+      ),
+      selectedBrands: new FormControl(
+        this.defaultSelectionValuesService.brands
+      ),
+      selectedYears: new FormControl(this.defaultSelectionValuesService.years),
+      selectedFuel: new FormControl(
+        this.defaultSelectionValuesService.fuels[0]
+      ),
+      selectedGear: new FormControl(
+        this.defaultSelectionValuesService.gears[0]
+      ),
+      selectedAvailability: new FormControl(false),
     });
   }
 

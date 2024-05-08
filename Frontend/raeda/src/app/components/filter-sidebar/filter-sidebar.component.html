@@ -11,25 +11,31 @@
     <p-accordion multiple="false">
       <p-accordionTab header="Location">
         <p-listbox
-          [options]="locations"
+          [options]="defaultSelectionValuesService.locations"
           formControlName="selectedLocation"
           [listStyle]="{ 'max-height': '220px' }"
+          metaKeySelection="true"
         />
       </p-accordionTab>
       <p-accordionTab header="Pickup Date">
-        <p-calendar formControlName="selectedPickupDate" [inline]="true" />
+        <p-calendar
+          formControlName="selectedPickupDate"
+          [inline]="true"
+          [minDate]="defaultSelectionValuesService.minDate()"
+        />
       </p-accordionTab>
       <p-accordionTab header="Price Range">
         <p-listbox
-          [options]="prices"
+          [options]="defaultSelectionValuesService.prices"
           formControlName="selectedPrice"
           optionLabel="title"
           [listStyle]="{ 'max-height': '220px' }"
+          metaKeySelection="true"
         />
       </p-accordionTab>
       <p-accordionTab header="Brand">
         <p-listbox
-          [options]="brands"
+          [options]="defaultSelectionValuesService.brands"
           formControlName="selectedBrands"
           [listStyle]="{ 'max-height': '220px' }"
           multiple="true"
@@ -37,7 +43,7 @@
       </p-accordionTab>
       <p-accordionTab header="Year">
         <p-listbox
-          [options]="years"
+          [options]="defaultSelectionValuesService.years"
           formControlName="selectedYears"
           [listStyle]="{ 'max-height': '220px' }"
           multiple="true"
@@ -45,16 +51,18 @@
       </p-accordionTab>
       <p-accordionTab header="Fuel Type">
         <p-listbox
-          [options]="fuels"
+          [options]="defaultSelectionValuesService.fuels"
           formControlName="selectedFuel"
           [listStyle]="{ 'max-height': '220px' }"
+          metaKeySelection="true"
         />
       </p-accordionTab>
       <p-accordionTab header="Gear Box">
         <p-listbox
-          [options]="gears"
+          [options]="defaultSelectionValuesService.gears"
           formControlName="selectedGear"
           [listStyle]="{ 'max-height': '220px' }"
+          metaKeySelection="true"
         />
       </p-accordionTab>
     </p-accordion>
