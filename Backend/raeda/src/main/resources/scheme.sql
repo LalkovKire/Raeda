@@ -44,12 +44,12 @@ create table Rental
     dropOffDate    TIMESTAMP not null,
     totalPrice     INT       not null,
     rentalDuration INT,
-    userID         BIGINT    not null,
-    carID          BIGINT    not null,
-    locationID     BIGINT    not null,
-    FOREIGN KEY (userID) REFERENCES carUser (userID),
-    FOREIGN KEY (carID) REFERENCES Car (carID),
-    FOREIGN KEY (locationID) REFERENCES Location (locationID)
+    userID         BIGINT,
+    carID          BIGINT,
+    locationID     BIGINT,
+    FOREIGN KEY (userID) REFERENCES carUser (userID) on delete set null,
+    FOREIGN KEY (carID) REFERENCES Car (carID) on delete set null,
+    FOREIGN KEY (locationID) REFERENCES Location (locationID) on delete set null
 );
 
 create table RentalReview
@@ -63,3 +63,5 @@ create table RentalReview
     FOREIGN KEY (userID) REFERENCES carUser (userID),
     FOREIGN KEY (rentalID) REFERENCES Rental (rentalID)
 );
+
+----------------------- Do this change or make a migration
