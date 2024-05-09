@@ -67,10 +67,8 @@ export class FilterSidebarComponent {
       selectedPrice: new FormControl(
         this.defaultSelectionValuesService.prices[0]
       ),
-      selectedBrands: new FormControl(
-        this.defaultSelectionValuesService.brands
-      ),
-      selectedYears: new FormControl(this.defaultSelectionValuesService.years),
+      selectedBrands: new FormControl([]),
+      selectedYears: new FormControl([]),
       selectedFuel: new FormControl(
         this.defaultSelectionValuesService.fuels[0]
       ),
