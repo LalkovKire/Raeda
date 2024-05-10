@@ -27,7 +27,9 @@ class CarService(
     private val rentalRepository: RentalRepository,
 ) {
 
-    fun getAllCars(): List<Car> = this.carRepository.findAll()
+    fun getAllCars(): List<CarResponse> = this.carRepository.findAll().map {
+        it.toCarResponse()
+    }
 
     fun getCarById(id: Long) = carRepository.findByIdOrNull(id) ?: throw CarNotFoundException(id)
 
@@ -63,7 +65,11 @@ class CarService(
 
     fun getLatestInventory() = this.carRepository.getLatestInventory()
 
-    fun deleteCar(id: Long) = this.carRepository.deleteById(id)
+    fun deleteCar(id: Long) : CarResponse {
+        val tmp = this.getCarById(id)
+        this.carRepository.deleteById(id)
+        return tmp.toCarResponse()
+    }
 
     fun rentCar(rental: RentalRequest): RentalResponse {
         val user = this.userRepository.findByEmail(rental.userEmail)

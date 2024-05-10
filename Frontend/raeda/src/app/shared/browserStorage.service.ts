@@ -25,10 +25,12 @@ export class BrowserStorageService {
 
     if (whereToSave) {
       localStorage.setItem('user', user);
+      localStorage.setItem('token', userInfo.accessToken);
     } else {
       sessionStorage.setItem('user', user);
+      localStorage.setItem('token', userInfo.accessToken);
     }
-
+    
     this.isSignIn.next(userInfo);
   }
 
