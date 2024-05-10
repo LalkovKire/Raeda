@@ -6,6 +6,7 @@ import { CarsPageComponent } from './cars-page/cars-page.component';
 import { signInGuard } from './guards/sign-in.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashCarsSectionComponent } from './dashboard/dash-cars-section/dash-cars-section.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full' },
@@ -29,6 +30,10 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard/cars',
-    component: DashCarsSectionComponent
-  }
+    component: DashCarsSectionComponent,
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent,
+  },
 ];
