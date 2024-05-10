@@ -82,4 +82,8 @@ export class FilterSidebarComponent {
   hide() {
     this.toggleFilterBy?.next(false);
   }
+
+  test() {
+    console.log('da');
+  }
 }
