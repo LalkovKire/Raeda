@@ -24,7 +24,7 @@ class CarService(
     private val carRepository: CarRepository,
     private val userRepository: UserRepository,
     private val locationService: LocationService,
-    private val rentalRepository: RentalRepository
+    private val rentalRepository: RentalRepository,
 ) {
 
     fun getAllCars(): List<Car> = this.carRepository.findAll()
@@ -65,7 +65,7 @@ class CarService(
 
     fun deleteCar(id: Long) = this.carRepository.deleteById(id)
 
-    fun rentCar(rental: RentalRequest) : RentalResponse {
+    fun rentCar(rental: RentalRequest): RentalResponse {
         val user = this.userRepository.findByEmail(rental.userEmail)
             ?: throw UserNotFoundByEmailException(rental.userEmail)
 
@@ -77,16 +77,18 @@ class CarService(
         val location = this.locationService.getLocationById(rental.locationID)
         val rentalDuration = calculateRentalDuration(rental.pickupTime, rental.dropOffTime)
 
-        val rent = this.rentalRepository.save(Rental(
-            0L,
-            rental.pickupTime,
-            rental.dropOffTime,
-            calcPrice(rentalDuration,car.price),
-            rentalDuration,
-            user,
-            car,
-            location
-        ))
+        val rent = this.rentalRepository.save(
+            Rental(
+                0L,
+                rental.pickupTime,
+                rental.dropOffTime,
+                calcPrice(rentalDuration, car.price),
+                rentalDuration,
+                user,
+                car,
+                location
+            )
+        )
 
         updateCarStatus(car.carID)
         return rent.toRentalResponse()
@@ -99,8 +101,8 @@ class CarService(
         TODO("Not yet implemented")
     }
 
-    fun calculateRentalDuration(pickupDate: LocalDateTime, dropoffDate: LocalDateTime) : Int {
-        val duration = Duration.between(pickupDate,dropoffDate)
+    fun calculateRentalDuration(pickupDate: LocalDateTime, dropoffDate: LocalDateTime): Int {
+        val duration = Duration.between(pickupDate, dropoffDate)
         return if (duration.toDays() > 2)
             1
         else duration.toDays().toInt()
@@ -131,4 +133,17 @@ class CarService(
         engine, carType, doors,
         fuelType, brand, location
     )
+
+    fun filterCars(filters: Map<String, String>): List<Car> {
+        val location = filters["location"]
+        val pickupDate = filters["pickupDate"]
+        val price = filters["price"]?.toIntOrNull()
+        val brand = filters["brand"]?.split(',') ?: emptyList()
+        val year = filters["year"]?.split(",")?.map { it.toInt() } ?: emptyList()
+        val fuel = filters["fuel"]
+        val gear = filters["gear"]
+        val availableOnly = if (filters["availableOnly"] == "true") 0 else null
+
+        return this.carRepository.getCarByFiltering(location, price, brand, year, fuel, gear, availableOnly);
+    }
 }
