@@ -17,6 +17,6 @@ export class DefaultSelectionValuesService {
   readonly brands = ['Porsche', 'Audi', 'Mercedes', 'BMW', 'Ford', 'Toyota'];
   readonly years = [2017, 2018, 2019, 2020, 2021, 2022, 2023];
   readonly fuels = ['All', 'Petrol', 'Diesel'];
-  readonly gears = ['All', 'Manuel', 'Automatic'];
+  readonly gears = ['All', 'Manual', 'Automatic'];
   readonly minDate = () => new Date();
 }
