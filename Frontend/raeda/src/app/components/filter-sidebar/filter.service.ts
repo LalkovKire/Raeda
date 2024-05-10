@@ -48,7 +48,7 @@ export class FilterService {
       params = { ...params, fuel: values.selectedFuel };
 
     if (values.selectedGear !== 'All')
-      params = { ...params, fuel: values.selectedGear };
+      params = { ...params, gear: values.selectedGear };
 
     if (values.selectedAvailability)
       params = { ...params, availableOnly: true };

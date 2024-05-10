@@ -7,7 +7,8 @@ import { CarCardComponent } from '../components/car-card/car-card.component';
 import { LoadingComponent } from '../components/loading/loading.component';
 import { ErrorComponent } from '../components/error/error.component';
 import { FilterSidebarComponent } from '../components/filter-sidebar/filter-sidebar.component';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map, switchMap } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-cars-page',
@@ -26,6 +27,7 @@ import { BehaviorSubject } from 'rxjs';
 export class CarsPageComponent {
   cars: CarModel[] = [];
   carService = inject(CarService);
+  route = inject(ActivatedRoute);
   isLoading = false;
   error = false;
   toggleFilterBy = new BehaviorSubject<boolean>(false);
@@ -33,16 +35,19 @@ export class CarsPageComponent {
   ngOnInit(): void {
     this.isLoading = true;
     this.error = false;
-    this.carService.getAllCars().subscribe({
-      next: (cars) => {
-        this.cars = cars;
-        this.isLoading = false;
-      },
-      error: () => {
-        this.isLoading = false;
-        this.error = true;
-      },
-    });
+
+    this.route.queryParams
+      .pipe(switchMap((params) => this.carService.getCarsByFiltering(params)))
+      .subscribe({
+        next: (cars) => {
+          this.cars = cars;
+          this.isLoading = false;
+        },
+        error: () => {
+          this.isLoading = false;
+          this.error = true;
+        },
+      });
   }
 
   onToggleFilterBy() {

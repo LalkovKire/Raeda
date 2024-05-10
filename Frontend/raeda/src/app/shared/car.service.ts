@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { CarModel } from './car.model';
+import { Params } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -14,5 +15,11 @@ export class CarService {
 
   getLatestInventory() {
     return this.http.get<CarModel[]>('http://localhost:8080/api/cars/latest');
+  }
+
+  getCarsByFiltering(params: Params) {
+    return this.http.get<CarModel[]>('http://localhost:8080/api/cars/filter', {
+      params: params,
+    });
   }
 }
