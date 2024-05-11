@@ -14,6 +14,7 @@ import com.sorsix.raeda.service.exceptions.CarNotAvailableException
 import com.sorsix.raeda.service.exceptions.CarNotFoundException
 import com.sorsix.raeda.service.exceptions.LicencePlateRegisteredException
 import com.sorsix.raeda.service.exceptions.UserNotFoundByEmailException
+import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.Duration
@@ -71,6 +72,7 @@ class CarService(
         return tmp.toCarResponse()
     }
 
+    @Transactional
     fun rentCar(rental: RentalRequest): RentalResponse {
         val user = this.userRepository.findByEmail(rental.userEmail)
             ?: throw UserNotFoundByEmailException(rental.userEmail)
@@ -103,8 +105,9 @@ class CarService(
     fun checkLicencePlate(licensePlate: String) =
         this.carRepository.existsByLicensePlate(licensePlate)
 
-    fun editCar(id: Car): Car {
-        TODO("Not yet implemented")
+    fun editCar(id: Long, car: CarRequest):Unit {
+        val fetchCar = this.getCarById(id)
+
     }
 
     fun calculateRentalDuration(pickupDate: LocalDateTime, dropoffDate: LocalDateTime): Int {

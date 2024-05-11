@@ -1,6 +1,16 @@
 <div class="wrapper pb-28 flex flex-col gap-20 justify-center">
     <app-navbar></app-navbar>
-    
+    <h1 class="text-4xl font-extrabold dark:text-white">Registered vehicles</h1>
+</div>
+<div class="wrapper">
+  <div class="flex justify-between">
+    <button class="btn btn-primary w-32" (click)="onToggleFilterBy()">
+      Filter
+    </button>
+    <button class="btn py-2 px-5 bg-violet-500 text-white font-semibold rounded-full shadow-md hover:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 focus:ring-opacity-75 w-32">
+      Add
+    </button>
+  </div>
 </div>
 <div class="pb-96">
     <div class="overflow-auto rounded-lg border border-gray-200 shadow-md m-5">
@@ -122,4 +132,5 @@
         </table>
       </div>
 </div>
+<app-filter-sidebar [toggleFilterBy]="toggleFilterBy"></app-filter-sidebar>
 <app-footer></app-footer>

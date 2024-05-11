@@ -6,6 +6,7 @@ import { CarsPageComponent } from './cars-page/cars-page.component';
 import { signInGuard } from './guards/sign-in.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashCarsSectionComponent } from './dashboard/dash-cars-section/dash-cars-section.component';
+import { authGuardGuard } from './guards/auth-guard.guard';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full' },
@@ -26,9 +27,15 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [authGuardGuard]
   },
   {
     path: 'dashboard/cars',
-    component: DashCarsSectionComponent
+    component: DashCarsSectionComponent,
+    canActivate: [authGuardGuard]
+  },
+  {
+    path: '**',
+    redirectTo: '/'
   }
 ];

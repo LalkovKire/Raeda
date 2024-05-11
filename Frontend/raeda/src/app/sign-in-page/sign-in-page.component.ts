@@ -53,6 +53,8 @@ export class SignInPageComponent implements OnInit {
           userInfo
         );
 
+        this.browserStorageService.userAuthentication(userInfo);
+
         this.router.navigate(['/cars']);
       },
       error: (error) => {

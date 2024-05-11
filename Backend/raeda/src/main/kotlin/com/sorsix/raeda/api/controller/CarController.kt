@@ -38,4 +38,8 @@ class CarController(private val carService: CarService) {
     @GetMapping("/filter")
     fun filterCars(@RequestParam filters: Map<String, String>) =
         ResponseEntity(this.carService.filterCars(filters), HttpStatus.OK)
+
+    @PutMapping("/edit/{id}")
+    fun editCarById(@PathVariable id: Long, @RequestBody car: CarRequest) =
+        ResponseEntity(this.carService.editCar(id, car), HttpStatus.OK)
 }

@@ -4,17 +4,20 @@ import { NavbarComponent } from '../../landing-page/navbar/navbar.component';
 import { DashboardService } from '../dashboard-service';
 import { DashCarModel } from '../dash-service-object';
 import { CommonModule } from '@angular/common';
+import { FilterSidebarComponent } from '../../components/filter-sidebar/filter-sidebar.component';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-dash-cars-section',
   standalone: true,
-  imports: [FooterComponent, NavbarComponent, CommonModule],
+  imports: [FooterComponent, NavbarComponent, CommonModule,FilterSidebarComponent],
   templateUrl: './dash-cars-section.component.html',
   styleUrl: './dash-cars-section.component.css'
 })
 export class DashCarsSectionComponent implements OnInit {
 
   cars: DashCarModel[] = [];
+  toggleFilterBy = new BehaviorSubject<boolean>(false);
 
   constructor(private carService: DashboardService) {
   }
@@ -43,4 +46,7 @@ export class DashCarsSectionComponent implements OnInit {
       });
   }
 
+  onToggleFilterBy() {
+    this.toggleFilterBy.next(true);
+  }
 }

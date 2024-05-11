@@ -1,5 +1,6 @@
 package com.sorsix.raeda.repository
 
+import com.sorsix.raeda.api.requests.CarRequest
 import com.sorsix.raeda.domain.Car
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.jpa.repository.JpaRepository
@@ -18,6 +19,10 @@ interface CarRepository : JpaRepository<Car, Long> {
     fun existsByLicensePlate(licensePlate: String): Boolean
 
     fun getCarByLicensePlate(licensePlate: String): Car
+
+    @Query(value = "ALTER TABLE car" +
+            " ALTER COLUMN", nativeQuery = true)
+    fun editCar(car: CarRequest) : Car
 
     @Query(
         value = "SELECT c.* FROM car c" +

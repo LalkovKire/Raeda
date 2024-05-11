@@ -21,6 +21,7 @@ export class DashboardService {
     let token = localStorage.getItem('token');
     
     if (token != null) {
+      
       const headerDict = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -30,7 +31,9 @@ export class DashboardService {
       const requestOptions = {                                                                                                                                                                                 
         headers: new HttpHeaders(headerDict), 
       };
+
       return this.http.delete<DashCarModel>(`${this.url}cars/${id}`,requestOptions);
+
     } else {
       return this.http.delete<DashCarModel>(`${this.url}cars/${id}`);
     }
