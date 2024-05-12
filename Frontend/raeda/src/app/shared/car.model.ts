@@ -1,3 +1,4 @@
+import { Location } from '../dashboard/dash-service-object';
 import { CarStatus } from './car-status';
 
 export class CarModel {
@@ -13,11 +14,9 @@ export class CarModel {
     public engine: string,
     public status: CarStatus,
     public price: number,
-    public location: {
-      locationName: string;
-    },
-    public brand?: string,
-    public carId?: number,
-    public licensePlate?: string
+    public location: Location,
+    public brand: string,
+    public carID: number,
+    public licensePlate: string
   ) {}
 }

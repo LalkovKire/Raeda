@@ -1,5 +1,6 @@
 package com.sorsix.raeda.domain
 
+import com.sorsix.raeda.api.response.CarResponse
 import com.sorsix.raeda.domain.enumerations.CarStatus
 import jakarta.persistence.*
 
@@ -13,47 +14,47 @@ data class Car(
     val carID: Long,
 
     @Column(nullable = false)
-    val image: String,
+    var image: String,
 
     @Column(name = "gearbox", nullable = false)
-    val gearBox: String,
+    var gearBox: String,
 
     @Column(nullable = false)
-    val model: String,
+    var model: String,
 
     @Column(name = "licenseplate", nullable = false, unique = true)
-    val licensePlate: String,
+    var licensePlate: String,
 
     @Column(name = "yearmade", nullable = false)
-    val yearMade: Int,
+    var yearMade: Int,
 
     @Column(nullable = false)
-    val seats: Int,
+    var seats: Int,
 
     @Column(nullable = false)
     var status: CarStatus,
 
     @Column(nullable = false)
-    val price: Int,
+    var price: Int,
 
     @Column(nullable = false)
-    val engine: String,
+    var engine: String,
 
     @Column(name = "cartype", nullable = false)
-    val carType: String,
+    var carType: String,
 
     @Column(name = "doors", nullable = false)
-    val doors: Int,
+    var doors: Int,
 
     @Column(name = "fueltype", nullable = false)
-    val fuelType: String,
+    var fuelType: String,
 
     @Column(name = "brand", nullable = false)
-    val brand: String,
+    var brand: String,
 
     @ManyToOne
     @JoinColumn(name = "locationid")
-    val location: Location
+    var location: Location
 
 )
 

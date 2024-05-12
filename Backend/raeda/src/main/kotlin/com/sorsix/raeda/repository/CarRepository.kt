@@ -2,6 +2,8 @@ package com.sorsix.raeda.repository
 
 import com.sorsix.raeda.api.requests.CarRequest
 import com.sorsix.raeda.domain.Car
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor
@@ -13,16 +15,14 @@ import org.springframework.stereotype.Repository
 @Repository
 interface CarRepository : JpaRepository<Car, Long> {
 
+    override fun findAll(page: Pageable): Page<Car>
+
     @Query("SELECT * FROM car WHERE status = 0 ORDER BY carid DESC LIMIT 6", nativeQuery = true)
     fun getLatestInventory(): List<Car>
 
     fun existsByLicensePlate(licensePlate: String): Boolean
 
     fun getCarByLicensePlate(licensePlate: String): Car
-
-    @Query(value = "ALTER TABLE car" +
-            " ALTER COLUMN", nativeQuery = true)
-    fun editCar(car: CarRequest) : Car
 
     @Query(
         value = "SELECT c.* FROM car c" +
@@ -44,6 +44,7 @@ interface CarRepository : JpaRepository<Car, Long> {
         @Param("year") year: List<Int>,
         @Param("fuel") fuel: String?,
         @Param("gear") gear: String?,
-        @Param("availableOnly") availableOnly: Int?
-    ): List<Car>
+        @Param("availableOnly") availableOnly: Int?,
+        pageable: Pageable
+    ): Page<Car>
 }

@@ -15,6 +15,9 @@ import com.sorsix.raeda.service.exceptions.CarNotFoundException
 import com.sorsix.raeda.service.exceptions.LicencePlateRegisteredException
 import com.sorsix.raeda.service.exceptions.UserNotFoundByEmailException
 import jakarta.transaction.Transactional
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.Duration
@@ -28,12 +31,15 @@ class CarService(
     private val rentalRepository: RentalRepository,
 ) {
 
-    fun getAllCars(): List<CarResponse> = this.carRepository.findAll().map {
-        it.toCarResponse()
+    fun getAllCars(pageable: Pageable): Page<CarResponse> {
+        val carsPage: Page<Car> = carRepository.findAll(pageable)
+        return carsPage.map { it.toCarResponse() }
     }
 
-    fun getCarById(id: Long) = carRepository.findByIdOrNull(id) ?: throw CarNotFoundException(id)
+    fun getCarById(id: Long) = carRepository.findByIdOrNull(id)
+        ?: throw CarNotFoundException(id)
 
+    @Transactional
     fun addCar(car: CarRequest): CarResponse {
 
         val location = this.locationService.getLocationById(car.locationID)
@@ -83,7 +89,8 @@ class CarService(
             throw CarNotAvailableException(car.carID)
 
         val location = this.locationService.getLocationById(rental.locationID)
-        val rentalDuration = calculateRentalDuration(rental.pickupTime, rental.dropOffTime)
+        val rentalDuration =
+            calculateRentalDuration(rental.pickupTime, rental.dropOffTime)
 
         val rent = this.rentalRepository.save(
             Rental(
@@ -105,9 +112,29 @@ class CarService(
     fun checkLicencePlate(licensePlate: String) =
         this.carRepository.existsByLicensePlate(licensePlate)
 
-    fun editCar(id: Long, car: CarRequest):Unit {
-        val fetchCar = this.getCarById(id)
+    @Transactional
+    fun editCar(id: Long, car: CarRequest): CarResponse {
 
+        val fetchCar = this.getCarById(id)
+        val fetchLocation = this.locationService.getLocationById(car.locationID)
+
+        fetchCar.apply {
+            this.image = car.image
+            this.gearBox = car.gearBox
+            this.model = car.model
+            this.licensePlate = car.licensePlate
+            this.yearMade = car.yearMade
+            this.seats = car.seats
+            this.price = car.price
+            this.engine = car.engine
+            this.carType = car.carType
+            this.doors = car.doors
+            this.fuelType = car.fuelType
+            this.brand = car.brand
+            this.location = fetchLocation
+        }
+
+        return this.carRepository.save(fetchCar).toCarResponse()
     }
 
     fun calculateRentalDuration(pickupDate: LocalDateTime, dropoffDate: LocalDateTime): Int {
@@ -118,7 +145,7 @@ class CarService(
     }
 
     fun updateCarStatus(carID: Long) {
-        var tmp = this.getCarById(carID)
+        val tmp = this.getCarById(carID)
         tmp.status = CarStatus.RENTED
         this.carRepository.save(tmp)
     }
@@ -135,7 +162,7 @@ class CarService(
         totalPrice = totalPrice
     )
 
-    fun Car.toCarResponse() = CarResponse(
+   fun Car.toCarResponse() = CarResponse(
         carID, image, gearBox,
         model, licensePlate, yearMade,
         seats, status, price,
@@ -143,7 +170,10 @@ class CarService(
         fuelType, brand, location
     )
 
-    fun filterCars(filters: Map<String, String>): List<Car> {
+    fun filterCars(filters: Map<String, String>): Page<CarResponse> {
+        val page = filters["page"]?.toIntOrNull() ?: 0
+        val size = filters["size"]?.toIntOrNull() ?: 10
+        val pageable = PageRequest.of(page,size);
         val location = filters["location"]
         val pickupDate = filters["pickupDate"]
         val price = filters["price"]?.toIntOrNull()
@@ -153,6 +183,7 @@ class CarService(
         val gear = filters["gear"]
         val availableOnly = if (filters["availableOnly"] == "true") 0 else null
 
-        return this.carRepository.getCarByFiltering(location, price, brand, year, fuel, gear, availableOnly);
+        return this.carRepository.getCarByFiltering(location, price, brand, year, fuel, gear, availableOnly,pageable)
+            .map { it.toCarResponse() }
     }
 }

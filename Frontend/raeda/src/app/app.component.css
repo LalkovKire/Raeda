@@ -54,3 +54,11 @@
 ::ng-deep ul li.p-listbox-item.p-highlight {
   @apply bg-clr-gray-2;
 }
+
+::ng-deep .p-accordion-tab.p-accordion-tab-active .p-toggleable-content {
+  height: auto;
+}
+
+::ng-deep .p-accordion-tab:not(.p-accordion-tab-active) .p-toggleable-content {
+  height: 0;
+}
