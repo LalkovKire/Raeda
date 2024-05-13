@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CarService } from '../../shared/car.service';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription, of, switchMap, tap } from 'rxjs';
+import { Subscription, switchMap } from 'rxjs';
 import { CarModel } from '../../shared/car.model';
 
 @Component({
@@ -29,6 +29,8 @@ export class PaginatorComponent implements OnInit {
   }
 
   loadCars(): void {
+    this.service.isLoading.set(true);
+    this.service.error.set(false);
     this.route.queryParams
       .pipe(
         switchMap((params) => {
@@ -43,9 +45,12 @@ export class PaginatorComponent implements OnInit {
           this.currentPage = 0;
           this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
           this.carsChanged.emit(cars.content);
+          this.service.isLoading.set(false);
+          this.service.error.set(false);
         },
         error: (error) => {
-          console.log(error);
+          this.service.isLoading.set(false);
+          this.service.error.set(true);
         },
       });
   }
@@ -72,6 +77,8 @@ export class PaginatorComponent implements OnInit {
   }
 
   updateQueryParams(): void {
+    this.service.isLoading.set(true);
+    this.service.error.set(false);
     this.queryParamsSubscription = this.route.queryParams
       .pipe(
         switchMap((params) => {
@@ -87,9 +94,12 @@ export class PaginatorComponent implements OnInit {
           this.totalPages = cars.totalPages;
           this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
           this.carsChanged.emit(cars.content);
+          this.service.isLoading.set(false);
+          this.service.error.set(false);
         },
         error: (error) => {
-          console.log(error);
+          this.service.isLoading.set(false);
+          this.service.error.set(true);
         },
       });
   }

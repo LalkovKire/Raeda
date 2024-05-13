@@ -11,30 +11,32 @@ import { PaginatorComponent } from '../../components/paginator/paginator.compone
 @Component({
   selector: 'app-dash-cars-section',
   standalone: true,
-  imports: [FooterComponent, NavbarComponent, CommonModule,FilterSidebarComponent, PaginatorComponent],
+  imports: [
+    FooterComponent,
+    NavbarComponent,
+    CommonModule,
+    FilterSidebarComponent,
+    PaginatorComponent,
+  ],
   templateUrl: './dash-cars-section.component.html',
-  styleUrl: './dash-cars-section.component.css'
+  styleUrl: './dash-cars-section.component.css',
 })
 export class DashCarsSectionComponent implements OnInit {
-
   cars: CarModel[] = [];
   toggleFilterBy = new BehaviorSubject<boolean>(false);
 
-  constructor(private carService: CarService) {
-  }
+  constructor(private carService: CarService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   deleteCarEntry(id: number): void {
-    this.carService.deleteCarById(id)
-      .subscribe({
-        next: (succ) => {
-          let ind = this.cars.indexOf(succ)
-          this.cars.splice(ind,1);
-        },
-        error: (err) => console.log(err)
-      });
+    this.carService.deleteCarById(id).subscribe({
+      next: (succ) => {
+        let ind = this.cars.indexOf(succ);
+        this.cars.splice(ind, 1);
+      },
+      error: (err) => console.log(err),
+    });
   }
 
   onToggleFilterBy() {
@@ -42,7 +44,6 @@ export class DashCarsSectionComponent implements OnInit {
   }
 
   onCarsChanged(cars: CarModel[]): void {
-    this.cars = cars; 
+    this.cars = cars;
   }
-
 }
