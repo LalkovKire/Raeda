@@ -18,7 +18,9 @@ export class DateService {
       .padStart(2, '0')}-${year}`;
   }
 
-  convertStringToDate(str: string) {
+  convertStringToDate(str: string | undefined) {
+    if (str === undefined) return null;
+
     const dateParts = str.split('-');
 
     const day = +dateParts[0];

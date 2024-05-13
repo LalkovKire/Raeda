@@ -10,32 +10,34 @@ import { CarModel } from '../../shared/car.model';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './paginator.component.html',
-  styleUrl: './paginator.component.css'
+  styleUrl: './paginator.component.css',
 })
 export class PaginatorComponent implements OnInit {
-
   currentPage = 0;
-  pageSize = 4;
+  pageSize = 100;
   totalPages = 0;
   pages: number[] = [];
-  @Output() carsChanged: EventEmitter<CarModel[]> = new EventEmitter<CarModel[]>();
+  @Output() carsChanged: EventEmitter<CarModel[]> = new EventEmitter<
+    CarModel[]
+  >();
   private queryParamsSubscription: Subscription | undefined;
 
-  constructor(private service: CarService, private route: ActivatedRoute){
-  }
+  constructor(private service: CarService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.loadCars();
   }
 
-  loadCars(): void {   
+  loadCars(): void {
     this.route.queryParams
-    .pipe(
-      switchMap((params) => {
-        if (this.queryParamsSubscription !== undefined) this.queryParamsSubscription.unsubscribe();
-        return this.service.getCarsByFiltering(params,0, this.pageSize)
-      }) 
-    ).subscribe({
+      .pipe(
+        switchMap((params) => {
+          if (this.queryParamsSubscription !== undefined)
+            this.queryParamsSubscription.unsubscribe();
+          return this.service.getCarsByFiltering(params, 0, this.pageSize);
+        })
+      )
+      .subscribe({
         next: (cars) => {
           this.totalPages = cars.totalPages;
           this.currentPage = 0;
@@ -50,7 +52,7 @@ export class PaginatorComponent implements OnInit {
 
   goToPage(page: number): void {
     if (page >= 0 && page <= this.totalPages) {
-      this.currentPage = page-1;
+      this.currentPage = page - 1;
       this.updateQueryParams();
     }
   }
@@ -68,12 +70,16 @@ export class PaginatorComponent implements OnInit {
       this.updateQueryParams();
     }
   }
-  
+
   updateQueryParams(): void {
-   this.queryParamsSubscription = this.route.queryParams
+    this.queryParamsSubscription = this.route.queryParams
       .pipe(
         switchMap((params) => {
-          return this.service.getCarsByFiltering(params, this.currentPage, this.pageSize);
+          return this.service.getCarsByFiltering(
+            params,
+            this.currentPage,
+            this.pageSize
+          );
         })
       )
       .subscribe({
@@ -87,5 +93,4 @@ export class PaginatorComponent implements OnInit {
         },
       });
   }
-
 }
