@@ -10,6 +10,7 @@ import { FilterSidebarComponent } from '../components/filter-sidebar/filter-side
 import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { PaginatorComponent } from '../components/paginator/paginator.component';
+import { WarningComponent } from '../components/warning/warning.component';
 
 @Component({
   selector: 'app-cars-page',
@@ -20,6 +21,7 @@ import { PaginatorComponent } from '../components/paginator/paginator.component'
     CarCardComponent,
     LoadingComponent,
     ErrorComponent,
+    WarningComponent,
     FilterSidebarComponent,
     PaginatorComponent,
   ],
@@ -33,6 +35,7 @@ export class CarsPageComponent {
   isLoading = false;
   error = false;
   toggleFilterBy = new BehaviorSubject<boolean>(false);
+  warning = false;
 
   constructor() {
     effect(() => {
@@ -46,6 +49,9 @@ export class CarsPageComponent {
   }
 
   onCarsChanged(cars: CarModel[]): void {
+    this.warning = false;
     this.cars = cars;
+
+    if (cars.length === 0) this.warning = true;
   }
 }
