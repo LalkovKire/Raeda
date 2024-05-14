@@ -61,4 +61,8 @@ export class CarService {
       return this.http.delete<CarModel>(`${this.url}/${id}`);
     }
   }
+
+  getCar(id: number) {
+    return this.http.get<CarModel>(`${this.url}/${id}`);
+  }
 }

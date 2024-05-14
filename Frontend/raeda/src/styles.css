@@ -3,7 +3,7 @@
 @import "../node_modules/tailwindcss/utilities.css" layer(tailwindcss);
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
-@import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Questrial&display=swap");
 
 html {
   @apply scroll-smooth;
@@ -43,7 +43,7 @@ li a {
 }
 
 .h2 {
-  @apply text-[40px] font-semibold text-clr-gray-6;
+  @apply text-[40px] font-semibold;
 }
 
 .h3 {
@@ -51,7 +51,7 @@ li a {
 }
 
 .h4 {
-  @apply font-semibold text-clr-gray-6;
+  @apply font-semibold text-clr-gray-6 text-xl;
 }
 
 .p {
@@ -96,4 +96,8 @@ li a {
 
 .label-radio {
   @apply block bg-clr-gray-5 text-clr-white font-bold capitalize px-3 py-3 rounded-lg hover:bg-clr-black peer-checked:bg-clr-black transition-all duration-300 ease-in-out;
+}
+
+.input-w-200 {
+  @apply w-[200px];
 }

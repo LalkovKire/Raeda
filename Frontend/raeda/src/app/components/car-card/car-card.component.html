@@ -103,9 +103,9 @@
         <span class="font-light text-clr-gray-5">/</span>
         <span class="font-light text-[12px] text-clr-gray-5">day</span>
       </div>
-      @if (car.status === "AVAILABLE") {
-      <button class="btn btn-primary-outline">Details</button>
-      }
+      <a [routerLink]="[car.carID]">
+        <button class="btn btn-primary-outline">Details</button>
+      </a>
     </div>
   </div>
 </li>
