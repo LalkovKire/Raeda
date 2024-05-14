@@ -1,6 +1,5 @@
 package com.sorsix.raeda.api.response
 
-import com.sorsix.raeda.domain.Location
 import com.sorsix.raeda.domain.enumerations.CarStatus
 
 data class CarResponse(
@@ -18,5 +17,5 @@ data class CarResponse(
     val doors: Int,
     val fuelType: String,
     val brand: String,
-    val location: Location
+    val location: LocationResponse
 )

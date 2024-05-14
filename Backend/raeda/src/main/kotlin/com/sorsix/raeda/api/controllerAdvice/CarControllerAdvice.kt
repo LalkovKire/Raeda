@@ -3,10 +3,8 @@ package com.sorsix.raeda.api.controllerAdvice
 import com.sorsix.raeda.domain.errorResponse.AlreadyExistsError
 import com.sorsix.raeda.domain.errorResponse.NotAvailableError
 import com.sorsix.raeda.domain.errorResponse.NotFoundError
-import com.sorsix.raeda.service.exceptions.CarNotAvailableException
-import com.sorsix.raeda.service.exceptions.CarNotFoundException
-import com.sorsix.raeda.service.exceptions.LicencePlateRegisteredException
-import com.sorsix.raeda.service.exceptions.LocationNotFoundException
+import com.sorsix.raeda.domain.errorResponse.WrongFormatError
+import com.sorsix.raeda.service.exceptions.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -30,5 +28,9 @@ class CarControllerAdvice : ResponseEntityExceptionHandler()  {
 
     @ExceptionHandler(LicencePlateRegisteredException::class)
     fun handleLicensePlateException(e : LicencePlateRegisteredException) =
-        ResponseEntity(AlreadyExistsError(description = "The license plate: ${e.lp} is already registered to the car with id: ${e.id}"), HttpStatus.BAD_REQUEST)
+        ResponseEntity(AlreadyExistsError(description = "The license plate: ${e.lp} is already registered to another car"), HttpStatus.BAD_REQUEST)
+
+    @ExceptionHandler(WrongUrlFormatException::class)
+    fun handleLicensePlateException(e : WrongUrlFormatException) =
+        ResponseEntity(WrongFormatError(description = "Invalid url format"),HttpStatus.BAD_REQUEST)
 }

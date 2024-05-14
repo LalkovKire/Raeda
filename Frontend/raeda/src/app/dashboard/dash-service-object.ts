@@ -3,7 +3,8 @@ export interface DashObject {
     name: String;
 }
 
-export interface Location {
+export interface CarLocation {
+    locationId: number;
     locationName: string;
     locationAddress: string;
 }

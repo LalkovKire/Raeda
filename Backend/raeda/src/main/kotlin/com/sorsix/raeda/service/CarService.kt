@@ -3,23 +3,26 @@ package com.sorsix.raeda.service
 import com.sorsix.raeda.api.requests.CarRequest
 import com.sorsix.raeda.api.requests.RentalRequest
 import com.sorsix.raeda.api.response.CarResponse
+import com.sorsix.raeda.api.response.LocationResponse
 import com.sorsix.raeda.api.response.RentalResponse
 import com.sorsix.raeda.domain.Car
+import com.sorsix.raeda.domain.Location
 import com.sorsix.raeda.domain.Rental
 import com.sorsix.raeda.domain.enumerations.CarStatus
 import com.sorsix.raeda.repository.CarRepository
 import com.sorsix.raeda.repository.RentalRepository
 import com.sorsix.raeda.repository.UserRepository
-import com.sorsix.raeda.service.exceptions.CarNotAvailableException
-import com.sorsix.raeda.service.exceptions.CarNotFoundException
-import com.sorsix.raeda.service.exceptions.LicencePlateRegisteredException
-import com.sorsix.raeda.service.exceptions.UserNotFoundByEmailException
+import com.sorsix.raeda.service.exceptions.*
 import jakarta.transaction.Transactional
+import org.hibernate.query.SortDirection
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import java.net.MalformedURLException
+import java.net.URL
 import java.time.Duration
 import java.time.LocalDateTime
 
@@ -48,6 +51,9 @@ class CarService(
             val fetchCar = this.carRepository.getCarByLicensePlate(car.licensePlate)
             throw LicencePlateRegisteredException(fetchCar.carID, car.licensePlate)
         }
+
+        if(!this.isUrlValid(car.image))
+            throw WrongUrlFormatException()
 
         return this.carRepository.save(
             Car(
@@ -167,15 +173,19 @@ class CarService(
         model, licensePlate, yearMade,
         seats, status, price,
         engine, carType, doors,
-        fuelType, brand, location
+        fuelType, brand, location.toLocationResponse()
     )
-
+    fun Location.toLocationResponse() = LocationResponse(
+        locationId = locId,
+        locationAddress = locationAddress,
+        locationName = locationName
+    )
     fun filterCars(filters: Map<String, String>): Page<CarResponse> {
         val page = filters["page"]?.toIntOrNull() ?: 0
         val size = filters["size"]?.toIntOrNull() ?: 10
-        val pageable = PageRequest.of(page,size);
+        val pageable = PageRequest.of(page,size, Sort.by(Sort.Direction.ASC, "carid"))
         val location = filters["location"]
-        val pickupDate = filters["pickupDate"]
+        // val pickupDate = filters["pickupDate"]
         val price = filters["price"]?.toIntOrNull()
         val brand = filters["brand"]?.split(',') ?: emptyList()
         val year = filters["year"]?.split(",")?.map { it.toInt() } ?: emptyList()
@@ -186,4 +196,14 @@ class CarService(
         return this.carRepository.getCarByFiltering(location, price, brand, year, fuel, gear, availableOnly,pageable)
             .map { it.toCarResponse() }
     }
+
+    private fun isUrlValid(url: String) : Boolean {
+        return try {
+            URL(url).toURI()
+            true
+        } catch (e : MalformedURLException) {
+            false
+        }
+    }
+
 }

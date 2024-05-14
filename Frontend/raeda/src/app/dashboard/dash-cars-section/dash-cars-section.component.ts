@@ -7,11 +7,12 @@ import { BehaviorSubject } from 'rxjs';
 import { CarService } from '../../shared/car.service';
 import { CarModel } from '../../shared/car.model';
 import { PaginatorComponent } from '../../components/paginator/paginator.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-dash-cars-section',
   standalone: true,
-  imports: [FooterComponent, NavbarComponent, CommonModule,FilterSidebarComponent, PaginatorComponent],
+  imports: [FooterComponent, NavbarComponent, CommonModule,FilterSidebarComponent, PaginatorComponent, RouterLink],
   templateUrl: './dash-cars-section.component.html',
   styleUrl: './dash-cars-section.component.css'
 })
@@ -42,6 +43,8 @@ export class DashCarsSectionComponent implements OnInit {
   }
 
   onCarsChanged(cars: CarModel[]): void {
+    console.log("something");
+    
     this.cars = cars; 
   }
 

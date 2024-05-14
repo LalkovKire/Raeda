@@ -35,22 +35,6 @@ export class CarsPageComponent {
   toggleFilterBy = new BehaviorSubject<boolean>(false);
 
   ngOnInit(): void {
-    this.isLoading = true;
-    this.error = false;
-    // Nema potreba od ovoj subsribe tuka, isLoading i error ke trebe da gi smenis ili preku Output ili nekako global stavi gi 
-    // i pravi mu subsribe. Go stavam vaka za da znais so da smenis, vidi vo paginator component... 
-    this.route.queryParams
-      .pipe(switchMap((params) => this.carService.getCarsByFiltering(params,0,1)))
-      .subscribe({
-        next: (cars) => {
-          this.cars = cars.content;
-          this.isLoading = false;
-        },
-        error: () => {
-          this.isLoading = false;
-          this.error = true;
-        },
-      });
   }
 
   onToggleFilterBy() {

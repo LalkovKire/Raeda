@@ -1,15 +1,16 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { CarModel } from './car.model';
+import { CarModel, CarRequest } from './car.model';
 import { Params } from '@angular/router';
 import { Pageable } from './pageable';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CarService {
 
+  private token = localStorage.getItem('token');
   private url = "http://localhost:8080/api/cars";
   private http = inject(HttpClient);
 
@@ -36,17 +37,34 @@ export class CarService {
     return this.http.get<Pageable<CarModel>>(`${this.url}/filter`, {
       params: queryParams
     });
+    
   }
 
-  deleteCarById(id : number) : Observable<CarModel> {
-    let token = localStorage.getItem('token');
-    
-    if (token != null) {
+  addNewCar(car: CarRequest) : Observable<CarModel> {
+    if (this.token != null) {
       
       const headerDict = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${this.token}`
+      }
+
+      const requestOptions = {                                                                                                                                                                                 
+        headers: new HttpHeaders(headerDict), 
+      };
+
+      return this.http.post<CarModel>(`${this.url}`,car,requestOptions);
+    } else throw new Error("Token must be present");
+  }
+
+  deleteCarById(id : number) : Observable<CarModel> {
+    
+    if (this.token != null) {
+      
+      const headerDict = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${this.token}`
       }
 
       const requestOptions = {                                                                                                                                                                                 
@@ -55,8 +73,6 @@ export class CarService {
 
       return this.http.delete<CarModel>(`${this.url}/${id}`,requestOptions);
 
-    } else {
-      return this.http.delete<CarModel>(`${this.url}/${id}`);
-    }
+    } else throw new Error('Token must be present');
   }
 }

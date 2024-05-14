@@ -24,7 +24,7 @@ class LocationController(private val locationService: LocationService){
     @GetMapping("/{id}")
     fun getLocationById(@PathVariable id: Long) : ResponseEntity<LocationResponse> {
         val loc = this.locationService.getLocationById(id)
-        return ResponseEntity(LocationResponse(loc.locationAddress,loc.locationName),HttpStatus.OK)
+        return ResponseEntity(LocationResponse(loc.locId,loc.locationAddress,loc.locationName),HttpStatus.OK)
     }
 
     @PostMapping
