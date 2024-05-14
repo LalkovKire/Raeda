@@ -11,6 +11,7 @@ import { FilterService } from './filter.service';
 import { DefaultSelectionValuesService } from './default-selection-values.service';
 import { FilterForm } from './filter-form';
 import { DateService } from '../../shared/date.service';
+import { LowerCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-filter-sidebar',
@@ -60,30 +61,39 @@ export class FilterSidebarComponent {
           this.route.snapshot.queryParams['pickupDate']
         )
       : new Date();
+    let price = this.route.snapshot.queryParams['price'];
+
+    const brands = this.route.snapshot.queryParams['brand']?.split(',') ?? [];
+    let years = this.route.snapshot.queryParams['year']?.split(',') ?? [];
+    const fuel =
+      this.route.snapshot.queryParams['fuel'] ??
+      this.defaultSelectionValuesService.fuels[0];
+    const gear =
+      this.route.snapshot.queryParams['gear'] ??
+      this.defaultSelectionValuesService.gears[0];
+    const available = !!(
+      this.route.snapshot.queryParams['availableOnly'] ?? false
+    );
+
+    price =
+      this.defaultSelectionValuesService.prices.find(
+        (p) => p.amount === +price
+      ) ?? this.defaultSelectionValuesService.prices[0];
+    years = years.map((year: string) => +year);
 
     return new FormGroup({
       selectedLocation: new FormControl(location),
       selectedPickupDate: new FormControl(pickup),
-      selectedPrice: new FormControl(
-        this.defaultSelectionValuesService.prices[0]
-      ),
-      selectedBrands: new FormControl([]),
-      selectedYears: new FormControl([]),
-      selectedFuel: new FormControl(
-        this.defaultSelectionValuesService.fuels[0]
-      ),
-      selectedGear: new FormControl(
-        this.defaultSelectionValuesService.gears[0]
-      ),
-      selectedAvailability: new FormControl(false),
+      selectedPrice: new FormControl(price),
+      selectedBrands: new FormControl(brands),
+      selectedYears: new FormControl(years),
+      selectedFuel: new FormControl(fuel),
+      selectedGear: new FormControl(gear),
+      selectedAvailability: new FormControl(available),
     });
   }
 
   hide() {
     this.toggleFilterBy?.next(false);
-  }
-
-  test() {
-    console.log('da');
   }
 }

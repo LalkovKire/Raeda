@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { NavbarComponent } from '../landing-page/navbar/navbar.component';
 import { FooterComponent } from '../components/footer/footer.component';
 import { CarService } from '../shared/car.service';
@@ -7,9 +7,10 @@ import { CarCardComponent } from '../components/car-card/car-card.component';
 import { LoadingComponent } from '../components/loading/loading.component';
 import { ErrorComponent } from '../components/error/error.component';
 import { FilterSidebarComponent } from '../components/filter-sidebar/filter-sidebar.component';
-import { BehaviorSubject, map, switchMap } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { PaginatorComponent } from '../components/paginator/paginator.component';
+import { WarningComponent } from '../components/warning/warning.component';
 
 @Component({
   selector: 'app-cars-page',
@@ -20,8 +21,9 @@ import { PaginatorComponent } from '../components/paginator/paginator.component'
     CarCardComponent,
     LoadingComponent,
     ErrorComponent,
+    WarningComponent,
     FilterSidebarComponent,
-    PaginatorComponent
+    PaginatorComponent,
   ],
   templateUrl: './cars-page.component.html',
   styleUrl: './cars-page.component.css',
@@ -33,8 +35,13 @@ export class CarsPageComponent {
   isLoading = false;
   error = false;
   toggleFilterBy = new BehaviorSubject<boolean>(false);
+  warning = false;
 
-  ngOnInit(): void {
+  constructor() {
+    effect(() => {
+      this.isLoading = this.carService.isLoading();
+      this.error = this.carService.error();
+    });
   }
 
   onToggleFilterBy() {
@@ -42,7 +49,9 @@ export class CarsPageComponent {
   }
 
   onCarsChanged(cars: CarModel[]): void {
-    this.cars = cars; 
-  }
+    this.warning = false;
+    this.cars = cars;
 
+    if (cars.length === 0) this.warning = true;
+  }
 }

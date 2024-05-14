@@ -9,6 +9,7 @@ import { DashCarsSectionComponent } from './dashboard/dash-cars-section/dash-car
 import { authGuardGuard } from './guards/auth-guard.guard';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { CarAddFormComponent } from './dashboard/car-add-form/car-add-form.component';
+import { CarDetailsPageComponent } from './car-details-page/car-details-page.component';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full' },
@@ -24,12 +25,21 @@ export const routes: Routes = [
   },
   {
     path: 'cars',
-    component: CarsPageComponent
+    children: [
+      {
+        path: '',
+        component: CarsPageComponent,
+      },
+      {
+        path: ':id',
+        component: CarDetailsPageComponent,
+      },
+    ],
   },
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [authGuardGuard]
+    canActivate: [authGuardGuard],
   },
   {
     path: 'dashboard/cars',

@@ -18,7 +18,9 @@ export class DateService {
       .padStart(2, '0')}-${year}`;
   }
 
-  convertStringToDate(str: string) {
+  convertStringToDate(str: string | undefined) {
+    if (str === undefined) return null;
+
     const dateParts = str.split('-');
 
     const day = +dateParts[0];
@@ -26,5 +28,14 @@ export class DateService {
     const year = +dateParts[2];
 
     return new Date(year, month, day);
+  }
+
+  dateDiffInDays(a: Date, b: Date) {
+    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+    // Discard the time and time-zone information.
+    const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+    const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+
+    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
   }
 }

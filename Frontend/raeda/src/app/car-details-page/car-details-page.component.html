@@ -1,0 +1,169 @@
+<div class="wrapper">
+  <app-navbar></app-navbar>
+  <div class="ml-20 mt-10">
+    <button class="btn btn-primary" (click)="onGoBack()">Back</button>
+    @if (car?.status === 'RENTED') {
+    <div class="mt-4">
+      <app-info>This car is already rented.</app-info>
+    </div>
+    } @if (!isLoggedIn) {
+    <div class="mt-4">
+      <app-warning>To rent this car you need to be sign in.</app-warning>
+    </div>
+
+    }
+  </div>
+  <div class="flex justify-between mt-5">
+    <div
+      class="w-[650px] mx-auto flex flex-col gap-10 shadow-xl rounded-2xl p-5 mb-72"
+    >
+      <div class="flex justify-between">
+        <h2 class="h2 text-clr-black">{{ car?.brand }} {{ car?.model }}</h2>
+        <div class="flex items-center">
+          <p class="font-bold">{{ car?.price }}€</p>
+          <span class="font-light text-clr-gray-5">/</span>
+          <span class="font-light text-[12px] text-clr-gray-5">day</span>
+        </div>
+      </div>
+      <div class="h-[400px]">
+        <img
+          [src]="car?.image"
+          [alt]="car?.model"
+          class="w-full h-full object-cover rounded-xl"
+        />
+      </div>
+      <div class="space-y-5">
+        <h3 class="h3">Key Characteristics</h3>
+        <ul class="flex gap-3">
+          <li
+            class="flex flex-col gap-5 items-center justify-center shadow-md rounded-xl w-24 h-20"
+          >
+            <div class="w-5 h-5">
+              <img src="/assets/images/icons/seat.svg" alt="" />
+            </div>
+            <p>{{ car?.seats }} Seats</p>
+          </li>
+          <li
+            class="flex flex-col gap-5 items-center justify-center shadow-md rounded-xl w-24 h-20"
+          >
+            <div class="w-5 h-5">
+              <img src="/assets/images/icons/door.svg" alt="" />
+            </div>
+            <p>{{ car?.seats }} Doors</p>
+          </li>
+          <li
+            class="flex flex-col gap-5 items-center justify-center shadow-md rounded-xl w-24 h-20"
+          >
+            <div class="w-5 h-5">
+              <img src="/assets/images/icons/engin.svg" alt="" />
+            </div>
+            <p>{{ car?.engine }}</p>
+          </li>
+          <li
+            class="flex flex-col gap-5 items-center justify-center shadow-md rounded-xl w-24 h-20"
+          >
+            <div class="w-5 h-5">
+              <img src="/assets/images/icons/pump.svg" alt="" />
+            </div>
+            <p>{{ car?.fuelType }}</p>
+          </li>
+          <li
+            class="flex flex-col gap-5 items-center justify-center shadow-md rounded-xl w-24 h-20"
+          >
+            <div class="w-5 h-5">
+              <img src="/assets/images/icons/gear.svg" alt="" />
+            </div>
+            <p>{{ car?.gearBox }}</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <aside class="w-[300px] self-start">
+      <form
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+        class="flex flex-col gap-10"
+      >
+        <div class="flex flex-col gap-5 shadow-xl rounded-3xl p-5">
+          <h4 class="h4">Rent Details</h4>
+          <div class="form-control">
+            <label class="label">Pickup Location</label>
+            <input
+              [disabled]="true"
+              class="input input-w-200"
+              [value]="car?.location?.locationName"
+            />
+          </div>
+          <div class="form-control">
+            <label for="pickup" class="label">Pickup Date</label>
+            <p-calendar
+              formControlName="pickupDate"
+              [minDate]="minDatePickup"
+              [showIcon]="true"
+              readonlyInput="true"
+              iconDisplay="input"
+              inputId="pickup"
+              inputStyleClass="input input-date input-w-200"
+            ></p-calendar>
+          </div>
+          <div class="form-control">
+            <label for="return" class="label">Return Date</label>
+            <p-calendar
+              formControlName="returnDate"
+              [minDate]="minDateReturn"
+              [showIcon]="true"
+              readonlyInput="true"
+              iconDisplay="input"
+              inputId="return"
+              inputStyleClass="input input-date input-w-200"
+            ></p-calendar>
+          </div>
+        </div>
+        <div class="shadow-xl rounded-3xl p-5 space-y-5">
+          <h4 class="h4">Price Breakdown</h4>
+          <div>
+            <div class="flex justify-between">
+              <p class="font-light">Price / day</p>
+              <span class="font-semibold"
+                >{{ car?.price }}€ x {{ dayDuration }}</span
+              >
+            </div>
+            <div class="flex justify-between">
+              <p class="font-light">Insurance</p>
+              <span class="font-semibold">{{ insurance }}€</span>
+            </div>
+          </div>
+          <div class="flex justify-between">
+            <h5>Total</h5>
+            <span class="font-semibold">{{ total }}€</span>
+          </div>
+          @if (isLoggedIn) {
+          <button
+            class="btn btn-primary w-full"
+            [disabled]="car?.status !== 'AVAILABLE'"
+          >
+            Rent Now
+          </button>
+          }
+        </div>
+      </form>
+    </aside>
+  </div>
+</div>
+<app-footer></app-footer>
+<p-dialog
+  header="Confirmation"
+  [(visible)]="visible"
+  closable="false"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <p>Are you sure you want to rent this car?</p>
+  <div class="flex gap-1 mt-5">
+    <button class="btn btn-primary-outline" (click)="visible = false">
+      Cancel
+    </button>
+    <button class="btn btn-primary">Rent</button>
+  </div>
+</p-dialog>

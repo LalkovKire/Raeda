@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
 import { CarModel, CarRequest } from './car.model';
+import { inject, Injectable, signal } from '@angular/core';
 import { Params } from '@angular/router';
 import { Pageable } from './pageable';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +13,8 @@ export class CarService {
   private token = localStorage.getItem('token');
   private url = "http://localhost:8080/api/cars";
   private http = inject(HttpClient);
+  isLoading = signal(false);
+  error = signal(false);
 
   getAllCars() {
     return this.http.get<CarModel[]>(`${this.url}`);
@@ -22,8 +24,11 @@ export class CarService {
     return this.http.get<CarModel[]>(`${this.url}/latest`);
   }
 
-  getCarsByFiltering(params: Params, page: number, size: number): Observable<Pageable<CarModel>> {
-
+  getCarsByFiltering(
+    params: Params,
+    page: number,
+    size: number
+  ): Observable<Pageable<CarModel>> {
     let queryParams = new HttpParams();
     queryParams = queryParams.append('page', page.toString());
     queryParams = queryParams.append('size', size.toString());
@@ -33,16 +38,15 @@ export class CarService {
         queryParams = queryParams.append(key, params[key]);
       }
     }
-    
+
     return this.http.get<Pageable<CarModel>>(`${this.url}/filter`, {
-      params: queryParams
+      params: queryParams,
     });
     
   }
 
   addNewCar(car: CarRequest) : Observable<CarModel> {
     if (this.token != null) {
-      
       const headerDict = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -60,19 +64,21 @@ export class CarService {
   deleteCarById(id : number) : Observable<CarModel> {
     
     if (this.token != null) {
-      
       const headerDict = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization': `Bearer ${this.token}`
       }
 
-      const requestOptions = {                                                                                                                                                                                 
-        headers: new HttpHeaders(headerDict), 
+      const requestOptions = {
+        headers: new HttpHeaders(headerDict),
       };
 
-      return this.http.delete<CarModel>(`${this.url}/${id}`,requestOptions);
+      return this.http.delete<CarModel>(`${this.url}/${id}`, requestOptions);
+    } else throw Error("Something went wrong while deleting");
+  }
 
-    } else throw new Error('Token must be present');
+  getCar(id: number) {
+    return this.http.get<CarModel>(`${this.url}/${id}`);
   }
 }
