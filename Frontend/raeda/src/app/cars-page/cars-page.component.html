@@ -4,11 +4,13 @@
     @if (isLoading) {
     <app-loading></app-loading>
     } @else if(error) {
-    <app-error
-      errorMessage="Something went wrong. Please try again later!"
-    ></app-error>
+    <div class="mt-4">
+      <app-error> Something went wrong. Please try again later! </app-error>
+    </div>
     } @else if (warning) {
-    <app-warning warningMessage="No data available."></app-warning>
+    <div class="mt-4">
+      <app-warning>No data available.</app-warning>
+    </div>
     } @else {
     <div>
       <button class="btn btn-primary" (click)="onToggleFilterBy()">

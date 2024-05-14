@@ -16,6 +16,9 @@ import {
 import { Location } from '@angular/common';
 import { DateService } from '../shared/date.service';
 import { InfoComponent } from '../components/info/info.component';
+import { DialogModule } from 'primeng/dialog';
+import { BrowserStorageService } from '../shared/browserStorage.service';
+import { WarningComponent } from '../components/warning/warning.component';
 
 @Component({
   selector: 'app-car-details-page',
@@ -27,6 +30,8 @@ import { InfoComponent } from '../components/info/info.component';
     DropdownModule,
     ReactiveFormsModule,
     InfoComponent,
+    DialogModule,
+    WarningComponent,
   ],
   templateUrl: './car-details-page.component.html',
   styleUrl: './car-details-page.component.css',
@@ -36,6 +41,8 @@ export class CarDetailsPageComponent {
   private carService = inject(CarService);
   private location = inject(Location);
   private date = inject(DateService);
+  private browserStorageService = inject(BrowserStorageService);
+
   car: CarModel | undefined;
   form: FormGroup = new FormGroup({});
   minDatePickup = new Date();
@@ -44,8 +51,15 @@ export class CarDetailsPageComponent {
   dayDuration = 1;
   total = 0;
   insurance = 10;
+  visible = false;
+  isLoggedIn = false;
 
   ngOnInit(): void {
+    this.browserStorageService.isSignIn.subscribe((value) => {
+      if (value) this.isLoggedIn = true;
+      else this.isLoggedIn = false;
+    });
+
     this.route.params
       .pipe(switchMap(({ id }) => this.carService.getCar(+id)))
       .subscribe((car) => {
@@ -81,7 +95,7 @@ export class CarDetailsPageComponent {
   }
 
   onSubmit() {
-    console.log('test');
+    this.visible = true;
   }
 
   restrict(p: Event) {

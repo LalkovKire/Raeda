@@ -1,6 +1,6 @@
 <div
   id="alert-2"
-  class="flex items-center p-4 mb-4 text-yellow-500 rounded-lg bg-clr-gray-2 mt-10"
+  class="flex items-center p-4 text-yellow-500 rounded-lg bg-clr-gray-2"
   role="alert"
 >
   <svg
@@ -15,5 +15,5 @@
     />
   </svg>
   <span class="sr-only">Info</span>
-  <div class="ms-3 text-sm font-medium">{{ warningMessage }}</div>
+  <div class="ms-3 text-sm font-medium"><ng-content></ng-content></div>
 </div>

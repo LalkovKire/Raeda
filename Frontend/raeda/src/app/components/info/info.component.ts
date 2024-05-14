@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-info',
@@ -7,6 +7,4 @@ import { Component, Input } from '@angular/core';
   templateUrl: './info.component.html',
   styleUrl: './info.component.css',
 })
-export class InfoComponent {
-  @Input() infoMessage?: string;
-}
+export class InfoComponent {}

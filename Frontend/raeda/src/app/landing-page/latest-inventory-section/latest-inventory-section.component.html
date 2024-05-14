@@ -9,7 +9,9 @@
   </div>
   } @else if (!isLoading && error) {
   <div class="flex justify-center">
-    <app-error [errorMessage]="error"></app-error>
+    <div class="mt-4">
+      <app-error>{{ error }}</app-error>
+    </div>
   </div>
   } @else {
 

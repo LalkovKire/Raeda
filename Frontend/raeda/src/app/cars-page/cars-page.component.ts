@@ -52,8 +52,6 @@ export class CarsPageComponent {
     this.warning = false;
     this.cars = cars;
 
-    console.log(cars);
-
     if (cars.length === 0) this.warning = true;
   }
 }

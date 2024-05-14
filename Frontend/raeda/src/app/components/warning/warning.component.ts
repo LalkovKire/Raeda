@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-warning',
@@ -7,6 +7,4 @@ import { Component, Input } from '@angular/core';
   templateUrl: './warning.component.html',
   styleUrl: './warning.component.css',
 })
-export class WarningComponent {
-  @Input() warningMessage?: string;
-}
+export class WarningComponent {}

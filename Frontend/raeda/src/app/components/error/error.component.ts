@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-error',
@@ -7,6 +7,4 @@ import { Component, Input } from '@angular/core';
   templateUrl: './error.component.html',
   styleUrl: './error.component.css',
 })
-export class ErrorComponent {
-  @Input() errorMessage?: string;
-}
+export class ErrorComponent {}
