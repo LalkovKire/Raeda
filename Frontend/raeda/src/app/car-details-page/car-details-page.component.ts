@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { NavbarComponent } from '../landing-page/navbar/navbar.component';
 import { FooterComponent } from '../components/footer/footer.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CarService } from '../shared/car.service';
 import { switchMap } from 'rxjs';
 import { CarModel } from '../shared/car.model';
@@ -19,6 +19,9 @@ import { InfoComponent } from '../components/info/info.component';
 import { DialogModule } from 'primeng/dialog';
 import { BrowserStorageService } from '../shared/browserStorage.service';
 import { WarningComponent } from '../components/warning/warning.component';
+import { RentalService } from '../shared/rental.service';
+import { RentalModel } from '../shared/rental.model';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-car-details-page',
@@ -42,6 +45,9 @@ export class CarDetailsPageComponent {
   private location = inject(Location);
   private date = inject(DateService);
   private browserStorageService = inject(BrowserStorageService);
+  private rentalService = inject(RentalService);
+  private messageService = inject(MessageService);
+  private router = inject(Router);
 
   car: CarModel | undefined;
   form: FormGroup = new FormGroup({});
@@ -96,6 +102,47 @@ export class CarDetailsPageComponent {
 
   onSubmit() {
     this.visible = true;
+  }
+
+  onRentACar() {
+    const pickupTime = (this.form.value['pickupDate'] as Date).toISOString();
+    const dropOffTime = (this.form.value['returnDate'] as Date).toISOString();
+    const carId = this.car?.carID;
+    let email = null;
+    this.browserStorageService.isSignIn.subscribe(
+      (val) => (email = val?.email)
+    );
+    const locationId = this.car?.location.locationId;
+
+    if (carId === undefined || email === null || locationId === undefined)
+      return;
+
+    const rental = new RentalModel(
+      pickupTime,
+      dropOffTime,
+      carId,
+      email,
+      locationId
+    );
+
+    console.log(rental);
+
+    this.rentalService.rentACar(rental).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          detail: 'This car is successfully rented',
+        });
+        this.router.navigate(['/cars']);
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          detail: err.error.description,
+        });
+      },
+    });
+    this.visible = false;
   }
 
   restrict(p: Event) {
