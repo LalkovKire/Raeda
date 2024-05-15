@@ -1,13 +1,14 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Component,OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DropdownModule } from 'primeng/dropdown';
 import { LocationService } from '../../shared/location.service';
 import { CarLocation } from '../dash-service-object';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CarService } from '../../shared/car.service';
 import { MessageService } from 'primeng/api';
-import { Subscription } from 'rxjs';
+import { Subscription, switchMap } from 'rxjs';
+import { CarModel } from '../../shared/car.model';
 
 @Component({
   selector: 'app-car-add-form',
@@ -24,13 +25,16 @@ export class CarAddFormComponent implements OnInit, OnDestroy {
   formGroup!: FormGroup;
   carSubscription: Subscription | undefined;
   locationSubscription: Subscription | undefined;
+  editMode = false;
+  editCar: CarModel | undefined;
 
   constructor(
     private location: Location,
     private service: LocationService,
     private carService: CarService,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ){}
 
   ngOnDestroy(): void {
@@ -41,6 +45,42 @@ export class CarAddFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initForm();
     this.loadLocations();
+    this.checkEditMode();
+  }
+
+  checkEditMode() {
+    this.route.queryParamMap
+    .subscribe({
+      next: (params) => {
+        const editMode = params.get('editMode');
+        const car = params.get('car');
+        if (car && editMode) {
+          this.editMode = JSON.parse(editMode);
+          this.editCar = JSON.parse(car) as CarModel;
+          this.editModeValues();
+        } else this.editMode = false;
+      },
+      error: (err) => console.log(err)
+    });
+  }
+
+  editModeValues() {
+    this.formGroup.patchValue({
+      brand: this.editCar?.brand,
+      model: this.editCar?.model,
+      type: this.editCar?.carType,
+      imageUrl: this.editCar?.image,
+      seats: this.editCar?.seats, 
+      doors: this.editCar?.doors,
+      fuel: this.editCar?.fuelType,
+      licensePlate: this.editCar?.licensePlate,
+      engine: this.editCar?.engine,
+      price: this.editCar?.price,
+      gearBox: this.editCar?.gearBox,
+      location: this.editCar?.location,
+      year: this.editCar?.yearMade
+    })
+    
   }
 
   initForm() {
@@ -83,41 +123,66 @@ export class CarAddFormComponent implements OnInit, OnDestroy {
   }
 
   submitCar(): void {
-    const tmpGear = this.gearBox.at(this.formGroup.get('gearBox')?.value);
-    const tmpLocation = this.locations.at(this.formGroup.get('location')?.value);
-    const tmpYear = this.years.at(this.formGroup.get('year')?.value);
+    console.log(this.formGroup.get('location')?.value);
+    
+    const index = this.locations.map(loc => loc.locationId)
+          .indexOf(this.formGroup.get('location')?.value.locationId);
     
 
-    this.carSubscription = this.carService.addNewCar({
+    const newCar = {
       image: this.formGroup.get('imageUrl')?.value,
       model: this.formGroup.get('model')?.value,
       carType: this.formGroup.get('type')?.value,
       seats: this.formGroup.get('seats')?.value,
-      gearBox: (tmpGear!=undefined) ? tmpGear : '',
-      yearMade: (tmpYear!=undefined) ? tmpYear : 2017,
+      gearBox: this.formGroup.get('gearBox')?.value,
+      yearMade: this.formGroup.get('year')?.value,
       doors: this.formGroup.get('doors')?.value,
       fuelType: this.formGroup.get('fuel')?.value,
       engine: this.formGroup.get('engine')?.value,
       price: this.formGroup.get('price')?.value,
-      locationID: (tmpLocation != undefined) ? tmpLocation.locationId : 1,
+      locationID: this.formGroup.get('location')?.value.locationId,
       brand: this.formGroup.get('brand')?.value,
       licensePlate: this.formGroup.get('licensePlate')?.value
-    }).subscribe({
-      next: (succ) => {
-        this.messageService.add({
-          severity: 'success',
-          detail: "Car added successfully"
-        })
-          this.router.navigateByUrl("/dashboard/cars");
-      },
-      error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          detail: err.error.description
-        })
-      }
-    })
+    }
 
+    if(this.editMode && this.editCar) {
+      this.carService.editCarById(this.editCar.carID,newCar)
+        .subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              detail: "Car edited successfully"
+            })
+              this.router.navigateByUrl("/dashboard/cars");
+          },
+          error: (err) => {
+            this.messageService.add({
+              severity: 'error',
+              detail: err.error.description
+            })
+          }
+        })
+    } else {
+      this.carSubscription = this.carService.addNewCar(newCar).subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            detail: "Car added successfully"
+          })
+            this.router.navigateByUrl("/dashboard/cars");
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            detail: err.error.description
+          })
+        }
+        })
+    }
+  }
+
+  compareLocations(location1: CarLocation, location2: CarLocation): boolean {
+    return location1 && location2 ? location1.locationId === location2.locationId : location1 === location2;
   }
 
   goBack(): void {

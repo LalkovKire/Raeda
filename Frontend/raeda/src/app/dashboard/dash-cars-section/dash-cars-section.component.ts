@@ -34,7 +34,7 @@ export class DashCarsSectionComponent implements OnInit {
   deleteCarEntry(id: number): void {
     this.carService.deleteCarById(id).subscribe({
       next: (succ) => {
-        let ind = this.cars.indexOf(succ);
+        let ind = this.cars.map(e => e.licensePlate).indexOf(succ.licensePlate);
         this.cars.splice(ind, 1);
       },
       error: (err) => console.log(err),

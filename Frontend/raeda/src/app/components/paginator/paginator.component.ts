@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CarService } from '../../shared/car.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { switchMap } from 'rxjs';
+import { Subscription, switchMap } from 'rxjs';
 import { CarModel } from '../../shared/car.model';
 
 @Component({
@@ -19,6 +19,7 @@ export class PaginatorComponent implements OnInit {
   pages: number[] = [];
   @Output() carsChanged: EventEmitter<CarModel[]> =
    new EventEmitter<CarModel[]>();
+  queryParamsSubscription : Subscription | undefined;
 
   constructor(
     private service: CarService, 
@@ -36,14 +37,14 @@ export class PaginatorComponent implements OnInit {
     this.route.queryParams
     .pipe(
       switchMap((params) => {
-        return this.service.getCarsByFiltering(params, this.currentPage, this.pageSize)
+        if (this.queryParamsSubscription !== undefined) this.queryParamsSubscription.unsubscribe();
+        return this.service.getCarsByFiltering(params, 0, this.pageSize)
       }) 
     ).subscribe({
         next: (cars) => {
           this.totalPages = cars.totalPages;
-          this.currentPage = cars.number;
+          this.currentPage = 0;
           this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-          console.log(cars.content);
           this.carsChanged.emit(cars.content);
           this.service.isLoading.set(false);
           this.service.error.set(false);
@@ -77,11 +78,25 @@ export class PaginatorComponent implements OnInit {
   }
 
   updateQueryParams(): void {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { page: this.currentPage, size: this.pageSize },
-      queryParamsHandling: 'merge'
-    });
-  }
+    this.queryParamsSubscription = this.route.queryParams
+       .pipe(
+         switchMap((params) => {
+           return this.service.getCarsByFiltering(params, this.currentPage, this.pageSize);
+         })
+       )
+       .subscribe({
+         next: (cars) => {
+           this.totalPages = cars.totalPages;
+           this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+           this.carsChanged.emit(cars.content);
+           this.service.isLoading.set(false);
+           this.service.error.set(false);
+         },
+         error: (error) => {
+          this.service.isLoading.set(false);
+          this.service.error.set(true);
+         },
+       });
+   }
 
 }
