@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Repository
 interface CarRepository : JpaRepository<Car, Long> {
@@ -24,7 +26,10 @@ interface CarRepository : JpaRepository<Car, Long> {
         value = "SELECT c.* FROM car c" +
                 " INNER JOIN location l" +
                 " ON l.locationid = c.locationid" +
-                " WHERE (:location IS NULL OR l.locationname = :location)" +
+                " FULL OUTER JOIN rental r" +
+                " ON r.carid = c.carid" +
+                " WHERE ((:pickupTime NOT BETWEEN r.pickupdate AND r.dropoffdate) OR r.dropoffdate IS NULL)" +
+                " AND (:location IS NULL OR l.locationname = :location)" +
                 " AND (:price IS NULL OR c.price <= :price)" +
                 " AND (:brand IS NULL OR c.brand IN (:brand))" +
                 " AND (:year IS NULL OR c.yearmade IN (:year))" +
@@ -35,6 +40,7 @@ interface CarRepository : JpaRepository<Car, Long> {
     )
     fun getCarByFiltering(
         @Param("location") location: String?,
+        @Param("pickupTime") pickupTime: LocalDate?,
         @Param("price") price: Int?,
         @Param("brand") brand: List<String>?,
         @Param("year") year: List<Int>,

@@ -24,7 +24,10 @@ import org.springframework.stereotype.Service
 import java.net.MalformedURLException
 import java.net.URL
 import java.time.Duration
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 @Service
 class CarService(
@@ -52,7 +55,7 @@ class CarService(
             throw LicencePlateRegisteredException(fetchCar.carID, car.licensePlate)
         }
 
-        if(!this.isUrlValid(car.image))
+        if (!this.isUrlValid(car.image))
             throw WrongUrlFormatException()
 
         return this.carRepository.save(
@@ -78,7 +81,7 @@ class CarService(
 
     fun getLatestInventory() = this.carRepository.getLatestInventory()
 
-    fun deleteCar(id: Long) : CarResponse {
+    fun deleteCar(id: Long): CarResponse {
         val tmp = this.getCarById(id)
         this.carRepository.deleteById(id)
         return tmp.toCarResponse()
@@ -86,6 +89,7 @@ class CarService(
 
     @Transactional
     fun rentCar(rental: RentalRequest): RentalResponse {
+
         val user = this.userRepository.findByEmail(rental.userEmail)
             ?: throw UserNotFoundByEmailException(rental.userEmail)
 
@@ -111,7 +115,7 @@ class CarService(
             )
         )
 
-        updateCarStatus(car.carID)
+        updateCarStatus(car.carID, rental.pickupTime)
         return rent.toRentalResponse()
     }
 
@@ -150,7 +154,11 @@ class CarService(
         else duration.toDays().toInt()
     }
 
-    fun updateCarStatus(carID: Long) {
+    fun updateCarStatus(carID: Long, pickup: LocalDateTime) {
+        println(pickup == LocalDateTime.now())
+        if (pickup != LocalDateTime.now())
+            return
+
         val tmp = this.getCarById(carID)
         tmp.status = CarStatus.RENTED
         this.carRepository.save(tmp)
@@ -168,24 +176,26 @@ class CarService(
         totalPrice = totalPrice
     )
 
-   fun Car.toCarResponse() = CarResponse(
+    fun Car.toCarResponse() = CarResponse(
         carID, image, gearBox,
         model, licensePlate, yearMade,
         seats, status, price,
         engine, carType, doors,
         fuelType, brand, location.toLocationResponse()
     )
+
     fun Location.toLocationResponse() = LocationResponse(
         locationId = locId,
         locationAddress = locationAddress,
         locationName = locationName
     )
+
     fun filterCars(filters: Map<String, String>): Page<CarResponse> {
         val page = filters["page"]?.toIntOrNull() ?: 0
         val size = filters["size"]?.toIntOrNull() ?: 10
-        val pageable = PageRequest.of(page,size, Sort.by(Sort.Direction.ASC, "carid"))
+        val pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "carid"))
         val location = filters["location"]
-        // val pickupDate = filters["pickupDate"]
+        val pickupDate = toLocalDateTime(filters["pickupDate"]) ?: LocalDate.now()
         val price = filters["price"]?.toIntOrNull()
         val brand = filters["brand"]?.split(',') ?: emptyList()
         val year = filters["year"]?.split(",")?.map { it.toInt() } ?: emptyList()
@@ -193,17 +203,34 @@ class CarService(
         val gear = filters["gear"]
         val availableOnly = if (filters["availableOnly"] == "true") 0 else null
 
-        return this.carRepository.getCarByFiltering(location, price, brand, year, fuel, gear, availableOnly,pageable)
+        return this.carRepository.getCarByFiltering(
+            location,
+            pickupDate,
+            price,
+            brand,
+            year,
+            fuel,
+            gear,
+            availableOnly,
+            pageable
+        )
             .map { it.toCarResponse() }
     }
 
-    private fun isUrlValid(url: String) : Boolean {
+    private fun isUrlValid(url: String): Boolean {
         return try {
             URL(url).toURI()
             true
-        } catch (e : MalformedURLException) {
+        } catch (e: MalformedURLException) {
             false
         }
+    }
+
+    private fun toLocalDateTime(date: String?): LocalDate? {
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+
+        return date?.let { LocalDate.parse(it, formatter) }
+
     }
 
 }
