@@ -17,5 +17,5 @@ data class CarResponse(
     val doors: Int,
     val fuelType: String,
     val brand: String,
-    val location: LocationResponse
+    val location: LocationResponse,
 )

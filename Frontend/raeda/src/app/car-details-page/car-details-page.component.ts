@@ -48,6 +48,7 @@ export class CarDetailsPageComponent {
   private rentalService = inject(RentalService);
   private messageService = inject(MessageService);
   private router = inject(Router);
+  private dateService = inject(DateService);
 
   car: CarModel | undefined;
   form: FormGroup = new FormGroup({});
@@ -105,8 +106,13 @@ export class CarDetailsPageComponent {
   }
 
   onRentACar() {
-    const pickupTime = (this.form.value['pickupDate'] as Date).toISOString();
-    const dropOffTime = (this.form.value['returnDate'] as Date).toISOString();
+    const pickupTime = this.dateService.convertToISOString(
+      this.form.value['pickupDate']
+    );
+    const dropOffTime = this.dateService.convertToISOString(
+      this.form.value['returnDate']
+    );
+
     const carId = this.car?.carID;
     let email = null;
     this.browserStorageService.isSignIn.subscribe(

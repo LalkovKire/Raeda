@@ -39,7 +39,9 @@ export class DateService {
     return Math.floor((utc2 - utc1) / _MS_PER_DAY);
   }
 
-  convertToISOString(date: string) {
-    return this.convertStringToDate(date)?.toISOString();
+  convertToISOString(date: Date) {
+    return new Date(
+      date.getTime() - date.getTimezoneOffset() * 60000
+    ).toISOString();
   }
 }
