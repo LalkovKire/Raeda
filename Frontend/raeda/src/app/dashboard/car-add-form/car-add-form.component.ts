@@ -182,7 +182,8 @@ export class CarAddFormComponent implements OnInit, OnDestroy {
   }
 
   compareLocations(location1: CarLocation, location2: CarLocation): boolean {
-    return location1 && location2 ? location1.locationId === location2.locationId : location1 === location2;
+    return location1 && location2 ? location1.locationId === location2.locationId :
+     location1.locationName === location2.locationName;
   }
 
   goBack(): void {

@@ -150,9 +150,18 @@ class CarService(
         else duration.toDays().toInt()
     }
 
+    fun findExpiredRentals(): List<Rental> {
+        val currentTime = LocalDateTime.now()
+        return rentalRepository.findExpiredRentals(currentTime)
+    }
+
     fun updateCarStatus(carID: Long) {
         val tmp = this.getCarById(carID)
-        tmp.status = CarStatus.RENTED
+        if (tmp.status == CarStatus.RENTED)
+            tmp.status = CarStatus.AVAILABLE
+        else
+            tmp.status = CarStatus.RENTED
+
         this.carRepository.save(tmp)
     }
 
