@@ -114,12 +114,9 @@ class CarService(
                 location
             )
         )
-        return if (rental.pickupTime != LocalDateTime.now())
-            rent.toRentalResponse()
-        else {
-            updateCarStatus(car.carID)
-            rent.toRentalResponse()
-        }
+
+        return rent.toRentalResponse()
+
     }
 
     fun checkLicencePlate(licensePlate: String) =
@@ -203,7 +200,7 @@ class CarService(
         val size = filters["size"]?.toIntOrNull() ?: 10
         val pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "carid"))
         val location = filters["location"]
-        val pickupDate = toLocalDateTime(filters["pickupDate"]) ?: LocalDate.now()
+        val pickupDate = toLocalDate(filters["pickupDate"]) ?: LocalDate.now()
         val price = filters["price"]?.toIntOrNull()
         val brand = filters["brand"]?.split(',') ?: emptyList()
         val year = filters["year"]?.split(",")?.map { it.toInt() } ?: emptyList()
@@ -211,9 +208,10 @@ class CarService(
         val gear = filters["gear"]
         val availableOnly = if (filters["availableOnly"] == "true") 0 else null
 
+        this.carRepository.updateStatus(pickupDate)
+
         return this.carRepository.getCarByFiltering(
             location,
-            pickupDate,
             price,
             brand,
             year,
@@ -234,7 +232,7 @@ class CarService(
         }
     }
 
-    private fun toLocalDateTime(date: String?): LocalDate? {
+    private fun toLocalDate(date: String?): LocalDate? {
         val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
 
         return date?.let { LocalDate.parse(it, formatter) }
