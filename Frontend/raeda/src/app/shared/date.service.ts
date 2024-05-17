@@ -31,17 +31,31 @@ export class DateService {
   }
 
   dateDiffInDays(a: Date, b: Date) {
-    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
-    // Discard the time and time-zone information.
+    const MS_PER_DAY = 1000 * 60 * 60 * 24;
     const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
     const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
 
-    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+    return Math.floor((utc2 - utc1) / MS_PER_DAY);
   }
 
   convertToISOString(date: Date) {
     return new Date(
       date.getTime() - date.getTimezoneOffset() * 60000
     ).toISOString();
+  }
+
+  getDatesBetween(pickup: Date, dropOff: Date) {
+    const dates = [];
+    const currentDate = new Date(pickup);
+    currentDate.setDate(currentDate.getDate() - 1);
+
+    while (currentDate <= dropOff) {
+      dates.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    dates.push(currentDate);
+
+    return dates;
   }
 }

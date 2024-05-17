@@ -104,6 +104,7 @@
               iconDisplay="input"
               inputId="pickup"
               inputStyleClass="input input-date input-w-200"
+              [disabledDates]="pickup"
             ></p-calendar>
           </div>
           <div class="form-control">
@@ -111,6 +112,7 @@
             <p-calendar
               formControlName="returnDate"
               [minDate]="minDateReturn"
+              [maxDate]="maxDate"
               [showIcon]="true"
               readonlyInput="true"
               iconDisplay="input"

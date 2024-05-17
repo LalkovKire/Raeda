@@ -1,9 +1,11 @@
 package com.sorsix.raeda.repository
 
 import com.sorsix.raeda.domain.Car
+import jakarta.transaction.Transactional
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
@@ -22,14 +24,28 @@ interface CarRepository : JpaRepository<Car, Long> {
 
     fun getCarByLicensePlate(licensePlate: String): Car
 
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query(
+        value = "UPDATE car" +
+                " SET status = (" +
+                "   CASE " +
+                "       WHEN (carid IN" +
+                "             (SELECT r.carid FROM rental r WHERE :pickup BETWEEN CAST(r.pickupdate AS DATE) AND CAST(r.dropoffdate AS DATE))" +
+                "           )" +
+                "          THEN 1" +
+                "       ELSE 0" +
+                "   END" +
+                " )" +
+                " WHERE TRUE", nativeQuery = true
+    )
+    fun updateStatus(@Param("pickup") pickup: LocalDate)
+
     @Query(
         value = "SELECT c.* FROM car c" +
                 " INNER JOIN location l" +
                 " ON l.locationid = c.locationid" +
-                " FULL OUTER JOIN rental r" +
-                " ON r.carid = c.carid" +
-                " WHERE ((:pickupTime NOT BETWEEN r.pickupdate AND r.dropoffdate) OR r.dropoffdate IS NULL)" +
-                " AND (:location IS NULL OR l.locationname = :location)" +
+                " WHERE (:location IS NULL OR l.locationname = :location)" +
                 " AND (:price IS NULL OR c.price <= :price)" +
                 " AND (:brand IS NULL OR c.brand IN (:brand))" +
                 " AND (:year IS NULL OR c.yearmade IN (:year))" +
@@ -40,7 +56,6 @@ interface CarRepository : JpaRepository<Car, Long> {
     )
     fun getCarByFiltering(
         @Param("location") location: String?,
-        @Param("pickupTime") pickupTime: LocalDate?,
         @Param("price") price: Int?,
         @Param("brand") brand: List<String>?,
         @Param("year") year: List<Int>,
@@ -49,4 +64,6 @@ interface CarRepository : JpaRepository<Car, Long> {
         @Param("availableOnly") availableOnly: Int?,
         pageable: Pageable
     ): Page<Car>
+
+
 }
