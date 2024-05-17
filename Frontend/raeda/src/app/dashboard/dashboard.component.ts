@@ -21,9 +21,9 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.serviceList = [
-      {imageUrl: "../../assets/images/dashboard/car-dashboard.png", name: "Cars"},
-      {imageUrl: "../../assets/images/dashboard/location-dashboard.png", name: "Locations"},
-      {imageUrl: "../../assets/images/dashboard/rental-dashboard.png", name: "Rentals"}
+      {imageUrl: "../../assets/images/dashboard/car-dashboard.png", name: "Cars", routeLink: "/dashboard/cars"},
+      {imageUrl: "../../assets/images/dashboard/location-dashboard.png", name: "Locations", routeLink: "/dashboard/locations"},
+      {imageUrl: "../../assets/images/dashboard/rental-dashboard.png", name: "Rentals", routeLink: "/dashboard/rentals"}
     ]
   }
 

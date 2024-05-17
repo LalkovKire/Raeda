@@ -10,6 +10,9 @@ import { authGuardGuard } from './guards/auth-guard.guard';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { CarAddFormComponent } from './dashboard/car-add-form/car-add-form.component';
 import { CarDetailsPageComponent } from './car-details-page/car-details-page.component';
+import { DashLocationSectionComponent } from './dashboard/dash-location-section/dash-location-section.component';
+import { LocationAddFormComponent } from './dashboard/location-add-form/location-add-form.component';
+import { DashRentalSectionComponent } from './dashboard/dash-rental-section/dash-rental-section.component';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full' },
@@ -49,7 +52,27 @@ export const routes: Routes = [
   {
     path: 'dashboard/cars/add',
     component: CarAddFormComponent,
-    canActivate: [authGuardGuard],
+    canActivate: [authGuardGuard]
+  },
+  {
+    path: 'dashboard/locations',
+    component: DashLocationSectionComponent,
+    canActivate: [authGuardGuard]
+  },
+  {
+    path: 'dashboard/locations/add',
+    component: LocationAddFormComponent,
+    canActivate: [authGuardGuard]
+  },
+  {
+    path: 'dashboard/rentals',
+    component: DashRentalSectionComponent,
+    canActivate: [authGuardGuard]
+  },
+  {
+    path: 'dashboard/rentals/add',
+    component: LocationAddFormComponent,
+    canActivate: [authGuardGuard]
   },
   {
     path: '**',

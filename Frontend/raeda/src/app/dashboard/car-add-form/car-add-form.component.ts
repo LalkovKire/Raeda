@@ -7,7 +7,7 @@ import { CarLocation } from '../dash-service-object';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CarService } from '../../shared/car.service';
 import { MessageService } from 'primeng/api';
-import { Subscription, switchMap } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { CarModel } from '../../shared/car.model';
 
 @Component({
@@ -60,7 +60,12 @@ export class CarAddFormComponent implements OnInit, OnDestroy {
           this.editModeValues();
         } else this.editMode = false;
       },
-      error: (err) => console.log(err)
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          detail: err.error.description
+        })
+      }
     });
   }
 
@@ -80,11 +85,9 @@ export class CarAddFormComponent implements OnInit, OnDestroy {
       location: this.editCar?.location,
       year: this.editCar?.yearMade
     })
-    
   }
 
   initForm() {
-
     const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
 
     this.formGroup = new FormGroup(
@@ -109,7 +112,6 @@ export class CarAddFormComponent implements OnInit, OnDestroy {
        year: new FormControl('', Validators.required)
       }
     )
-    
   }
 
   loadLocations(): void {
@@ -118,17 +120,16 @@ export class CarAddFormComponent implements OnInit, OnDestroy {
       next: (loc) => {
         this.locations = loc;
       },
-      error: (err) => console.log(err)
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          detail: err.error.description
+        })
+      }
     })
   }
 
   submitCar(): void {
-    console.log(this.formGroup.get('location')?.value);
-    
-    const index = this.locations.map(loc => loc.locationId)
-          .indexOf(this.formGroup.get('location')?.value.locationId);
-    
-
     const newCar = {
       image: this.formGroup.get('imageUrl')?.value,
       model: this.formGroup.get('model')?.value,
@@ -182,8 +183,7 @@ export class CarAddFormComponent implements OnInit, OnDestroy {
   }
 
   compareLocations(location1: CarLocation, location2: CarLocation): boolean {
-    return location1 && location2 ? location1.locationId === location2.locationId :
-     location1.locationName === location2.locationName;
+    return location1.locationId === location2.locationId
   }
 
   goBack(): void {

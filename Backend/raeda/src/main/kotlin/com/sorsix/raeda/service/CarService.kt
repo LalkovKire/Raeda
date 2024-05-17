@@ -114,12 +114,8 @@ class CarService(
                 location
             )
         )
-        return if (rental.pickupTime != LocalDateTime.now())
-            rent.toRentalResponse()
-        else {
-            updateCarStatus(car.carID)
-            rent.toRentalResponse()
-        }
+        updateCarStatus(car.carID)
+        return rent.toRentalResponse()
     }
 
     fun checkLicencePlate(licensePlate: String) =
@@ -152,7 +148,7 @@ class CarService(
 
     fun calculateRentalDuration(pickupDate: LocalDateTime, dropoffDate: LocalDateTime): Int {
         val duration = Duration.between(pickupDate, dropoffDate)
-        return if (duration.toDays() > 2)
+        return if (duration.toDays() < 2)
             1
         else duration.toDays().toInt()
     }
@@ -172,14 +168,14 @@ class CarService(
     }
 
 
-    fun calcPrice(rentalDuration: Int, price: Int) = rentalDuration * price
+    fun calcPrice(rentalDuration: Int, price: Int) = (rentalDuration * price) + 10
 
     fun Rental.toRentalResponse() = RentalResponse(
         pickupTime = pickupTime,
         dropOffTime = dropOffTime,
         rentalID = rentalID,
         car = car,
-        location = location,
+        location = location.toLocationResponse(),
         rentalDuration = rentalDuration,
         totalPrice = totalPrice
     )

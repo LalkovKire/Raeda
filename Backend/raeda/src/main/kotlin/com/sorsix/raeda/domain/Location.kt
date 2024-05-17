@@ -18,8 +18,8 @@ data class Location (
     val locId: Long,
 
     @Column(name = "locationaddress")
-    val locationAddress: String,
+    var locationAddress: String,
 
     @Column(name = "locationname", nullable = false)
-    val locationName: String
+    var locationName: String
 )

@@ -11,5 +11,5 @@ data class RentalResponse (
     val car: Car,
     val rentalDuration: Int,
     val totalPrice: Int,
-    val location: Location
+    val location: LocationResponse
 )

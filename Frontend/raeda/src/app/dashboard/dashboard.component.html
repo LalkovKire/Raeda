@@ -8,7 +8,7 @@
                 <div class="custom-holder container mx-auto px-[12px] md:px-24 xl:px-12 max-w-[1300px] nanum2">
                     <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-16 gap-y-28 lg:gap-y-16">
                         @for (item of serviceList; track $index) {
-                            <a [routerLink]="['/dashboard/cars']">
+                            <a [routerLink]="[item.routeLink]">
                                 <app-dash-card [item]=item></app-dash-card>
                             </a>
                         }

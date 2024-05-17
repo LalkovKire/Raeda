@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface LocationRepository : JpaRepository<Location, Long> {
+
+    fun existsByLocationAddressAndLocationName(address: String,name: String) : Boolean
+
 }
