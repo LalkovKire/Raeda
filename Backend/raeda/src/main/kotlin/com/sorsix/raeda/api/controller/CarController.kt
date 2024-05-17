@@ -26,6 +26,9 @@ class CarController(private val carService: CarService) {
     fun getCarById(@PathVariable id: Long) =
         this.carService.getCarById(id).toCarResponse()
 
+    @GetMapping("/{id}/rentals")
+    fun getRentalDates(@PathVariable id: Long) = this.carService.getRentalDates(id)
+
     @PostMapping
     fun addNewCar(@RequestBody @Validated car: CarRequest) =
         this.carService.addCar(car)
@@ -47,7 +50,7 @@ class CarController(private val carService: CarService) {
         ResponseEntity(this.carService.filterCars(params), HttpStatus.OK)
 
     @PutMapping("/edit/{id}")
-    fun editCarById(@PathVariable id: Long,@RequestBody @Validated car: CarRequest) =
+    fun editCarById(@PathVariable id: Long, @RequestBody @Validated car: CarRequest) =
         ResponseEntity(this.carService.editCar(id, car), HttpStatus.OK)
 
     private fun Car.toCarResponse() = CarResponse(
@@ -63,4 +66,5 @@ class CarController(private val carService: CarService) {
         locationAddress = locationAddress,
         locationName = locationName
     )
+
 }

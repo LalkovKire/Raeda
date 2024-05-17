@@ -4,6 +4,7 @@ import com.sorsix.raeda.api.requests.CarRequest
 import com.sorsix.raeda.api.requests.RentalRequest
 import com.sorsix.raeda.api.response.CarResponse
 import com.sorsix.raeda.api.response.LocationResponse
+import com.sorsix.raeda.api.response.RentalDates
 import com.sorsix.raeda.api.response.RentalResponse
 import com.sorsix.raeda.domain.Car
 import com.sorsix.raeda.domain.Location
@@ -200,13 +201,16 @@ class CarService(
         val size = filters["size"]?.toIntOrNull() ?: 10
         val pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "carid"))
         val location = filters["location"]
-        val pickupDate = toLocalDate(filters["pickupDate"]) ?: LocalDate.now()
+        var pickupDate = toLocalDate(filters["pickupDate"]) ?: LocalDate.now()
         val price = filters["price"]?.toIntOrNull()
         val brand = filters["brand"]?.split(',') ?: emptyList()
         val year = filters["year"]?.split(",")?.map { it.toInt() } ?: emptyList()
         val fuel = filters["fuel"]
         val gear = filters["gear"]
         val availableOnly = if (filters["availableOnly"] == "true") 0 else null
+
+        if (pickupDate < LocalDate.now())
+            pickupDate = LocalDate.now()
 
         this.carRepository.updateStatus(pickupDate)
 
@@ -222,6 +226,12 @@ class CarService(
         )
             .map { it.toCarResponse() }
     }
+
+    fun getRentalDates(id: Long): List<RentalDates> {
+        val car = getCarById(id)
+        return this.rentalRepository.findRentalDates(car)
+    }
+
 
     private fun isUrlValid(url: String): Boolean {
         return try {
