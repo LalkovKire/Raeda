@@ -3,7 +3,7 @@ import { NavbarComponent } from '../landing-page/navbar/navbar.component';
 import { FooterComponent } from '../components/footer/footer.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CarService } from '../shared/car.service';
-import { switchMap } from 'rxjs';
+import { max, switchMap, tap } from 'rxjs';
 import { CarModel } from '../shared/car.model';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
@@ -22,6 +22,7 @@ import { WarningComponent } from '../components/warning/warning.component';
 import { RentalService } from '../shared/rental.service';
 import { RentalModel } from '../shared/rental.model';
 import { MessageService } from 'primeng/api';
+import { DatesModel } from '../shared/dates.model';
 
 @Component({
   selector: 'app-car-details-page',
@@ -54,12 +55,15 @@ export class CarDetailsPageComponent {
   form: FormGroup = new FormGroup({});
   minDatePickup = new Date();
   minDateReturn = new Date();
+  maxDate: Date | null = null;
   locations = ['Skopje', 'Strumica', 'Kavadarci'];
   dayDuration = 1;
   total = 0;
   insurance = 10;
   visible = false;
   isLoggedIn = false;
+  dates: DatesModel[] = [];
+  pickup: Date[] = [];
 
   ngOnInit(): void {
     this.browserStorageService.isSignIn.subscribe((value) => {
@@ -68,10 +72,31 @@ export class CarDetailsPageComponent {
     });
 
     this.route.params
-      .pipe(switchMap(({ id }) => this.carService.getCar(+id)))
-      .subscribe((car) => {
-        this.car = car;
-        this.total = this.car?.price * this.dayDuration + this.insurance;
+      .pipe(
+        switchMap(({ id }) => this.carService.getCar(+id)),
+        tap((car) => {
+          this.car = car;
+          this.total = this.car?.price * this.dayDuration + this.insurance;
+        }),
+        switchMap((car) => this.carService.getCarDates(car.carID))
+      )
+      .subscribe((dates) => {
+        this.dates = dates;
+        dates.map((date) => {
+          const disablePickupDates = this.dateService.getDatesBetween(
+            new Date(date.pickup),
+            new Date(date.dropOff)
+          );
+          this.pickup.push(...disablePickupDates);
+          let minDate = this.dates.find(
+            (date) => new Date() < new Date(date.pickup)
+          );
+
+          if (!minDate) return;
+
+          this.maxDate = new Date(minDate.pickup);
+          this.maxDate.setDate(this.maxDate.getDate() - 2);
+        });
       });
 
     this.form = this.initForm();
@@ -79,6 +104,16 @@ export class CarDetailsPageComponent {
     this.form.get('pickupDate')?.valueChanges.subscribe((val) => {
       this.form.get('returnDate')?.setValue(val);
       this.minDateReturn = val;
+
+      let date = this.dates.find((date) => val < new Date(date.pickup));
+
+      if (!date) {
+        this.maxDate = null;
+        return;
+      }
+
+      this.maxDate = new Date(date.pickup);
+      this.maxDate.setDate(this.maxDate.getDate() - 2);
     });
 
     this.form.get('returnDate')?.valueChanges.subscribe((val) => {
