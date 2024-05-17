@@ -46,10 +46,9 @@ export class DateService {
 
   getDatesBetween(pickup: Date, dropOff: Date) {
     const dates = [];
-    const currentDate = new Date(pickup);
-    currentDate.setDate(currentDate.getDate() - 1);
+    const currentDate = pickup;
 
-    while (currentDate <= dropOff) {
+    while (currentDate < dropOff) {
       dates.push(new Date(currentDate));
       currentDate.setDate(currentDate.getDate() + 1);
     }

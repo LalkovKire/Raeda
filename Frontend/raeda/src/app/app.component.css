@@ -7,6 +7,10 @@
   @apply p-[1px] text-clr-gray-7;
 }
 
+::ng-deep .p-datepicker table td .p-disabled {
+  @apply p-[1px] text-clr-gray-5;
+}
+
 ::ng-deep .p-datepicker table td .p-datepicker-other-month {
   @apply text-clr-white bg-red-500;
 }

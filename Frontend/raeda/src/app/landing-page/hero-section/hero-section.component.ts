@@ -52,6 +52,9 @@ export class HeroSectionComponent implements OnInit {
       pickupDate: this.dateService.convertDateToString(
         this.form.value.pickupDate
       ),
+      dropOffDate: this.dateService.convertDateToString(
+        this.form.value.returnDate
+      ),
     };
 
     this.router.navigate(['/cars'], { queryParams: query });

@@ -95,7 +95,7 @@ export class CarDetailsPageComponent {
           if (!minDate) return;
 
           this.maxDate = new Date(minDate.pickup);
-          this.maxDate.setDate(this.maxDate.getDate() - 2);
+          this.maxDate.setDate(this.maxDate.getDate() - 1);
         });
       });
 
@@ -113,7 +113,7 @@ export class CarDetailsPageComponent {
       }
 
       this.maxDate = new Date(date.pickup);
-      this.maxDate.setDate(this.maxDate.getDate() - 2);
+      this.maxDate.setDate(this.maxDate.getDate() - 1);
     });
 
     this.form.get('returnDate')?.valueChanges.subscribe((val) => {
