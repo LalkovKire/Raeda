@@ -33,4 +33,10 @@ class CarControllerAdvice : ResponseEntityExceptionHandler()  {
     @ExceptionHandler(WrongUrlFormatException::class)
     fun handleLicensePlateException(e : WrongUrlFormatException) =
         ResponseEntity(WrongFormatError(description = "Invalid url format"),HttpStatus.BAD_REQUEST)
+
+    @ExceptionHandler(CarPickupDateException::class)
+    fun handleCarPickupDateException(e : CarPickupDateException) = ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+
+    @ExceptionHandler(CarDropOffDateException::class)
+    fun handleDropOffDateException(e : CarPickupDateException) = ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
 }

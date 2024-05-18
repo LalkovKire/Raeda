@@ -29,6 +29,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import kotlin.math.log
 
 @Service
 class CarService(
@@ -96,8 +97,12 @@ class CarService(
 
         val car = this.getCarById(rental.carID)
 
-        if (car.status != CarStatus.AVAILABLE)
-            throw CarNotAvailableException(car.carID)
+        if (this.rentalRepository.findRentalByCarAndDate(rental.carID, rental.pickupTime).isNotEmpty())
+            throw CarPickupDateException()
+
+        if (this.rentalRepository.findRentalByCarAndDate(rental.carID, rental.dropOffTime).isNotEmpty())
+            throw CarDropOffDateException()
+
 
         val location = this.locationService.getLocationById(rental.locationID)
         val rentalDuration =
