@@ -1,17 +1,17 @@
-import { Component, inject, Input } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { SidebarModule } from 'primeng/sidebar';
-import { AccordionModule } from 'primeng/accordion';
-import { ListboxModule } from 'primeng/listbox';
-import { CalendarModule } from 'primeng/calendar';
-import { InputSwitchModule } from 'primeng/inputswitch';
-import { BehaviorSubject, debounceTime } from 'rxjs';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { FilterService } from './filter.service';
-import { DefaultSelectionValuesService } from './default-selection-values.service';
-import { FilterForm } from './filter-form';
-import { DateService } from '../../shared/date.service';
-import { LowerCasePipe } from '@angular/common';
+import {Component, inject, Input} from '@angular/core';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {SidebarModule} from 'primeng/sidebar';
+import {AccordionModule} from 'primeng/accordion';
+import {ListboxModule} from 'primeng/listbox';
+import {CalendarModule} from 'primeng/calendar';
+import {InputSwitchModule} from 'primeng/inputswitch';
+import {BehaviorSubject, debounceTime} from 'rxjs';
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {FilterService} from './filter.service';
+import {DefaultSelectionValuesService} from './default-selection-values.service';
+import {FilterForm} from './filter-form';
+import {DateService} from '../../shared/date.service';
+import {LowerCasePipe} from '@angular/common';
 
 @Component({
   selector: 'app-filter-sidebar',
@@ -58,8 +58,8 @@ export class FilterSidebarComponent {
       this.defaultSelectionValuesService.locations[0];
     const pickup = this.route.snapshot.queryParams['pickupDate']
       ? this.dateService.convertStringToDate(
-          this.route.snapshot.queryParams['pickupDate']
-        )
+        this.route.snapshot.queryParams['pickupDate']
+      )
       : new Date();
     let price = this.route.snapshot.queryParams['price'];
 
@@ -80,6 +80,8 @@ export class FilterSidebarComponent {
         (p) => p.amount === +price
       ) ?? this.defaultSelectionValuesService.prices[0];
     years = years.map((year: string) => +year);
+
+    this.dateService.pickup = pickup;
 
     return new FormGroup({
       selectedLocation: new FormControl(location),

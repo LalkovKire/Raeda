@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DateService {
+  pickup: Date | null = null;
+
   getCurrentDate() {
     return new Date();
   }
@@ -56,5 +58,28 @@ export class DateService {
     dates.push(currentDate);
 
     return dates;
+  }
+
+  compareDates(a: Date, b: Date): number {
+    const dateA = new Date(a);
+    const dateB = new Date(b);
+
+    const yearA = dateA.getFullYear();
+    const monthA = dateA.getMonth();
+    const dayA = dateA.getDate();
+    const yearB = dateB.getFullYear();
+    const monthB = dateB.getMonth();
+    const dayB = dateB.getDate();
+
+    if (yearA < yearB) return -1;
+    if (yearA > yearB) return 1;
+
+    if (monthA < monthB) return -1;
+    if (monthA > monthB) return 1;
+
+    if (dayA < dayB) return -1;
+    if (dayA > dayB) return 1;
+
+    return 0;
   }
 }
