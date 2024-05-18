@@ -1,8 +1,7 @@
 package com.sorsix.raeda.api.controller
 
 import com.sorsix.raeda.api.requests.LocationRequest
-import com.sorsix.raeda.api.response.LocationResponse
-import com.sorsix.raeda.domain.Location
+import com.sorsix.raeda.api.util.toLocationResponse
 import com.sorsix.raeda.service.LocationService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -40,9 +39,4 @@ class LocationController(private val locationService: LocationService){
     fun deleteLocation(@PathVariable id: Long) =
         this.locationService.deleteLocation(id)
 
-    private fun Location.toLocationResponse() = LocationResponse(
-        locationId = this.locId,
-        locationName = this.locationName,
-        locationAddress = this.locationAddress
-    )
 }

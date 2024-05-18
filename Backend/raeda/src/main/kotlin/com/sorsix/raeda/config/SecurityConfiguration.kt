@@ -22,12 +22,14 @@ class SecurityConfiguration(
             .csrf { it.disable() }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/api/auth", "api/auth/refresh", "/error")
+                    .requestMatchers("/api/auth", "/error")
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/user", "/api/cars/rent")
                     .permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/cars/**", "/api/loc")
                     .permitAll()
+                    .requestMatchers(HttpMethod.GET,  "/api/user/rentals/{id}", "/api/user/rentals")
+                    .hasRole("USER")
                     .requestMatchers("/api/user**", "/api/cars/edit**")
                     .hasRole("ADMIN")
                     .anyRequest()

@@ -2,10 +2,7 @@ package com.sorsix.raeda.api.controller
 
 import com.sorsix.raeda.api.requests.CarRequest
 import com.sorsix.raeda.api.requests.RentalRequest
-import com.sorsix.raeda.api.response.CarResponse
-import com.sorsix.raeda.api.response.LocationResponse
-import com.sorsix.raeda.domain.Car
-import com.sorsix.raeda.domain.Location
+import com.sorsix.raeda.api.util.toCarResponse
 import com.sorsix.raeda.service.CarService
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
@@ -52,19 +49,5 @@ class CarController(private val carService: CarService) {
     @PutMapping("/edit/{id}")
     fun editCarById(@PathVariable id: Long, @RequestBody @Validated car: CarRequest) =
         ResponseEntity(this.carService.editCar(id, car), HttpStatus.OK)
-
-    private fun Car.toCarResponse() = CarResponse(
-        carID, image, gearBox,
-        model, licensePlate, yearMade,
-        seats, status, price,
-        engine, carType, doors,
-        fuelType, brand, location.toLocationResponse()
-    )
-
-    private fun Location.toLocationResponse() = LocationResponse(
-        locationId = locId,
-        locationAddress = locationAddress,
-        locationName = locationName
-    )
 
 }
