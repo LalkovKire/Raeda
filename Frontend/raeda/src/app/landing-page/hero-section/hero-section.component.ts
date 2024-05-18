@@ -32,10 +32,10 @@ export class HeroSectionComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.initForm();
 
-    this.form.get('pickupDate')?.valueChanges.subscribe((val) => {
-      this.form.get('returnDate')?.setValue(val);
-      this.minDateReturn = val;
-    });
+    // this.form.get('pickupDate')?.valueChanges.subscribe((val) => {
+    //   this.form.get('returnDate')?.setValue(val);
+    //   this.minDateReturn = val;
+    // });
   }
 
   onSubmit() {
@@ -52,9 +52,9 @@ export class HeroSectionComponent implements OnInit {
       pickupDate: this.dateService.convertDateToString(
         this.form.value.pickupDate
       ),
-      dropOffDate: this.dateService.convertDateToString(
-        this.form.value.returnDate
-      ),
+      // dropOffDate: this.dateService.convertDateToString(
+      //   this.form.value.returnDate
+      // ),
     };
 
     this.router.navigate(['/cars'], { queryParams: query });
@@ -66,7 +66,7 @@ export class HeroSectionComponent implements OnInit {
     return new FormGroup({
       location: new FormControl(null, Validators.required),
       pickupDate: new FormControl(date, Validators.required),
-      returnDate: new FormControl(date, Validators.required),
+      // returnDate: new FormControl(date, Validators.required),
     });
   }
 
