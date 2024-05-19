@@ -6,7 +6,7 @@ import com.sorsix.raeda.domain.Location
 import com.sorsix.raeda.repository.LocationRepository
 import com.sorsix.raeda.service.exceptions.LocationAddressAlreadyRegisteredException
 import com.sorsix.raeda.service.exceptions.LocationNotFoundException
-import com.sorsix.raeda.service.exceptions.LocationNotFoundExceptionName
+import com.sorsix.raeda.api.util.toLocationResponse
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -61,11 +61,5 @@ class LocationService(private val locationRepository: LocationRepository) {
 
         return this.locationRepository.save(fetchLocation).toLocationResponse()
     }
-
-    fun Location.toLocationResponse() = LocationResponse(
-        locationId = this.locId,
-        locationName = this.locationName,
-        locationAddress = this.locationAddress
-    )
 
 }

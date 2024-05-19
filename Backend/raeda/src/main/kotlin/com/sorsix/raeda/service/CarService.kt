@@ -3,11 +3,11 @@ package com.sorsix.raeda.service
 import com.sorsix.raeda.api.requests.CarRequest
 import com.sorsix.raeda.api.requests.RentalRequest
 import com.sorsix.raeda.api.response.CarResponse
-import com.sorsix.raeda.api.response.LocationResponse
+import com.sorsix.raeda.api.util.toCarResponse
+import com.sorsix.raeda.api.util.toRentalResponse
 import com.sorsix.raeda.api.response.RentalDates
 import com.sorsix.raeda.api.response.RentalResponse
 import com.sorsix.raeda.domain.Car
-import com.sorsix.raeda.domain.Location
 import com.sorsix.raeda.domain.Rental
 import com.sorsix.raeda.domain.enumerations.CarStatus
 import com.sorsix.raeda.repository.CarRepository
@@ -15,7 +15,6 @@ import com.sorsix.raeda.repository.RentalRepository
 import com.sorsix.raeda.repository.UserRepository
 import com.sorsix.raeda.service.exceptions.*
 import jakarta.transaction.Transactional
-import org.hibernate.query.SortDirection
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -27,7 +26,6 @@ import java.net.URL
 import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import kotlin.math.log
 
@@ -120,7 +118,6 @@ class CarService(
                 location
             )
         )
-
         return rent.toRentalResponse()
 
     }
@@ -178,30 +175,6 @@ class CarService(
 
     fun calcPrice(rentalDuration: Int, price: Int) =
         (rentalDuration * price) + 10
-
-    fun Rental.toRentalResponse() = RentalResponse(
-        pickupTime = pickupTime,
-        dropOffTime = dropOffTime,
-        rentalID = rentalID,
-        car = car,
-        location = location.toLocationResponse(),
-        rentalDuration = rentalDuration,
-        totalPrice = totalPrice
-    )
-
-    fun Car.toCarResponse() = CarResponse(
-        carID, image, gearBox,
-        model, licensePlate, yearMade,
-        seats, status, price,
-        engine, carType, doors,
-        fuelType, brand, location.toLocationResponse()
-    )
-
-    fun Location.toLocationResponse() = LocationResponse(
-        locationId = locId,
-        locationAddress = locationAddress,
-        locationName = locationName
-    )
 
     fun filterCars(filters: Map<String, String>): Page<CarResponse> {
         val page = filters["page"]?.toIntOrNull() ?: 0

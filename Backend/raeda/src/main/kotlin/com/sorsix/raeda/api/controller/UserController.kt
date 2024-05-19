@@ -11,15 +11,26 @@ import org.springframework.web.bind.annotation.*
 class UserController(private val userService: UserService) {
 
     @PostMapping
-    fun create(@RequestBody userRequest: UserRequest) = ResponseEntity(this.userService.createUser(userRequest),HttpStatus.OK)
+    fun create(@RequestBody userRequest: UserRequest) =
+        ResponseEntity(this.userService.createUser(userRequest),HttpStatus.OK)
 
     @GetMapping
-    fun listAll() = ResponseEntity(this.userService.findAllUsers(), HttpStatus.OK)
+    fun listAll() =
+        ResponseEntity(this.userService.findAllUsers(), HttpStatus.OK)
 
     @GetMapping("/{id}")
-    fun findUserById(@PathVariable id: Long) = ResponseEntity(this.userService.findUserById(id),HttpStatus.OK)
+    fun findUserById(@PathVariable id: Long) =
+        ResponseEntity(this.userService.findUserById(id),HttpStatus.OK)
 
     @DeleteMapping("/{id}")
-    fun deleteUserById(@PathVariable id: Long) = ResponseEntity(this.userService.deleteUserById(id),HttpStatus.OK)
+    fun deleteUserById(@PathVariable id: Long) =
+        ResponseEntity(this.userService.deleteUserById(id),HttpStatus.OK)
 
+    @GetMapping("/rentals/{id}")
+    fun getUserRentalsById(@PathVariable id: Long) =
+        this.userService.getUserRentalsById(id)
+
+    @GetMapping("/rentals")
+    fun getUserRentalsByEmail(@RequestParam email: String) =
+        this.userService.getUserRentalsByEmail(email)
 }
