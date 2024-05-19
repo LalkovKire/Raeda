@@ -8,14 +8,17 @@ import {DashRental} from '../dashboard/dash-service-object';
   providedIn: 'root',
 })
 export class RentalService {
-
   private token = localStorage.getItem('token');
   private http = inject(HttpClient);
   private url2 = 'http://localhost:8080/api/cars';
   private url = 'http://localhost:8080/api/rental';
 
+  preRentACar(phoneNumber: string) {
+    return this.http.post(`${this.url2}/rent`, phoneNumber);
+  }
+
   rentACar(rentalInformation: RentalModel) {
-    return this.http.post(`${this.url2}/rent`, rentalInformation);
+    return this.http.post(`${this.url2}/rent/otp`, rentalInformation);
   }
 
   getAllRentals(): Observable<DashRental[]> {
@@ -48,4 +51,6 @@ export class RentalService {
 
     return this.http.get<DashRental[]>(`http://localhost:8080/api/user/rentals?email=${email}`, requestOptions);
   }
+
+
 }

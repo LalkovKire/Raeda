@@ -9,11 +9,11 @@ import {CalendarModule} from 'primeng/calendar';
 import {DropdownModule} from 'primeng/dropdown';
 import {
   FormControl,
-  FormGroup,
+  FormGroup, FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {Location} from '@angular/common';
+import {Location, NgIf} from '@angular/common';
 import {DateService} from '../shared/date.service';
 import {InfoComponent} from '../components/info/info.component';
 import {DialogModule} from 'primeng/dialog';
@@ -23,6 +23,8 @@ import {RentalService} from '../shared/rental.service';
 import {RentalModel} from '../shared/rental.model';
 import {MessageService} from 'primeng/api';
 import {DatesModel} from '../shared/dates.model';
+import {InputOtpModule} from "primeng/inputotp";
+import {ChipsModule} from "primeng/chips";
 
 @Component({
   selector: 'app-car-details-page',
@@ -36,6 +38,10 @@ import {DatesModel} from '../shared/dates.model';
     InfoComponent,
     DialogModule,
     WarningComponent,
+    InputOtpModule,
+    NgIf,
+    ChipsModule,
+    FormsModule,
   ],
   templateUrl: './car-details-page.component.html',
   styleUrl: './car-details-page.component.css',
@@ -53,6 +59,7 @@ export class CarDetailsPageComponent implements OnInit {
 
   car: CarModel | undefined;
   form: FormGroup = new FormGroup({});
+  formOTP: FormGroup = new FormGroup({});
   minDatePickup = new Date();
   minDateReturn = new Date();
   maxDate: Date | null = null;
@@ -61,11 +68,16 @@ export class CarDetailsPageComponent implements OnInit {
   total = 0;
   insurance = 10;
   visible = false;
+  visibleOTP = false;
   isLoggedIn = false;
   dates: DatesModel[] = [];
   pickup: Date[] = [];
+  value: number = 0;
 
   ngOnInit(): void {
+    this.form = this.initForm();
+    this.formOTP = this.initFormOTP();
+
     this.browserStorageService.isSignIn.subscribe((value) => {
       this.isLoggedIn = !!value;
     });
@@ -103,7 +115,6 @@ export class CarDetailsPageComponent implements OnInit {
         });
       });
 
-    this.form = this.initForm();
 
     this.form.get('pickupDate')?.valueChanges.subscribe((val) => {
       this.form.get('returnDate')?.setValue(val);
@@ -133,11 +144,33 @@ export class CarDetailsPageComponent implements OnInit {
     });
   }
 
+  private initFormOTP() {
+    return new FormGroup({
+      thousands: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(9)]),
+      hundreds: new FormControl(null, [Validators.required, Validators.min(0), Validators.max(9)]),
+      tens: new FormControl(null, [Validators.required, Validators.min(0), Validators.max(9)]),
+      ones: new FormControl(null, [Validators.required, Validators.min(0), Validators.max(9)]),
+    });
+  }
+
   onSubmit() {
     this.visible = true;
   }
 
-  onRentACar() {
+  onSubmitOTP() {
+    if (!this.formOTP.valid) {
+      this.messageService.add({
+        severity: 'error',
+        detail: 'OTP form is not valid',
+      });
+      return;
+    }
+
+    const otp = +this.formOTP.value['thousands'] * 1000 +
+      +this.formOTP.value['hundreds'] * 100 +
+      +this.formOTP.value['tens'] * 10 +
+      +this.formOTP.value['ones'];
+
     const pickupTime = this.dateService.convertToISOString(
       this.form.value['pickupDate']
     );
@@ -160,8 +193,10 @@ export class CarDetailsPageComponent implements OnInit {
       dropOffTime,
       carId,
       email,
-      locationId
+      locationId,
+      otp
     );
+
 
     this.rentalService.rentACar(rental).subscribe({
       next: () => {
@@ -169,7 +204,8 @@ export class CarDetailsPageComponent implements OnInit {
           severity: 'success',
           detail: 'This car is successfully rented',
         });
-        this.router.navigate(['/cars']);
+        this.visibleOTP = false;
+        this.router.navigate(['/my-rents']);
       },
       error: (err) => {
         this.messageService.add({
@@ -178,7 +214,19 @@ export class CarDetailsPageComponent implements OnInit {
         });
       },
     });
+  }
+
+  onRentACar() {
+    this.browserStorageService.isSignIn.subscribe(user => {
+        if (user === null || user?.phoneNumber === null) return;
+
+        this.rentalService.preRentACar(user.phoneNumber).subscribe();
+      }
+    );
+
+
     this.visible = false;
+    this.visibleOTP = true;
   }
 
   onGoBack() {

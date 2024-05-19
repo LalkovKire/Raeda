@@ -164,3 +164,51 @@
     <button class="btn btn-primary" (click)="onRentACar()">Rent</button>
   </div>
 </p-dialog>
+<p-dialog
+  [(visible)]="visibleOTP"
+  closable="true"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="max-w-md mx-auto text-center px-4">
+    <header class="mb-8">
+      <h3 class="text-2xl font-bold mb-1 h3">Mobile Phone Verification</h3>
+      <p class="text-[15px] text-clr-gray-5">Enter the 4-digit verification code that was sent to your phone number.</p>
+    </header>
+    <form id="otp-form" [formGroup]="formOTP" (ngSubmit)="onSubmitOTP()">
+      <div class="flex items-center justify-center gap-3">
+        <input
+          formControlName="thousands"
+          type="text"
+          class="w-14 h-14 text-center text-2xl font-extrabold text-clr-gray-7 bg-clr-white border border-transparent hover:border-clr-gray-3 appearance-none rounded p-4 outline-none focus:bg-white focus:border-clr-gray-3 focus:ring-2 focus:ring-clr-gray-1"
+          pattern="\d*" maxlength="1"/>
+        <input
+          formControlName="hundreds"
+          type="text"
+          class="w-14 h-14 text-center text-2xl font-extrabold text-clr-gray-7 bg-clr-white border border-transparent hover:border-clr-gray-3 appearance-none rounded p-4 outline-none focus:bg-white focus:border-clr-gray-3 focus:ring-2 focus:ring-clr-gray-1"
+          maxlength="1"/>
+        <input
+          formControlName="tens"
+          type="text"
+          class="w-14 h-14 text-center text-2xl font-extrabold text-clr-gray-7 bg-clr-white border border-transparent hover:border-clr-gray-3 appearance-none rounded p-4 outline-none focus:bg-white focus:border-clr-gray-3 focus:ring-2 focus:ring-clr-gray-1"
+          maxlength="1"/>
+        <input
+          formControlName="ones"
+          type="text"
+          class="w-14 h-14 text-center text-2xl font-extrabold text-clr-gray-7 bg-clr-white border border-transparent hover:border-clr-gray-3 appearance-none rounded p-4 outline-none focus:bg-white focus:border-clr-gray-3 focus:ring-2 focus:ring-clr-gray-1"
+          maxlength="1"/>
+      </div>
+      <div class="max-w-[260px] mx-auto mt-4">
+        <button type="submit"
+                class="btn btn-primary w-full" [disabled]="!formOTP.valid">
+          Verify
+          Rent
+        </button>
+      </div>
+    </form>
+    <div class="text-sm text-clr-gray-5 mt-4
+        ">Didn't receive code? <a>Resend</a></div>
+  </div>
+
+</p-dialog>
