@@ -26,7 +26,7 @@ class SecurityConfiguration(
                     .permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/user", "/api/cars/rent")
                     .permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/cars/**", "/api/loc")
+                    .requestMatchers(HttpMethod.GET, "/api/cars/**", "/api/loc", "/api/loc/page")
                     .permitAll()
                     .requestMatchers(HttpMethod.GET,  "/api/user/rentals/{id}", "/api/user/rentals")
                     .hasRole("USER")

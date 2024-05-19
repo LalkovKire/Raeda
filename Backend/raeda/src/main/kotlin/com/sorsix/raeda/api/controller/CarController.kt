@@ -6,8 +6,6 @@ import com.sorsix.raeda.api.util.toCarResponse
 import com.sorsix.raeda.service.CarService
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
@@ -24,7 +22,8 @@ class CarController(private val carService: CarService) {
         this.carService.getCarById(id).toCarResponse()
 
     @GetMapping("/{id}/rentals")
-    fun getRentalDates(@PathVariable id: Long) = this.carService.getRentalDates(id)
+    fun getRentalDates(@PathVariable id: Long) =
+        this.carService.getRentalDates(id)
 
     @PostMapping
     fun addNewCar(@RequestBody @Validated car: CarRequest) =
@@ -44,10 +43,10 @@ class CarController(private val carService: CarService) {
 
     @GetMapping("/filter")
     fun filterCars(@RequestParam params: Map<String, String>) =
-        ResponseEntity(this.carService.filterCars(params), HttpStatus.OK)
+        this.carService.filterCars(params)
 
     @PutMapping("/edit/{id}")
     fun editCarById(@PathVariable id: Long, @RequestBody @Validated car: CarRequest) =
-        ResponseEntity(this.carService.editCar(id, car), HttpStatus.OK)
+       this.carService.editCar(id, car)
 
 }

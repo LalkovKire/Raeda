@@ -27,7 +27,6 @@ import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import kotlin.math.log
 
 @Service
 class CarService(
@@ -37,10 +36,10 @@ class CarService(
     private val rentalRepository: RentalRepository,
 ) {
 
-    fun getAllCars(pageable: Pageable): Page<CarResponse> {
-        val carsPage: Page<Car> = carRepository.findAll(pageable)
-        return carsPage.map { it.toCarResponse() }
-    }
+    fun getAllCars(pageable: Pageable) =
+        carRepository.findAll(pageable).map {
+            it.toCarResponse()
+        }
 
     fun getCarById(id: Long) = carRepository.findByIdOrNull(id)
         ?: throw CarNotFoundException(id)
@@ -106,7 +105,7 @@ class CarService(
         val rentalDuration =
             calculateRentalDuration(rental.pickupTime, rental.dropOffTime)
 
-        val rent = this.rentalRepository.save(
+        return this.rentalRepository.save(
             Rental(
                 0L,
                 rental.pickupTime,
@@ -117,8 +116,7 @@ class CarService(
                 car,
                 location
             )
-        )
-        return rent.toRentalResponse()
+        ).toRentalResponse()
 
     }
 
@@ -202,8 +200,7 @@ class CarService(
             gear,
             availableOnly,
             pageable
-        )
-            .map { it.toCarResponse() }
+        ).map { it.toCarResponse() }
     }
 
     fun getRentalDates(id: Long): List<RentalDates> {
@@ -223,9 +220,7 @@ class CarService(
 
     private fun toLocalDate(date: String?): LocalDate? {
         val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-
         return date?.let { LocalDate.parse(it, formatter) }
-
     }
 
 }

@@ -19,62 +19,61 @@
         <table class="w-full border-collapse bg-white text-left text-sm table-auto overflow-scroll text-gray-500" [scrollLeft]="">
           <thead class="bg-gray-50">
             <tr>
-              <th scope="col" class="px-6 py-4 font-medium text-gray-900">ID</th>
-              <th scope="col" class="px-6 py-4 font-medium text-gray-900">Brand</th>
-              <th scope="col" class="px-6 py-4 font-medium text-gray-900">Model</th>
-              <th scope="col" class="px-6 py-4 font-medium text-gray-900">Type</th>
-              <th scope="col" class="px-6 py-4 font-medium text-gray-900">Doors/Seats</th>
-              <th scope="col" class="px-6 py-4 font-medium text-gray-900">Gear box</th>
-              <th scope="col" class="px-6 py-4 font-medium text-gray-900">Year</th>
-              <th scope="col" class="px-6 py-4 font-medium text-gray-900">Fuel</th>
-              <th scope="col" class="px-6 py-4 font-medium text-gray-900">Engine</th>
-              <th scope="col" class="px-6 py-4 font-medium text-gray-900">Price</th>
-              <th scope="col" class="px-6 py-4 font-medium text-gray-900">Location</th>
-              <th scope="col" class="px-6 py-4 font-medium text-gray-900">Status</th>
-              <th scope="col" class="px-6 py-4 font-medium text-gray-900">Licence plate</th>
-              <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
+              <th scope="col" class="px-5 py-4 font-medium text-gray-900">ID</th>
+              <th scope="col" class="px-5 py-4 font-medium text-gray-900">Brand</th>
+              <th scope="col" class="px-5 py-4 font-medium text-gray-900">Model</th>
+              <th scope="col" class="px-5 py-4 font-medium text-gray-900">Type</th>
+              <th scope="col" class="px-2 py-4 font-medium text-gray-900">Doors/Seats</th>
+              <th scope="col" class="px-5 py-4 font-medium text-gray-900">Gear box</th>
+              <th scope="col" class="px-5 py-4 font-medium text-gray-900">Year</th>
+              <th scope="col" class="px-5 py-4 font-medium text-gray-900">Fuel</th>
+              <th scope="col" class="px-5 py-4 font-medium text-gray-900">Engine</th>
+              <th scope="col" class="px-5 py-4 font-medium text-gray-900">Price</th>
+              <th scope="col" class="px-5 py-4 font-medium text-gray-900">Location</th>
+              <th scope="col" class="px-5 py-4 font-medium text-gray-900">Status</th>
+              <th scope="col" class="px-5 py-4 font-medium text-gray-900">Licence plate</th>
+              <th scope="col" class="px-5 py-4 font-medium text-gray-900"></th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100 border-t border-gray-100">
             @for (item of cars; track item.carID; let idx = $index) {
                 <tr class="hover:bg-blue-50" [ngClass]="{'bg-white': (idx % 2 == 0), 'bg-slate-100' : (idx % 2 != 0) }">
-                    <th class="flex gap-3 px-6 py-4 font-normal text-gray-900">
-                      <div class="relative">
-                        <p>{{ item.carID }}</p>
-                      </div>
-                    </th>
-                    <td class="px-6 py-4">
+                    <td class="px-5 py-4">
+                      {{ item.carID }}
+                    </td>
+                    <td class="px-5 py-4">
                         {{ item.brand }}
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-5 py-4">
                       {{ item.model }}
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-5 py-4">
                         {{ item.carType }}
                     </td>
-                    <td class="pl-6 py-4 text-left">
+                    <td class="px-2 py-4 text-left">
                         {{ item.doors }} /
                         {{ item.seats }}
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-5 py-4">
                         {{ item.gearBox }}
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-5 py-4">
                         {{ item.yearMade }}
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-5 py-4">
                         {{ item.fuelType }}
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-5 py-4">
                         {{ item.engine }}
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-5 py-4">
                         {{ item.price }}
                     </td>
-                    <td class="px-6 py-4">
-                        {{ item.location.locationName }}
+                    <td class="px-5 py-4">
+                        {{ item.location.locationName }} -<br>
+                        {{ item.location.locationAddress}}
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-5 py-4">
                         <span [ngClass]="{
                             'text-orange-400' : (item.status === 'RENTED'),
                             'text-green-600' : (item.status === 'AVAILABLE'),
@@ -88,10 +87,10 @@
                           {{item.status}}
                         </span>
                     </td>
-                    <td class="px-6 py-4"> 
+                    <td class="px-5 py-4"> 
                         {{ item.licensePlate }}
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-5 py-4">
                       <div class="flex justify-end gap-4">
                         <button type="button" (click)="deleteCarEntry(item.carID)">
                           <svg

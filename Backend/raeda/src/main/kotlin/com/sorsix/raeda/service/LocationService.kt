@@ -7,6 +7,7 @@ import com.sorsix.raeda.repository.LocationRepository
 import com.sorsix.raeda.service.exceptions.LocationAddressAlreadyRegisteredException
 import com.sorsix.raeda.service.exceptions.LocationNotFoundException
 import com.sorsix.raeda.api.util.toLocationResponse
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -15,12 +16,13 @@ class LocationService(private val locationRepository: LocationRepository) {
 
     fun getAllLocations() =
         this.locationRepository.findAll().map {
-        LocationResponse(
-            locationId = it.locId,
-            locationName = it.locationName,
-            locationAddress = it.locationAddress
-        )
-    }
+            it.toLocationResponse()
+        }
+
+    fun getAllLocationsByPage(pageable: Pageable) =
+        this.locationRepository.findAll(pageable).map {
+            it.toLocationResponse()
+        }
 
     fun getLocationById(id: Long) : Location {
         return this.locationRepository.findByIdOrNull(id) ?:

@@ -2,8 +2,7 @@ package com.sorsix.raeda.api.controller
 
 import com.sorsix.raeda.api.requests.UserRequest
 import com.sorsix.raeda.service.UserService
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -11,20 +10,20 @@ import org.springframework.web.bind.annotation.*
 class UserController(private val userService: UserService) {
 
     @PostMapping
-    fun create(@RequestBody userRequest: UserRequest) =
-        ResponseEntity(this.userService.createUser(userRequest),HttpStatus.OK)
+    fun create(@RequestBody @Validated userRequest: UserRequest) =
+        this.userService.createUser(userRequest)
 
     @GetMapping
     fun listAll() =
-        ResponseEntity(this.userService.findAllUsers(), HttpStatus.OK)
+        this.userService.findAllUsers()
 
     @GetMapping("/{id}")
     fun findUserById(@PathVariable id: Long) =
-        ResponseEntity(this.userService.findUserById(id),HttpStatus.OK)
+        this.userService.findUserById(id)
 
     @DeleteMapping("/{id}")
     fun deleteUserById(@PathVariable id: Long) =
-        ResponseEntity(this.userService.deleteUserById(id),HttpStatus.OK)
+        this.userService.deleteUserById(id)
 
     @GetMapping("/rentals/{id}")
     fun getUserRentalsById(@PathVariable id: Long) =
