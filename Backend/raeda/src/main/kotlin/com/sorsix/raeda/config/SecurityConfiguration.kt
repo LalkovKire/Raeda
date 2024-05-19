@@ -17,7 +17,10 @@ class SecurityConfiguration(
 ) {
 
     @Bean
-    fun securityFilterChain(http: HttpSecurity, jwtAuthenticationFilter: JwtAuthenticationFilter): DefaultSecurityFilterChain {
+    fun securityFilterChain(
+        http: HttpSecurity,
+        jwtAuthenticationFilter: JwtAuthenticationFilter
+    ): DefaultSecurityFilterChain {
         http
             .csrf { it.disable() }
             .authorizeHttpRequests {
@@ -28,8 +31,8 @@ class SecurityConfiguration(
                     .permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/cars/**", "/api/loc")
                     .permitAll()
-                    .requestMatchers(HttpMethod.GET,  "/api/user/rentals/{id}", "/api/user/rentals")
-                    .hasRole("USER")
+                    .requestMatchers(HttpMethod.GET, "/api/user/rentals/{id}", "/api/user/rentals")
+                    .hasAnyRole("ADMIN", "USER")
                     .requestMatchers("/api/user**", "/api/cars/edit**")
                     .hasRole("ADMIN")
                     .anyRequest()
