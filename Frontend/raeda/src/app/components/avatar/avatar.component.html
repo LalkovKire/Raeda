@@ -14,7 +14,7 @@
     </div>
     <ul class="py-2 text-sm text-clr-gray-5" aria-labelledby="avatarButton">
       <li>
-        <a href="#" class="block px-4 py-2 hover:bg-clr-gray-1">My Rents</a>
+        <a [routerLink]="['/my-rents']" class="block px-4 py-2 hover:bg-clr-gray-1">My Rents</a>
       </li>
       @if(signedIn.role == "ADMIN") {
         <li>

@@ -1,0 +1,74 @@
+<div class="wrapper">
+  <app-navbar></app-navbar>
+
+  <h2 class="h2 mt-10 uppercase">My Rentals</h2>
+
+  <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-10">
+    <table class="w-full text-sm text-left rtl:text-right text-clr-gray-5">
+      <thead class="text-xs text-clr-gray-7 uppercase bg-clr-gray-3">
+      <tr>
+        <th scope="col" class="px-6 py-3">
+          Rent ID
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Car
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Pickup Date
+        </th>
+        <th scope="col" class="px-6 py-3">
+          DropOff Date
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Price per Day
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Duration
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Total
+        </th>
+        <th scope="col" class="px-6 py-3">
+          PDF
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Review
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (item of rents; track item.rentalID) {
+          <tr class="bg-clr-gray-2 text-clr-gray-7 border-b hover:bg-clr-gray-3">
+            <th scope="row" class="px-6 py-4 font-medium text-clr-black whitespace-nowrap">
+              {{ item.rentalID }}
+            </th>
+            <td class="px-6 py-4 text-blue-500">
+              <a [routerLink]="['/cars', item.car.carID]">
+                {{ item.car.brand }} {{ item.car.model }} {{ item.car.carType }}
+              </a>
+            </td>
+            <td class="px-6 py-4">
+              {{ item.pickupTime | date }}
+            </td>
+            <td class="px-6 py-4">
+              {{ item.dropOffTime | date }}
+            </td>
+            <td class="px-6 py-4">
+              {{ item.car.price }}€ per day
+            </td>
+            <td class="px-6 py-4">
+              {{ item.rentalDuration }} / {{ item.rentalDuration === 1 ? 'day' : 'days' }}
+            </td>
+            <td class="px-6 py-4">
+              {{ item.totalPrice }}€
+            </td>
+            <td>View PDF</td>
+            <td>Review</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+</div>
+<app-footer></app-footer>

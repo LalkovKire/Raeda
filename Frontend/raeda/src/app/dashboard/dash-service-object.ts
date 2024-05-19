@@ -19,8 +19,8 @@ export interface CarLocationRequest {
 
 export interface DashRental {
     rentalID: number,
-    pickupTime: String,
-    dropOffTime: String,
+    pickupTime: Date,
+    dropOffTime: Date,
     car: CarModel,
     rentalDuration: number,
     totalPrice: number,
