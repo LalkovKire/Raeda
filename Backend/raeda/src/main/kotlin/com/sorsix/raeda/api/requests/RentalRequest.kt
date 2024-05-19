@@ -3,7 +3,7 @@ package com.sorsix.raeda.api.requests
 import org.jetbrains.annotations.NotNull
 import java.time.LocalDateTime
 
-data class RentalRequest (
+data class RentalRequest(
 
     @NotNull
     val pickupTime: LocalDateTime,
@@ -18,5 +18,8 @@ data class RentalRequest (
     val userEmail: String,
 
     @NotNull
-    val locationID: Long
+    val locationID: Long,
+
+    @NotNull
+    val otp: Int,
 )

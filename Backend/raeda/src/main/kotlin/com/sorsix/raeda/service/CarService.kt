@@ -3,17 +3,20 @@ package com.sorsix.raeda.service
 import com.sorsix.raeda.api.requests.CarRequest
 import com.sorsix.raeda.api.requests.RentalRequest
 import com.sorsix.raeda.api.response.CarResponse
-import com.sorsix.raeda.api.util.toCarResponse
-import com.sorsix.raeda.api.util.toRentalResponse
 import com.sorsix.raeda.api.response.RentalDates
 import com.sorsix.raeda.api.response.RentalResponse
+import com.sorsix.raeda.api.util.toCarResponse
+import com.sorsix.raeda.api.util.toRentalResponse
 import com.sorsix.raeda.domain.Car
 import com.sorsix.raeda.domain.Rental
+import com.sorsix.raeda.domain.User
 import com.sorsix.raeda.domain.enumerations.CarStatus
 import com.sorsix.raeda.repository.CarRepository
 import com.sorsix.raeda.repository.RentalRepository
 import com.sorsix.raeda.repository.UserRepository
 import com.sorsix.raeda.service.exceptions.*
+import com.vonage.client.VonageClient
+import com.vonage.client.sms.messages.TextMessage
 import jakarta.transaction.Transactional
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -27,6 +30,8 @@ import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import kotlin.random.Random
+
 
 @Service
 class CarService(
@@ -35,6 +40,7 @@ class CarService(
     private val locationService: LocationService,
     private val rentalRepository: RentalRepository,
 ) {
+    var otp = 1_000
 
     fun getAllCars(pageable: Pageable) =
         carRepository.findAll(pageable).map {
@@ -86,8 +92,29 @@ class CarService(
         return tmp.toCarResponse()
     }
 
+
+    fun preRentCar(phoneNumber: String) {
+        println(phoneNumber)
+        val client = VonageClient.builder().apiKey("373e08ae").apiSecret("APPMc8QjUYJzslqf").build()
+        otp = generateOTP()
+        val number = phoneNumber.substring(1)
+
+        val message = TextMessage(
+            "Raeda",
+            "389$number",
+            "Your OTP for renting is: $otp. Please use this code to confirm your rental booking. Thank you"
+        )
+
+        println(otp)
+
+        client.smsClient.submitMessage(message)
+
+    }
+
     @Transactional
     fun rentCar(rental: RentalRequest): RentalResponse {
+        if (rental.otp != otp)
+            throw WrongOTPCode()
 
         val user = this.userRepository.findByEmail(rental.userEmail)
             ?: throw UserNotFoundByEmailException(rental.userEmail)
@@ -99,7 +126,6 @@ class CarService(
 
         if (this.rentalRepository.findRentalByCarAndDate(rental.carID, rental.dropOffTime).isNotEmpty())
             throw CarDropOffDateException()
-
 
         val location = this.locationService.getLocationById(rental.locationID)
         val rentalDuration =
@@ -117,7 +143,6 @@ class CarService(
                 location
             )
         ).toRentalResponse()
-
     }
 
     fun checkLicencePlate(licensePlate: String) =
@@ -223,5 +248,7 @@ class CarService(
         val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
         return date?.let { LocalDate.parse(it, formatter) }
     }
+
+    private fun generateOTP() = Random.nextInt(1_000, 10_000)
 
 }

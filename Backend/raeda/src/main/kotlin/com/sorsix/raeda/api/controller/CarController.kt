@@ -38,6 +38,10 @@ class CarController(private val carService: CarService) {
         this.carService.getLatestInventory()
 
     @PostMapping("/rent")
+    fun preRentCar(@RequestBody @Validated phoneNumber: String) =
+        carService.preRentCar(phoneNumber)
+
+    @PostMapping("/rent/otp")
     fun rentCar(@RequestBody @Validated rental: RentalRequest) =
         carService.rentCar(rental)
 
@@ -47,6 +51,6 @@ class CarController(private val carService: CarService) {
 
     @PutMapping("/edit/{id}")
     fun editCarById(@PathVariable id: Long, @RequestBody @Validated car: CarRequest) =
-       this.carService.editCar(id, car)
+        this.carService.editCar(id, car)
 
 }
