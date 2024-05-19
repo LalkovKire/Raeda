@@ -153,11 +153,12 @@ class CarService(
         return this.carRepository.save(fetchCar).toCarResponse()
     }
 
-    fun calculateRentalDuration(pickupDate: LocalDateTime, dropoffDate: LocalDateTime): Int {
-        val duration = Duration.between(pickupDate, dropoffDate)
-        return if (duration.toDays() < 2)
-            1
-        else duration.toDays().toInt()
+    fun calculateRentalDuration(pickupDate: LocalDateTime, dropOffDate: LocalDateTime): Int {
+        if (pickupDate == dropOffDate) return 1
+
+        val duration = Duration.between(pickupDate, dropOffDate)
+
+        return duration.toDays().toInt() + 2
     }
 
     fun findExpiredRentals(): List<Rental> {
