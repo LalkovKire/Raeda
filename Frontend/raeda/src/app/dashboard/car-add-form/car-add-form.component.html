@@ -283,7 +283,8 @@
                   <option value="" disabled hidden></option>
                   @for (item of locations; track item.locationId) {
                     <option [ngValue]="item"
-                     > {{ item.locationName }}</option>
+                     > {{ item.locationName }} -
+                    {{item.locationAddress}}</option>
                   }
                   </select>
                     <label class="absolute duration-300 top-3 -z-1 origin-0 text-gray-500">Location</label>

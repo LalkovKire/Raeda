@@ -6,6 +6,7 @@ import { CarLocation } from '../dash-service-object';
 import { MessageService } from 'primeng/api';
 import { RouterLink } from '@angular/router';
 import { FooterComponent } from '../../components/footer/footer.component';
+import { LocationPaginatorComponent } from './location-paginator/location-paginator.component';
 
 @Component({
   selector: 'app-dash-location-section',
@@ -14,7 +15,8 @@ import { FooterComponent } from '../../components/footer/footer.component';
     NavbarComponent,
     CommonModule, 
     RouterLink,
-    FooterComponent],
+    FooterComponent,
+    LocationPaginatorComponent],
   templateUrl: './dash-location-section.component.html',
   styleUrl: './dash-location-section.component.css'
 })
@@ -27,23 +29,10 @@ export class DashLocationSectionComponent implements OnInit {
     private messageService: MessageService  
   ){}
 
-  ngOnInit(): void {
-    this.initLocations();
-  }
+  ngOnInit(): void {}
 
-  initLocations(): void {
-    this.locationService.getAllLocations()
-      .subscribe({
-        next: (loc) => {
-          this.locations = loc;
-        },
-        error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            detail: err.error.description
-          })
-        }
-      })
+  onLocationsChanged(loc: CarLocation[]): void {
+    this.locations = loc; 
   }
 
   deleteLocationById(id: number): void {

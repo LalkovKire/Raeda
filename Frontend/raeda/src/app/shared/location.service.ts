@@ -1,7 +1,9 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CarLocation, CarLocationRequest } from '../dashboard/dash-service-object';
+import { Params } from '@angular/router';
+import { Pageable } from './pageable';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +16,28 @@ export class LocationService {
   
   constructor() { }
 
-  getAllLocations() : Observable<CarLocation[]> {
+  getAllLocations(): Observable<CarLocation[]> {
     return this.http.get<CarLocation[]>(`${this.url}`);
+  }
+
+  getAllLocationsByPagination(
+    params: Params,
+    page: number,
+    size: number) : Observable<Pageable<CarLocation>> {
+
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append('page', page.toString());
+    queryParams = queryParams.append('size', size.toString());
+
+    for (const key in params) {
+      if (params.hasOwnProperty(key)) {
+        queryParams = queryParams.append(key, params[key]);
+      }
+    }
+    
+    return this.http.get<Pageable<CarLocation>>(`${this.url}/page`, {
+      params: queryParams
+    });
   }
 
   addNewLocation(loc: CarLocationRequest) : Observable<CarLocation> {

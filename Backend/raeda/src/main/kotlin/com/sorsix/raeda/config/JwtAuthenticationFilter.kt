@@ -25,14 +25,14 @@ class JwtAuthenticationFilter(
     ) {
         val authHeader: String? = request.getHeader("Authorization")
 
-        if (authHeader.doesNotContainBearerToken()) { // Check if header contains Bearer
+        if (authHeader.doesNotContainBearerToken()) {
             filterChain.doFilter(request, response)
             return
         }
 
-        val jwtToken = authHeader!!.extractTokenValue() // Extract the token after Bearer
+        val jwtToken = authHeader!!.extractTokenValue()
 
-        val email = tokenService.extractEmail(jwtToken) // Extract user email from token
+        val email = tokenService.extractEmail(jwtToken)
 
         if (email != null && SecurityContextHolder.getContext().authentication == null) {
             val foundUser = userDetailsService.loadUserByUsername(email)

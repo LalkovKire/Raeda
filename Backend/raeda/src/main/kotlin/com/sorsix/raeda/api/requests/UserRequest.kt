@@ -21,4 +21,4 @@ data class UserRequest(
     val userPassword: String,
 
     val role: Role
-    )
+)
