@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { NavbarComponent } from '../landing-page/navbar/navbar.component';
 import { FooterComponent } from '../components/footer/footer.component';
 import { DashCardComponent } from './dash-card/dash-card.component';
 import { DashObject } from './dash-service-object';
+import {NavbarComponent} from "../pages/landing-page/navbar/navbar.component";
 
 @Component({
   selector: 'admin-dashboard',

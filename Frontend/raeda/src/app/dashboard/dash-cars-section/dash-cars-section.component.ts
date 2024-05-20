@@ -1,35 +1,38 @@
-import { Component, OnInit } from '@angular/core';
-import { FooterComponent } from '../../components/footer/footer.component';
-import { NavbarComponent } from '../../landing-page/navbar/navbar.component';
-import { CommonModule } from '@angular/common';
-import { FilterSidebarComponent } from '../../components/filter-sidebar/filter-sidebar.component';
-import { BehaviorSubject } from 'rxjs';
-import { CarService } from '../../shared/car.service';
-import { CarModel } from '../../shared/car.model';
-import { PaginatorComponent } from '../../components/paginator/paginator.component';
-import { RouterLink } from '@angular/router';
+import {Component, inject, OnInit} from '@angular/core';
+import {FooterComponent} from '../../components/footer/footer.component';
+import {CommonModule} from '@angular/common';
+import {FilterSidebarComponent} from '../../components/filter-sidebar/filter-sidebar.component';
+import {CarService} from '../../services/car.service';
+import {CarModel} from '../../models/car.model';
+import {PaginatorComponent} from '../../components/paginator/paginator.component';
+import {RouterLink} from '@angular/router';
+import {FilterService} from "../../services/filter.service";
+import {NavbarComponent} from "../../pages/landing-page/navbar/navbar.component";
 
 @Component({
   selector: 'app-dash-cars-section',
   standalone: true,
   imports: [
-    FooterComponent, 
-    NavbarComponent, 
+    FooterComponent,
+    NavbarComponent,
     CommonModule,
-    FilterSidebarComponent, 
-    PaginatorComponent, 
+    FilterSidebarComponent,
+    PaginatorComponent,
     RouterLink
   ],
   templateUrl: './dash-cars-section.component.html',
   styleUrl: './dash-cars-section.component.css',
 })
 export class DashCarsSectionComponent implements OnInit {
+  private filterService = inject(FilterService);
+
   cars: CarModel[] = [];
-  toggleFilterBy = new BehaviorSubject<boolean>(false);
 
-  constructor(private carService: CarService) {}
+  constructor(private carService: CarService) {
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   deleteCarEntry(id: number): void {
     this.carService.deleteCarById(id).subscribe({
@@ -42,10 +45,10 @@ export class DashCarsSectionComponent implements OnInit {
   }
 
   onToggleFilterBy() {
-    this.toggleFilterBy.next(true);
+    this.filterService.toggle.set(true);
   }
 
   onCarsChanged(cars: CarModel[]): void {
-    this.cars = cars; 
+    this.cars = cars;
   }
 }

@@ -1,10 +1,10 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CarLocation, CarLocationRequest } from '../dash-service-object';
+import { CarLocation } from '../dash-service-object';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { LocationService } from '../../shared/location.service';
+import { LocationService } from '../../services/location.service';
 
 @Component({
   selector: 'app-location-add-form',
@@ -53,7 +53,7 @@ export class LocationAddFormComponent implements OnInit {
               severity: 'error',
               detail: err.error.description
             })
-          } 
+          }
         })
     } else {
       this.locationService.addNewLocation(tmpLocation)
@@ -70,7 +70,7 @@ export class LocationAddFormComponent implements OnInit {
               severity: 'error',
               detail: err.error.description
             })
-          } 
+          }
         })
     }
   }

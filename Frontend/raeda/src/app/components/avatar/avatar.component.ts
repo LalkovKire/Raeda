@@ -1,6 +1,6 @@
 import { Component, inject, Input } from '@angular/core';
-import { BrowserStorageService } from '../../shared/browserStorage.service';
-import { LoginResponse } from '../../auth/login-response';
+import { BrowserStorageService } from '../../services/browserStorage.service';
+import { LoginResponse } from '../../models/login-response';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -11,8 +11,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './avatar.component.css',
 })
 export class AvatarComponent {
-  // @ts-ignore
-  @Input() signedIn: LoginResponse;
+  @Input() signedIn: LoginResponse | undefined;
   browserStorageService = inject(BrowserStorageService);
   toggleDropdown = false;
 

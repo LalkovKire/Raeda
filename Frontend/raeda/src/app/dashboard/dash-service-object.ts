@@ -1,4 +1,4 @@
-import { CarModel } from "../shared/car.model";
+import { CarModel } from "../models/car.model";
 
 export interface DashObject {
     imageUrl: String;

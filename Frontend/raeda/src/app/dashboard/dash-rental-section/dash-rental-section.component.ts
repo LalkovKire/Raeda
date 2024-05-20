@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { NavbarComponent } from '../../landing-page/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { RentalModel } from '../../shared/rental.model';
 import { DashRental } from '../dash-service-object';
-import { RentalService } from '../../shared/rental.service';
+import { RentalService } from '../../services/rental.service';
 import { MessageService } from 'primeng/api';
+import {NavbarComponent} from "../../pages/landing-page/navbar/navbar.component";
 
 @Component({
   selector: 'app-dash-rental-section',

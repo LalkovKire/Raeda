@@ -1,17 +1,16 @@
-import {Component, inject, Input} from '@angular/core';
+import {Component, effect, inject, OnInit} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {SidebarModule} from 'primeng/sidebar';
 import {AccordionModule} from 'primeng/accordion';
 import {ListboxModule} from 'primeng/listbox';
 import {CalendarModule} from 'primeng/calendar';
 import {InputSwitchModule} from 'primeng/inputswitch';
-import {BehaviorSubject, debounceTime} from 'rxjs';
-import {ActivatedRoute, Params, Router} from '@angular/router';
-import {FilterService} from './filter.service';
+import {ActivatedRoute, Router} from '@angular/router';
 import {DefaultSelectionValuesService} from './default-selection-values.service';
 import {FilterForm} from './filter-form';
-import {DateService} from '../../shared/date.service';
-import {LowerCasePipe} from '@angular/common';
+import {DateService} from '../../services/date.service';
+import {FilterService} from "../../services/filter.service";
+import {debounceTime} from "rxjs";
 
 @Component({
   selector: 'app-filter-sidebar',
@@ -27,17 +26,21 @@ import {LowerCasePipe} from '@angular/common';
   templateUrl: './filter-sidebar.component.html',
   styleUrl: './filter-sidebar.component.css',
 })
-export class FilterSidebarComponent {
-  @Input() toggleFilterBy: BehaviorSubject<boolean> | undefined;
-
+export class FilterSidebarComponent implements OnInit {
   private filterService = inject(FilterService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private dateService = inject(DateService);
   defaultSelectionValuesService = inject(DefaultSelectionValuesService);
-  route = inject(ActivatedRoute);
-  router = inject(Router);
-  dateService = inject(DateService);
 
   toggle: boolean | undefined;
   form: FormGroup = new FormGroup({});
+
+  constructor() {
+    effect(() => {
+      this.toggle = this.filterService.toggle();
+    });
+  }
 
   ngOnInit(): void {
     this.form = this.initForm();
@@ -49,7 +52,6 @@ export class FilterSidebarComponent {
           queryParams: this.filterService.buildQueryParams(values),
         });
       });
-    this.toggleFilterBy?.subscribe((val: boolean) => (this.toggle = val));
   }
 
   initForm() {
@@ -96,6 +98,6 @@ export class FilterSidebarComponent {
   }
 
   hide() {
-    this.toggleFilterBy?.next(false);
+    this.filterService.toggle.set(false);
   }
 }

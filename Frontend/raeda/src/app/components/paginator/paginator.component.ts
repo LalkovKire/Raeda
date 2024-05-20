@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CarService } from '../../shared/car.service';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { CarService } from '../../services/car.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, switchMap } from 'rxjs';
-import { CarModel } from '../../shared/car.model';
+import { CarModel } from '../../models/car.model';
 
 @Component({
   selector: 'app-paginator',
@@ -22,8 +22,8 @@ export class PaginatorComponent implements OnInit {
   queryParamsSubscription : Subscription | undefined;
 
   constructor(
-    private service: CarService, 
-    private route: ActivatedRoute, 
+    private service: CarService,
+    private route: ActivatedRoute,
     private router: Router
   ){}
 
@@ -39,7 +39,7 @@ export class PaginatorComponent implements OnInit {
       switchMap((params) => {
         if (this.queryParamsSubscription !== undefined) this.queryParamsSubscription.unsubscribe();
         return this.service.getCarsByFiltering(params, 0, this.pageSize)
-      }) 
+      })
     ).subscribe({
         next: (cars) => {
           this.totalPages = cars.totalPages;

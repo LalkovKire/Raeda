@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Subscription, switchMap } from 'rxjs';
-import { CarModel } from '../../../shared/car.model';
 import { CarLocation } from '../../dash-service-object';
-import { LocationService } from '../../../shared/location.service';
+import { LocationService } from '../../../services/location.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -22,10 +21,10 @@ export class LocationPaginatorComponent implements OnInit {
   @Output() locationChanged: EventEmitter<CarLocation[]> =
    new EventEmitter<CarLocation[]>();
   queryParamsSubscription : Subscription | undefined;
-  
+
   constructor(
-    private service: LocationService, 
-    private route: ActivatedRoute, 
+    private service: LocationService,
+    private route: ActivatedRoute,
     private router: Router
   ){}
 
@@ -39,7 +38,7 @@ export class LocationPaginatorComponent implements OnInit {
       switchMap((params) => {
         if (this.queryParamsSubscription !== undefined) this.queryParamsSubscription.unsubscribe();
         return this.service.getAllLocationsByPagination(params, this.currentPage, this.pageSize)
-      }) 
+      })
     ).subscribe({
         next: (location) => {
           this.totalPages = location.totalPages;

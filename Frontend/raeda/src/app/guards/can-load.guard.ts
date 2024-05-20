@@ -1,18 +1,13 @@
 import {CanActivateFn, Router} from '@angular/router';
 import {inject} from "@angular/core";
-import {BrowserStorageService} from "../shared/browserStorage.service";
-import {map, take} from "rxjs";
+import {BrowserStorageService} from "../services/browserStorage.service";
 
 export const canLoadGuard: CanActivateFn = (route, state) => {
   const browserStorageService = inject(BrowserStorageService);
   const router = inject(Router);
 
-  return browserStorageService.isSignIn.pipe(
-    take(1),
-    map((status) => {
-      if (status) return true;
+  if (browserStorageService.getUser() !== null)
+    return true;
 
-      return router.createUrlTree(['/']);
-    })
-  );
+  return router.createUrlTree(['/']);
 };

@@ -1,7 +1,7 @@
-import { Component, inject, Input } from '@angular/core';
-import { CarModel } from '../../shared/car.model';
-import { NgClass } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import {Component, inject, Input, OnInit} from '@angular/core';
+import {CarModel} from '../../models/car.model';
+import {NgClass} from '@angular/common';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'car-card',
@@ -10,9 +10,8 @@ import { Router, RouterLink } from '@angular/router';
   templateUrl: './car-card.component.html',
   styleUrl: './car-card.component.css',
 })
-export class CarCardComponent {
-  // @ts-ignore
-  @Input() car: CarModel;
+export class CarCardComponent implements OnInit {
+  @Input() car: CarModel | undefined;
   router = inject(Router);
   path = './';
 

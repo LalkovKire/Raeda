@@ -9,14 +9,14 @@
   @if (toggleDropdown) {
   <div class="z-50 dropdown bg-clr-white divide-y divide-clr-gray-2 rounded-lg shadow w-56 min-h-fit absolute transform: translate-y-2 left-0">
     <div class="px-4 py-3 text-sm text-clr-gray-6">
-      <div>{{ signedIn.firstName }} {{ signedIn.lastName }}</div>
-      <div class="font-medium truncate">{{ signedIn.email }}</div>
+      <div>{{ signedIn?.firstName }} {{ signedIn?.lastName }}</div>
+      <div class="font-medium truncate">{{ signedIn?.email }}</div>
     </div>
     <ul class="py-2 text-sm text-clr-gray-5" aria-labelledby="avatarButton">
       <li>
         <a [routerLink]="['/my-rents']" class="block px-4 py-2 hover:bg-clr-gray-1">My Rents</a>
       </li>
-      @if(signedIn.role == "ADMIN") {
+      @if(signedIn?.role == "ADMIN") {
         <li>
           <a [routerLink]="['/dashboard']" class="block px-4 py-2 hover:bg-clr-gray-1">Dashboard</a>
         </li>

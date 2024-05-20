@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { NavbarComponent } from '../../landing-page/navbar/navbar.component';
 import { CommonModule } from '@angular/common';
-import { LocationService } from '../../shared/location.service';
+import { LocationService } from '../../services/location.service';
 import { CarLocation } from '../dash-service-object';
 import { MessageService } from 'primeng/api';
 import { RouterLink } from '@angular/router';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { LocationPaginatorComponent } from './location-paginator/location-paginator.component';
+import {NavbarComponent} from "../../pages/landing-page/navbar/navbar.component";
 
 @Component({
   selector: 'app-dash-location-section',
   standalone: true,
   imports: [
     NavbarComponent,
-    CommonModule, 
+    CommonModule,
     RouterLink,
     FooterComponent,
     LocationPaginatorComponent],
@@ -26,13 +26,13 @@ export class DashLocationSectionComponent implements OnInit {
 
   constructor(
     private locationService: LocationService,
-    private messageService: MessageService  
+    private messageService: MessageService
   ){}
 
   ngOnInit(): void {}
 
   onLocationsChanged(loc: CarLocation[]): void {
-    this.locations = loc; 
+    this.locations = loc;
   }
 
   deleteLocationById(id: number): void {

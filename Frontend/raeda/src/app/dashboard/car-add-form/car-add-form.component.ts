@@ -2,13 +2,13 @@ import { CommonModule, Location } from '@angular/common';
 import { Component,OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DropdownModule } from 'primeng/dropdown';
-import { LocationService } from '../../shared/location.service';
+import { LocationService } from '../../services/location.service';
 import { CarLocation } from '../dash-service-object';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CarService } from '../../shared/car.service';
+import { CarService } from '../../services/car.service';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { CarModel } from '../../shared/car.model';
+import { CarModel } from '../../models/car.model';
 
 @Component({
   selector: 'app-car-add-form',
@@ -75,7 +75,7 @@ export class CarAddFormComponent implements OnInit, OnDestroy {
       model: this.editCar?.model,
       type: this.editCar?.carType,
       imageUrl: this.editCar?.image,
-      seats: this.editCar?.seats, 
+      seats: this.editCar?.seats,
       doors: this.editCar?.doors,
       fuel: this.editCar?.fuelType,
       licensePlate: this.editCar?.licensePlate,
@@ -97,7 +97,7 @@ export class CarAddFormComponent implements OnInit, OnDestroy {
        type: new FormControl('', Validators.required),
        imageUrl: new FormControl('',
         [Validators.required, Validators.pattern(urlRegex)]),
-       seats: new FormControl('', 
+       seats: new FormControl('',
         [Validators.required,Validators.min(2), Validators.max(8)]),
        doors: new FormControl('',
         [Validators.required,Validators.min(2), Validators.max(6)]),

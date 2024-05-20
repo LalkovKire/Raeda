@@ -1,7 +1,7 @@
 <li
   [ngClass]="[
-    car.status === 'AVAILABLE' ? 'card-hover' : '',
-    car.status !== 'AVAILABLE' ? 'not-available' : ''
+    car?.status === 'AVAILABLE' ? 'card-hover' : '',
+    car?.status !== 'AVAILABLE' ? 'not-available' : ''
   ]"
 >
   <div
@@ -9,14 +9,14 @@
   >
     <div class="w-full h-[180px]">
       <img
-        [src]="car.image"
-        [alt]="car.model"
+        [src]="car?.image"
+        [alt]="car?.model"
         class="h-full w-full object-cover"
       />
     </div>
     <div class="text-center">
-      <h4 class="h4">{{ car.model }}</h4>
-      <small>{{ car.carType }}</small>
+      <h4 class="h4">{{ car?.model }}</h4>
+      <small>{{ car?.carType }}</small>
     </div>
     <ul class="flex items-center gap-5 px-5">
       <div>
@@ -26,7 +26,7 @@
             alt="Seat icon"
             class="icon"
           />
-          <small>{{ car.seats }} Seats</small>
+          <small>{{ car?.seats }} Seats</small>
         </li>
         <li>
           <img
@@ -34,7 +34,7 @@
             alt="Door icon"
             class="icon"
           />
-          <small>{{ car.doors }} Doors</small>
+          <small>{{ car?.doors }} Doors</small>
         </li>
       </div>
       <div>
@@ -44,7 +44,7 @@
             alt="Gear icon"
             class="icon"
           />
-          <small>{{ car.gearBox }}</small>
+          <small>{{ car?.gearBox }}</small>
         </li>
         <li>
           <img
@@ -52,7 +52,7 @@
             alt="Pump icon"
             class="icon"
           />
-          <small>{{ car.fuelType }}</small>
+          <small>{{ car?.fuelType }}</small>
         </li>
       </div>
       <div>
@@ -62,7 +62,7 @@
             alt="Calendar icon"
             class="icon"
           />
-          <small>{{ car.yearMade }}</small>
+          <small>{{ car?.yearMade }}</small>
         </li>
         <li>
           <img
@@ -70,7 +70,7 @@
             alt="Engin icon"
             class="icon"
           />
-          <small>{{ car.engine }}</small>
+          <small>{{ car?.engine }}</small>
         </li>
       </div>
     </ul>
@@ -81,29 +81,29 @@
           alt="Location icon"
           class="icon"
         />
-        <small> {{ car.location.locationName }} </small>
+        <small> {{ car?.location?.locationName }} </small>
       </li>
       <li>
         <img
           [src]="
             '/assets/images/icons/'.concat(
-              car.status === 'AVAILABLE' ? 'available.svg' : 'not-available.svg'
+              car?.status === 'AVAILABLE' ? 'available.svg' : 'not-available.svg'
             )
           "
           alt="Location icon"
           class="icon"
         />
-        <small> {{ car.status }}</small>
+        <small> {{ car?.status }}</small>
       </li>
     </ul>
     <div class="h-[1px] w-1/2 bg-clr-gray-4"></div>
     <div class="flex items-center gap-20">
       <div class="flex items-center">
-        <p class="font-bold">{{ car.price }}€</p>
+        <p class="font-bold">{{ car?.price }}€</p>
         <span class="font-light text-clr-gray-5">/</span>
         <span class="font-light text-[12px] text-clr-gray-5">day</span>
       </div>
-      <a [routerLink]="[path, car.carID]">
+      <a [routerLink]="[path, car?.carID]">
         <button class="btn btn-primary-outline">Details</button>
       </a>
     </div>
