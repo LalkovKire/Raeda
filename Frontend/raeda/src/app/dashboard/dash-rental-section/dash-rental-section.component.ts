@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from '../../landing-page/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { RentalModel } from '../../shared/rental.model';
 import { DashRental } from '../dash-service-object';
@@ -15,7 +15,9 @@ import { MessageService } from 'primeng/api';
     NavbarComponent,
     FooterComponent,
     CommonModule,
-    RouterLink],
+    RouterLink,
+    DatePipe
+  ],
   templateUrl: './dash-rental-section.component.html',
   styleUrl: './dash-rental-section.component.css'
 })

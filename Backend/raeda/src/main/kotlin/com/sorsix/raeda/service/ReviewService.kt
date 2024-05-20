@@ -7,7 +7,9 @@ import com.sorsix.raeda.api.response.ReviewResponse
 import com.sorsix.raeda.api.util.toReviewResponse
 import com.sorsix.raeda.domain.Review
 import com.sorsix.raeda.repository.ReviewRepository
+import com.sorsix.raeda.service.exceptions.ReviewInvalidDateException
 import com.sorsix.raeda.service.exceptions.ReviewNotFoundException
+import com.sorsix.raeda.service.exceptions.UserAlreadyLeftReviewException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -23,6 +25,18 @@ class ReviewService(
         val user = this.userService.findUserByEmail(review.userEmail)
 
         val rental = this.rentalService.getRentalById(review.rentalID)
+
+        if (rental.dropOffTime > LocalDateTime.now())
+            throw ReviewInvalidDateException()
+
+        val checkUserReviews =
+            this.reviewRepository.checkIfUserHasAlreadyReviewed(rental.user.userId, rental.car.carID)
+
+        if (checkUserReviews.isNotEmpty()) {
+            val username = rental.user.firstName.plus(" ").plus(rental.user.lastName)
+            val car = rental.car.brand.plus(" ").plus(rental.car.model)
+            throw UserAlreadyLeftReviewException(username, car)
+        }
 
         return this.reviewRepository.save(Review(
             0L,

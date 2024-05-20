@@ -15,6 +15,7 @@ import {LocationAddFormComponent} from './dashboard/location-add-form/location-a
 import {DashRentalSectionComponent} from './dashboard/dash-rental-section/dash-rental-section.component';
 import {MyRentsPageComponent} from "./my-rents-page/my-rents-page.component";
 import {canLoadGuard} from "./guards/can-load.guard";
+import { LocationsPageComponent } from './locations-page/locations-page.component';
 
 export const routes: Routes = [
   {path: '', component: LandingPageComponent, pathMatch: 'full'},
@@ -40,6 +41,10 @@ export const routes: Routes = [
         component: CarDetailsPageComponent,
       },
     ],
+  },
+  {
+    path: 'locations',
+    component: LocationsPageComponent
   },
   {
     path: 'dashboard',

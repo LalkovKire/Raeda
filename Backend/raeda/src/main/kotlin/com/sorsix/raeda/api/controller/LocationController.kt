@@ -4,9 +4,7 @@ import com.sorsix.raeda.api.requests.LocationRequest
 import com.sorsix.raeda.api.util.toLocationResponse
 import com.sorsix.raeda.service.LocationService
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
-import org.springframework.data.web.PageableDefault
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 

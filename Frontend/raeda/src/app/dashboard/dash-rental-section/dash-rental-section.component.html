@@ -37,10 +37,10 @@
                           </div>
                         </th>
                         <td class="px-6 py-4">
-                            {{ item.pickupTime}}
+                            {{ item.pickupTime | date }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ item.dropOffTime }}
+                            {{ item.dropOffTime | date }}
                         </td>
                         <td class="px-6 py-4">
                             {{ item.car.carID }}

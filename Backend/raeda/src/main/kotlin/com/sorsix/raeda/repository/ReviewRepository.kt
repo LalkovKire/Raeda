@@ -11,4 +11,10 @@ interface ReviewRepository : JpaRepository<Review, Long> {
 
     @Query("SELECT r FROM Review r JOIN r.rental ren WHERE ren.car.carID = :carId")
     fun findByCarId(@Param("carId") carId: Long): List<Review>
+
+    @Query("SELECT r FROM Review r JOIN r.rental ren" +
+            " WHERE ren.car.carID = :carId AND ren.user.userId = :userId")
+    fun checkIfUserHasAlreadyReviewed(
+        @Param("userId")userId: Long,
+        @Param("carId") carId: Long) : List<Review>
 }
