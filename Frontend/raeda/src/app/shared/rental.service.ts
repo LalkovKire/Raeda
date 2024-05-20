@@ -3,6 +3,7 @@ import {inject, Injectable} from '@angular/core';
 import {RentalModel} from './rental.model';
 import {Observable} from 'rxjs';
 import {DashRental} from '../dashboard/dash-service-object';
+import {ReviewReq} from "./review-req";
 
 @Injectable({
   providedIn: 'root',
@@ -52,5 +53,21 @@ export class RentalService {
     return this.http.get<DashRental[]>(`http://localhost:8080/api/user/rentals?email=${email}`, requestOptions);
   }
 
+  postReview(review: ReviewReq) {
 
+
+    if (this.token === null) return;
+
+    const headerDict = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${this.token}`
+    };
+
+    const requestOptions = {
+      headers: new HttpHeaders(headerDict),
+    };
+
+    return this.http.post(`http://localhost:8080/api/review`, review, requestOptions);
+  }
 }

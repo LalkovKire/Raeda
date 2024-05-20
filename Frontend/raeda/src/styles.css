@@ -101,3 +101,7 @@ li a {
 .input-w-200 {
   @apply w-[200px];
 }
+
+.textarea {
+  @apply bg-transparent border border-clr-gray-4 text-clr-gray-6 rounded-lg placeholder:text-clr-gray-4 p-2 focus-visible:outline-none focus:border-clr-gray-7
+}

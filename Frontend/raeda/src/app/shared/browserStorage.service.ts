@@ -1,9 +1,9 @@
-import { Injectable, inject, signal } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { LoginResponse } from '../auth/login-response';
-import { Router } from '@angular/router';
+import {Injectable, inject, signal} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
+import {LoginResponse} from '../auth/login-response';
+import {Router} from '@angular/router';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class BrowserStorageService {
   isSignIn = new BehaviorSubject<LoginResponse | null>(null);
   router = inject(Router);
@@ -51,5 +51,16 @@ export class BrowserStorageService {
     this.authenticated.update((val) => false);
     this.isSignIn.next(null);
     this.router.navigateByUrl('/');
+  }
+
+  getUser() {
+    const localStorageUser = localStorage.getItem('user') as string;
+    const sessionStorageUser = sessionStorage.getItem('user') as string;
+
+    if (localStorageUser) return JSON.parse(localStorageUser);
+
+    if (sessionStorageUser) return JSON.parse(sessionStorageUser);
+
+    return null;
   }
 }
