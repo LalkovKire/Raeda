@@ -6,6 +6,7 @@ import {Pageable} from '../models/pageable';
 import {Observable} from 'rxjs';
 import {DatesModel} from '../models/dates.model';
 import {BrowserStorageService} from "./browserStorage.service";
+import {ReviewModal} from "../models/review.modal";
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,7 @@ export class CarService {
   private http = inject(HttpClient);
   private browserStorageService = inject(BrowserStorageService);
 
-  private token: string | undefined | null = null;
+  private token: string | null = null;
   private url = 'http://localhost:8080/api/cars';
   isLoading = signal(false);
   error = signal(false);
@@ -54,55 +55,26 @@ export class CarService {
   }
 
   addNewCar(car: CarRequest): Observable<CarModel> {
-    if (this.token != null) {
-      const headerDict = {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: `Bearer ${this.token}`,
-      };
+    if (this.token === null)
+      throw new Error('Token must be present');
 
-      const requestOptions = {
-        headers: new HttpHeaders(headerDict),
-      };
+    return this.http.post<CarModel>(`${this.url}`, car, this.addToken());
 
-      return this.http.post<CarModel>(`${this.url}`, car, requestOptions);
-    } else throw new Error('Token must be present');
   }
 
   editCarById(id: number, car: CarRequest): Observable<CarModel> {
-    if (this.token != null) {
-      const headerDict = {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: `Bearer ${this.token}`,
-      };
+    if (this.token === null)
+      throw new Error('Token must be present');
 
-      const requestOptions = {
-        headers: new HttpHeaders(headerDict),
-      };
+    return this.http.put<CarModel>(`${this.url}/edit/${id}`, car, this.addToken());
 
-      return this.http.put<CarModel>(
-        `${this.url}/edit/${id}`,
-        car,
-        requestOptions
-      );
-    } else throw new Error('Token must be present');
   }
 
   deleteCarById(id: number): Observable<CarModel> {
-    if (this.token != null) {
-      const headerDict = {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: `Bearer ${this.token}`,
-      };
+    if (this.token === null) throw Error('Something went wrong while deleting');
 
-      const requestOptions = {
-        headers: new HttpHeaders(headerDict),
-      };
+    return this.http.delete<CarModel>(`${this.url}/${id}`, this.addToken());
 
-      return this.http.delete<CarModel>(`${this.url}/${id}`, requestOptions);
-    } else throw Error('Something went wrong while deleting');
   }
 
   getCar(id: number) {
@@ -112,4 +84,21 @@ export class CarService {
   getCarDates(id: number) {
     return this.http.get<DatesModel[]>(`${this.url}/${id}/rentals`);
   }
+
+  getCarReview(id: number) {
+    return this.http.get<ReviewModal>(`http://localhost:8080/api/review/total/${id}`);
+  }
+
+  private addToken() {
+    const headerDict = {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: `Bearer ${this.token}`,
+    };
+
+    return {
+      headers: new HttpHeaders(headerDict),
+    };
+  }
+
 }

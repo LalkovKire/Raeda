@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { SignInUser } from '../models/signInUser.model';
 import { SignUpUser } from '../models/signUpUser.model';
-import { LoginResponse } from '../models/login-response';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,7 @@ export class AuthService {
   private http = inject(HttpClient);
 
   signIn(user: SignInUser) {
-    return this.http.post<LoginResponse>(
+    return this.http.post<User>(
       'http://localhost:8080/api/auth',
       user
     );

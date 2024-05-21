@@ -3,7 +3,7 @@ import {NavbarComponent} from '../landing-page/navbar/navbar.component';
 import {FooterComponent} from '../../components/footer/footer.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CarService} from '../../services/car.service';
-import {switchMap, tap} from 'rxjs';
+import {forkJoin, switchMap, tap} from 'rxjs';
 import {CarModel} from '../../models/car.model';
 import {CalendarModule} from 'primeng/calendar';
 import {DropdownModule} from 'primeng/dropdown';
@@ -25,7 +25,9 @@ import {MessageService} from 'primeng/api';
 import {DatesModel} from '../../models/dates.model';
 import {InputOtpModule} from "primeng/inputotp";
 import {ChipsModule} from "primeng/chips";
-import {LoginResponse} from "../../models/login-response";
+import {User} from "../../models/user.model";
+import {ReviewModal} from "../../models/review.modal";
+import {StartsComponent} from "../../components/starts/starts.component";
 
 @Component({
   selector: 'app-car-details-page',
@@ -43,6 +45,8 @@ import {LoginResponse} from "../../models/login-response";
     NgIf,
     ChipsModule,
     FormsModule,
+    StartsComponent,
+    InfoComponent
   ],
   templateUrl: './car-details-page.component.html',
   styleUrl: './car-details-page.component.css',
@@ -59,6 +63,7 @@ export class CarDetailsPageComponent implements OnInit {
   private dateService = inject(DateService);
 
   car: CarModel | undefined;
+  review: ReviewModal | undefined;
   form: FormGroup = new FormGroup({});
   formOTP: FormGroup = new FormGroup({});
   minDatePickup = new Date();
@@ -67,14 +72,13 @@ export class CarDetailsPageComponent implements OnInit {
   locations = ['Skopje', 'Strumica', 'Kavadarci'];
   dayDuration = 1;
   total = 0;
-  insurance = 10;
   visible = false;
   visibleOTP = false;
   isLoggedIn = false;
   dates: DatesModel[] = [];
   pickup: Date[] = [];
   value: number = 0;
-  user: LoginResponse | null = null;
+  user: User | null = null;
 
 
   constructor() {
@@ -88,39 +92,19 @@ export class CarDetailsPageComponent implements OnInit {
     this.form = this.initForm();
     this.formOTP = this.initFormOTP();
 
-    this.route.params
-      .pipe(
-        switchMap(({id}) => this.carService.getCar(+id)),
-        tap((car) => {
-          this.car = car;
-          this.total = this.car?.price * this.dayDuration + this.insurance;
-        }),
-        switchMap((car) => this.carService.getCarDates(car.carID))
-      )
-      .subscribe((dates) => {
-        this.dates = dates;
-        dates.map((date) => {
-          const disablePickupDates = this.dateService.getDatesBetween(
-            new Date(date.pickup),
-            new Date(date.dropOff)
-          );
-          this.pickup.push(...disablePickupDates);
-          let firstAvailableDate = this.dateService.pickup ?? new Date();
-
-          this.pickup
-            .sort(this.dateService.compareDates)
-            .forEach(date => {
-              if (date.getDate() === firstAvailableDate.getDate()) {
-                firstAvailableDate.setDate(firstAvailableDate.getDate() + 1);
-              }
-            });
-
-          this.form.patchValue({pickupDate: firstAvailableDate});
-
-          this.maxDropOffDate(firstAvailableDate);
-        });
-      });
-
+    this.route.params.pipe(
+      switchMap(({id}) => forkJoin({
+        car: this.carService.getCar(+id),
+        dates: this.carService.getCarDates(+id),
+        review: this.carService.getCarReview(+id)
+      })),
+      tap(({car, dates, review}) => {
+        this.car = car;
+        this.total = this.calculateTotalPrice(car);
+        this.processCarDates(dates);
+        this.review = review;
+      })
+    ).subscribe();
 
     this.form.get('pickupDate')?.valueChanges.subscribe((val) => {
       this.form.get('returnDate')?.setValue(val);
@@ -137,7 +121,34 @@ export class CarDetailsPageComponent implements OnInit {
       this.dayDuration = this.date.dateDiffInDays(pickupDate, returnDate) + 1;
 
       if (this.car?.price)
-        this.total = this.car.price * this.dayDuration + this.insurance;
+        this.total = this.car.price * this.dayDuration;
+    });
+  }
+
+  private calculateTotalPrice(car: CarModel): number {
+    return (car?.price ?? 0) * this.dayDuration;
+  }
+
+  private processCarDates(dates: DatesModel[]): void {
+    dates.forEach((date) => {
+      const disablePickupDates = this.dateService.getDatesBetween(
+        new Date(date.pickup),
+        new Date(date.dropOff)
+      );
+      this.pickup.push(...disablePickupDates);
+      let firstAvailableDate = this.dateService.pickup ?? new Date();
+
+      this.pickup
+        .sort(this.dateService.compareDates)
+        .forEach((date) => {
+          if (date.getDate() === firstAvailableDate.getDate()) {
+            firstAvailableDate.setDate(firstAvailableDate.getDate() + 1);
+          }
+        });
+
+      this.form.patchValue({pickupDate: firstAvailableDate});
+
+      this.maxDropOffDate(firstAvailableDate);
     });
   }
 

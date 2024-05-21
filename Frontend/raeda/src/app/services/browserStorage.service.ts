@@ -1,5 +1,5 @@
 import {Injectable, inject, signal} from '@angular/core';
-import {LoginResponse} from '../models/login-response';
+import {User} from '../models/user.model';
 import {Router} from '@angular/router';
 
 @Injectable({providedIn: 'root'})
@@ -26,7 +26,7 @@ export class BrowserStorageService {
     }
   }
 
-  saveUserInfoInStorage(whereToSave: boolean, userInfo: LoginResponse) {
+  saveUserInfoInStorage(whereToSave: boolean, userInfo: User) {
     const user = JSON.stringify(userInfo);
 
     if (whereToSave) {
@@ -38,7 +38,7 @@ export class BrowserStorageService {
     this.isSignIn.set(true);
   }
 
-  userAuthentication(user: LoginResponse): void {
+  userAuthentication(user: User): void {
     if (user.role === 'ADMIN') this.authenticated.update((val) => true);
     else this.authenticated.update((val) => false);
   }
@@ -51,7 +51,7 @@ export class BrowserStorageService {
     this.router.navigateByUrl('/');
   }
 
-  getUser(): LoginResponse | null {
+  getUser(): User | null {
     const localStorageUser = localStorage.getItem('user') as string;
     const sessionStorageUser = sessionStorage.getItem('user') as string;
 

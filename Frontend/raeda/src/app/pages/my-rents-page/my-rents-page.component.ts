@@ -11,7 +11,7 @@ import {BrowserStorageService} from "../../services/browserStorage.service";
 import {RentalService} from "../../services/rental.service";
 import {DashRental} from "../../dashboard/dash-service-object";
 import {ReviewReq} from "../../models/review-req";
-import {LoginResponse} from "../../models/login-response";
+import {User} from "../../models/user.model";
 
 @Component({
   selector: 'app-my-rents-page',
@@ -28,7 +28,7 @@ export class MyRentsPageComponent implements OnInit {
   rents: DashRental[] | null = null;
   visible = false;
   form: FormGroup = new FormGroup({});
-  user: LoginResponse | null = null;
+  user: User | null = null;
   rentalId: number = 0;
 
   ngOnInit(): void {

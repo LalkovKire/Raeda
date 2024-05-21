@@ -1,4 +1,4 @@
-export interface LoginResponse {
+export interface User {
   accessToken: string;
   email: string;
   firstName: string;

@@ -2,7 +2,7 @@ import {Component, effect, inject, OnInit} from '@angular/core';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 import {AvatarComponent} from "../../../components/avatar/avatar.component";
 import {BrowserStorageService} from "../../../services/browserStorage.service";
-import {LoginResponse} from "../../../models/login-response";
+import {User} from "../../../models/user.model";
 
 @Component({
   selector: 'app-navbar',
@@ -13,7 +13,7 @@ import {LoginResponse} from "../../../models/login-response";
 })
 export class NavbarComponent {
   private browserStorageService = inject(BrowserStorageService);
-  signedIn: LoginResponse | null = null;
+  signedIn: User | null = null;
 
   constructor() {
     effect(() => {
