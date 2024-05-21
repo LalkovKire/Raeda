@@ -78,7 +78,7 @@
       </div>
       <div class="shadow-xl rounded-2xl p-5">
         <h3 class="h3">Reviews</h3>
-        @if (review?.reviews?.length !== 0) {
+        @if (review?.reviews) {
           <div
             class="inline-block shadow-md rounded-xl px-3 py-5 text-center"
           >
@@ -88,7 +88,7 @@
             <app-starts [rating]="this.review?.totalRating ?? 0"></app-starts>
           </div>
         }
-        @if (review?.reviews?.length === 0) {
+        @if (!review?.reviews) {
           <div class="mt-5">
             <app-info>No reviews yet. Be the first to leave a review!
             </app-info>
