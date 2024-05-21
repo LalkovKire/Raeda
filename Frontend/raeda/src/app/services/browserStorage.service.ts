@@ -48,7 +48,7 @@ export class BrowserStorageService {
     sessionStorage.removeItem('user');
     this.authenticated.update((val) => false);
     this.isSignIn.set(false);
-    this.router.navigateByUrl('/');
+    this.router.navigateByUrl('/signin');
   }
 
   getUser(): User | null {
