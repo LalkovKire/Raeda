@@ -39,6 +39,7 @@ class CarService(
     private val userRepository: UserRepository,
     private val locationService: LocationService,
     private val rentalRepository: RentalRepository,
+    private val userService: UserService
 ) {
     var otp = 1_000
 
@@ -116,8 +117,7 @@ class CarService(
         if (rental.otp != otp)
             throw WrongOTPCode()
 
-        val user = this.userRepository.findByEmail(rental.userEmail)
-            ?: throw UserNotFoundByEmailException(rental.userEmail)
+        val user = this.userService.findUserByEmail(rental.userEmail)
 
         val car = this.getCarById(rental.carID)
 

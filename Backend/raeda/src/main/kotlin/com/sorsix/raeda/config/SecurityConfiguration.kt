@@ -25,15 +25,21 @@ class SecurityConfiguration(
             .csrf { it.disable() }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/api/auth", "api/auth/refresh", "/error")
+                    .requestMatchers("/api/auth", "/error")
                     .permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/user", "/api/cars/rent", "/api/cars/rent/otp", "/api/review")
+                    .requestMatchers(HttpMethod.GET, "/api/loc", "/api/loc/page",
+                        "/api/loc/{id}", "/api/review/{id}", "/api/review/total/{id}", "/api/cars", "/api/cars/{id}",
+                        "/api/cars/{id}/rentals", "/api/cars/latest", "/api/cars/filter")
                     .permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/cars/**", "/api/loc", "/api/loc/page")
+                    .requestMatchers(HttpMethod.POST,"/api/user")
                     .permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/user/rentals/{id}", "/api/user/rentals")
-                    .hasAnyRole("ADMIN", "USER")
-                    .requestMatchers("/api/user**", "/api/cars/edit**")
+                    .requestMatchers(HttpMethod.POST, "/api/loc", "/api/cars")
+                    .hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.PUT, "/api/loc/edit/{id}", "/api/cars/edit/{id}")
+                    .hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.DELETE, "/api/loc/{id}", "/api/cars/{id}")
+                    .hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/api/rental")
                     .hasRole("ADMIN")
                     .anyRequest()
                     .fullyAuthenticated()
