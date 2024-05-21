@@ -78,6 +78,7 @@ export class CarDetailsPageComponent implements OnInit {
   pickup: Date[] = [];
   value: number = 0;
   user: User | null = null;
+  Math = Math
 
 
   constructor() {

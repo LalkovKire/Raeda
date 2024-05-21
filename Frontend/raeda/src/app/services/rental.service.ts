@@ -22,11 +22,18 @@ export class RentalService {
   }
 
   preRentACar(phoneNumber: string) {
-    return this.http.post(`${this.url2}/rent`, phoneNumber);
+    if (this.token === null)
+      throw new Error('Token must be present');
+
+    return this.http.post(`${this.url2}/rent`, phoneNumber, this.addToken());
   }
 
   rentACar(rentalInformation: RentalModel) {
-    return this.http.post(`${this.url2}/rent/otp`, rentalInformation);
+    if (this.token === null)
+      throw new Error('Token must be present');
+
+
+    return this.http.post(`${this.url2}/rent/otp`, rentalInformation, this.addToken());
   }
 
   getAllRentals(): Observable<DashRental[]> {
@@ -74,5 +81,17 @@ export class RentalService {
     };
 
     return this.http.post(`http://localhost:8080/api/review`, review, requestOptions);
+  }
+
+  private addToken() {
+    const headerDict = {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: `Bearer ${this.token}`,
+    };
+
+    return {
+      headers: new HttpHeaders(headerDict),
+    };
   }
 }

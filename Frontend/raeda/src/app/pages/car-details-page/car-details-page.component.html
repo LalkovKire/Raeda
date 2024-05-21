@@ -82,10 +82,10 @@
           <div
             class="inline-block shadow-md rounded-xl px-3 py-5 text-center"
           >
-            <p class="text-3xl font-bold mb-2">{{ this.review?.totalRating }} <span
+            <p class="text-3xl font-bold mb-2">{{ this.review?.totalRating?.toFixed(1) }} <span
               class="text-sm font-normal">/ 5</span>
             </p>
-            <app-starts [rating]="this.review?.totalRating ?? 0"></app-starts>
+            <app-starts [rating]="Math.floor(this.review?.totalRating ?? 0)"></app-starts>
           </div>
         }
         @if (!review?.reviews) {
