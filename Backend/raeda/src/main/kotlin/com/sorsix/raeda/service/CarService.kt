@@ -108,7 +108,7 @@ class CarService(
 
         println(otp)
 
-        client.smsClient.submitMessage(message)
+//        client.smsClient.submitMessage(message)
 
     }
 
