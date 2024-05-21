@@ -3,7 +3,6 @@ import {NavbarComponent} from '../landing-page/navbar/navbar.component';
 import {FooterComponent} from '../../components/footer/footer.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CarService} from '../../services/car.service';
-import {forkJoin, switchMap, tap} from 'rxjs';
 import {CarModel} from '../../models/car.model';
 import {CalendarModule} from 'primeng/calendar';
 import {DropdownModule} from 'primeng/dropdown';
@@ -92,19 +91,21 @@ export class CarDetailsPageComponent implements OnInit {
     this.form = this.initForm();
     this.formOTP = this.initFormOTP();
 
-    this.route.params.pipe(
-      switchMap(({id}) => forkJoin({
-        car: this.carService.getCar(+id),
-        dates: this.carService.getCarDates(+id),
-        review: this.carService.getCarReview(+id)
-      })),
-      tap(({car, dates, review}) => {
+    this.route.params.subscribe(({id}) => {
+      this.carService.getCar(+id).subscribe(car => {
         this.car = car;
         this.total = this.calculateTotalPrice(car);
+      });
+
+      this.carService.getCarDates(+id).subscribe(dates => {
+        this.dates = dates;
         this.processCarDates(dates);
+      });
+
+      this.carService.getCarReview(+id).subscribe(review => {
         this.review = review;
-      })
-    ).subscribe();
+      });
+    });
 
     this.form.get('pickupDate')?.valueChanges.subscribe((val) => {
       this.form.get('returnDate')?.setValue(val);
